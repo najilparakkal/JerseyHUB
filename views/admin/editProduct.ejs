@@ -1,0 +1,429 @@
+<%- include ('adminHeader')%>
+
+
+    <section class="content-main">
+        <form action="/admin/updateProduct" method="post" enctype="multipart/form-data"
+            onsubmit="return productValidation()">
+            <div class="row">
+                <div class="col-9">
+                    <div class="content-header">
+                        <h2 class="content-title">Edit the Product</h2>
+                        <div>
+
+                            <button type="submit" class="btn btn-md rounded font-sm hover-up">Update</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <label for="product_title" class="form-label">Product title</label>
+                                <input name="name" type="text" placeholder="Type here" value="<%= product.name  %>"
+                                    class="form-control" id="productName">
+                                <p id="nameErr"></p>
+                            </div>
+                            <div class="row gx-3">
+                                <div class="col-md-4 mb-3">
+                                    <label for="product_size" class="form-label">Quantity</label>
+                                    <input type="text" name="stock" value="<%= product.stock %>" placeholder="Type here"
+                                        class="form-control" id="productQuantity">
+                                    <p id="quantityErr"></p>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="product_brand" class="form-label">Brand</label>
+                                <input type="text" name="brand" placeholder="Type here" value="<%= product.brand  %>"
+                                    class="form-control" id="productBrand">
+                                <p id="brandErr"></p>
+                            </div>
+                            <input type="hidden" id="id" name="id" value="<%= product._id %>">
+
+                        </div>
+                    </div>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div>
+                                <label class="form-label">Description</label>
+                                <textarea name="description" placeholder="Type here" class="form-control" rows="4"
+                                    id="description"><%-product.description  %></textarea>
+                                <p id="descriptionErr"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-4" >
+                        <div class="card-body">
+                            <div class="card-body">
+                                <div style="display: flex; justify-content: space-evenly;">
+                                 <div style="display: grid; ">
+                                    <img id="coverImage" src="<%- product.coverimage %>" style="width: 50px; height: 50px;">
+                                    <a onclick="changeCoverImage()" style="color: blue; margin-top: 20px;">Change</a>
+
+                                 </div>
+
+                                    <% for (let i = 0; i < product.images.length; i++) { %>
+                                        <% if(product.images[i]) { %>
+                                            <div style="display: grid;">
+
+                                                <img src="<%- product.images[i] %>" style="width: 50px; height: 50px;">
+                                                <a href="/admin/removeImage?productId=<%- product._id %>&imageIndex=<%= i %>" style="color: red;">Remove</a>
+                                                <a onclick="handleImageChange('<%= i %>')" style="color: blue;">Change</a>
+
+                                                                                                
+                                            </div>
+                                        <% } else { %>
+                                            <p>No Image</p>
+                                        <% } %>
+                                    <% } %>
+                                </div>
+                                
+                            </div>
+                            <a href="" id="addImagesBtn">Add New Images
+                                
+                            </a>
+
+                            <div id="additionalImages" style="display: none;">
+                                
+
+                            <div>
+                                
+                                <label class="form-label">Cover Image </label>
+                                <div class="input-group">
+                                    <input name="coverimage" value="<%- product.coverimage %>" id="images_1" class="form-control image-input" type="file"
+                                        accept="image/*" >
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary crop-btn" id="crop_1" type="button"
+                                            onclick="initiateCropper(1)">Crop</button>
+                                        <button class="btn btn-outline-secondary save-btn" id="save-btn_1" type="button"
+                                            onclick="uploadCroppedImage(1)" style="display:none">Save</button>
+                                    </div>
+                                </div>
+
+                                <div id="image1Cover">
+                                    <img id="croppedImages_1" style="display:none">
+                                </div>
+                                <p id="imagesErr"></p>
+                            </div>
+                            <div>
+                                <label class="form-label"> Images </label>
+                                <div class="input-group">
+                                    <input name="images" value="<%- product.coverimage %>" id="images_2" class="form-control image-input" type="file"
+                                        accept="image/*" >  
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary crop-btn" id="crop_2" type="button"
+                                            onclick="initiateCropper(2)">Crop</button>
+                                        <button class="btn btn-outline-secondary save-btn" id="save-btn_2" type="button"
+                                            onclick="uploadCroppedImage(2)" style="display:none">Save</button>
+                                    </div>
+                                </div>
+                                <img id="croppedImages_2" style="display:none">
+                                <p id="imagesErr"></p>
+                            </div>
+        
+                            <div>
+                                <div class="input-group">
+                                    <input name="images" id="images_3" class="form-control image-input" type="file"
+                                        accept="image/*" >
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary crop-btn" id="crop_3" type="button"
+                                            onclick="initiateCropper(3)">Crop</button>
+                                        <button class="btn btn-outline-secondary save-btn" id="save-btn_3" type="button"
+                                            onclick="uploadCroppedImage(3)" style="display:none">Save</button>
+                                    </div>
+                                </div>
+                                <img id="croppedImages_3" style="display:none">
+                                <p id="imagesErr"></p>
+                            </div>
+        
+                            <div>
+                                <div class="input-group">
+                                    <input name="images" id="images_4" class="form-control image-input" type="file"
+                                        accept="image/*" >
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary crop-btn" id="crop_4" type="button"
+                                            onclick="initiateCropper(4)">Crop</button>
+                                        <button class="btn btn-outline-secondary save-btn" id="save-btn_4" type="button"
+                                            onclick="uploadCroppedImage(4)" style="display:none">Save</button>
+                                    </div>
+                                </div>
+                                <img id="croppedImages_4" style="display:none">
+                                <p id="imagesErr"></p>
+                            </div>
+                        </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <label class="form-label" for="product_price">Price</label>
+                                <input type="text" name="price" value="<%=product.price  %>" placeholder="Type here"
+                                    class="form-control" id="price">
+                                <p id="priceErr"></p>
+                            </div>
+                    
+                        <div class="mb-4">
+                            <label for="product_size" class="form-label">Offer</label>
+                            <input type="text" name="offerPrice" value="<%= product.offerPrice %>" placeholder="Type here" class="form-control"
+                                id="offerPrice">
+                            <p id="quantityErr"></p>
+                        </div>
+                        <button onclick="calculateOffer()" class="btn btn-primary">Offer</button>
+
+
+                            <div class="mb-4">
+                                <label class="form-label" for="product_status">Category</label>
+                                <select class="form-select" name="category" id="category">
+                                    <p id="categoryErr"></p>
+                                    <% category.forEach(n=>{ %>
+                                        <option>
+                                            <%= n.name %>
+                                        </option>
+                                        <% }) %>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
+
+        <script>
+            let cropper;
+
+            function initiateCropper(imageNum) {
+                alert(imageNum)
+                const input = document.getElementById('images_' + imageNum)
+                alert(input)
+                const file = input.files[0];
+                const image = document.getElementById(`croppedImages_${imageNum}`);
+                image.style.display = 'block'
+                const cropBtn = document.getElementById('crop_' + imageNum)
+                const saveBtn = document.getElementById('save-btn_' + imageNum)
+
+                if (file && image) {
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        image.src = e.target.result;
+
+                        cropper = new Cropper(image, {
+                            aspectRatio: 1,
+                            viewMode: 2,
+                        });
+
+                        cropBtn.style.display = 'none';
+                        saveBtn.style.display = 'block';
+                    }
+                    reader.readAsDataURL(file);
+                } else {
+                    canvas.src = '';
+                    if (cropper) {
+                        cropper.destroy();
+                    }
+                }
+            }
+
+            function uploadCroppedImage(id) {
+                const canvas = cropper.getCroppedCanvas();
+                if (canvas) {
+                    canvas.toBlob((blob) => {
+                        const fileName = 'cropped_image.jpg';
+                        const file = new File([blob], fileName, { type: 'image/jpeg' });
+                        const input = document.getElementById('images_' + id);
+
+                        if (DataTransfer && FileList) {
+                            const dataTransfer = new DataTransfer();
+                            dataTransfer.items.add(file);
+                            input.files = dataTransfer.files;
+                        } else {
+                            console.error('FileList and DataTransfer are not supported in this browser.');
+                        }
+
+                        cropper.destroy();
+                        document.getElementById('croppedImages_' + id).style.display = 'none';
+                        document.getElementById('save-btn_' + id).style.display = 'none'
+                        document.getElementById('crop_' + id).style.display = 'block';
+
+                    });
+                }
+            }
+
+
+            function dataURItoBlob(dataURI) {
+                const byteString = atob(dataURI.split(',')[1]);
+                const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+                const ab = new ArrayBuffer(byteString.length);
+                const ia = new Uint8Array(ab);
+                for (let i = 0; i < byteString.length; i++) {
+                    ia[i] = byteString.charCodeAt(i);
+                }
+                return new Blob([ab], { type: mimeString });
+            }
+
+
+
+        </script>
+
+         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+         <script>
+            function calculateOffer() {
+                Swal.fire({
+                    title: 'How much offer?',
+                    input: 'number',
+                    inputAttributes: {
+                        autocapitalize: 'off'
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: 'OK',
+                    showLoaderOnConfirm: true,
+                    preConfirm: (number) => {
+                        const originalPrice = parseInt(document.getElementById('price').value);
+                        const res = (number *originalPrice)/100;
+                        const result = originalPrice-res
+                        return result;
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const calculatedValue = result.value;
+                        if (calculatedValue !== undefined) {
+                            const inputField = document.getElementById('offerPrice');
+                            inputField.value = calculatedValue.toFixed(2);
+                        }
+                    }
+                });
+            }
+            </script>
+            
+<script>
+ function handleImageChange(index) {
+    Swal.fire({
+        title: 'Upload Image',
+        input: 'file',
+        inputAttributes: {
+            accept: 'image/*',
+            'aria-label': 'Upload your image',
+            name: 'images'
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Upload',
+        showLoaderOnConfirm: true,
+        preConfirm: (file) => {
+            if (!file) {
+                Swal.showValidationMessage('Please select an image');
+            }
+            return file;
+        },
+    }).then((result) => {
+        if (result.isConfirmed && result.value) {
+            const productId = '<%= product._id %>';
+            const imageIndex = index;
+
+            const formData = new FormData();
+            formData.append('image', result.value);
+
+            fetch(`/admin/changeimage?productId=${productId}&imageIndex=${imageIndex}`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Image upload failed');
+            })
+            .then(data => {
+                // Handle success
+                Swal.fire('Success', data.message, 'success');
+                location.reload()
+            })
+            .catch(error => {
+                // Handle errors
+                console.error(error);
+                Swal.fire('Error', 'Failed to upload image', 'error');
+            });
+        }
+    });
+}
+
+</script>
+
+
+<script>
+    function changeCoverImage() {
+    Swal.fire({
+        title: 'Upload Cover Image',
+        input: 'file',
+        inputAttributes: {
+            accept: 'image/*',
+            'aria-label': 'Upload your cover image',
+            name: 'coverImage'
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Upload',
+        showLoaderOnConfirm: true,
+        preConfirm: (file) => {
+            if (!file) {
+                Swal.showValidationMessage('Please select an image');
+            }
+            return file;
+        },
+    }).then((result) => {
+        if (result.isConfirmed && result.value) {
+            const productId = '<%= product._id %>';
+
+            const formData = new FormData();
+            formData.append('coverImage', result.value);
+
+            fetch(`/admin/changeCoverImage?productId=${productId}`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Cover image upload failed');
+            })
+            .then(data => {
+                // Handle success
+                Swal.fire('Success', data.message, 'success');
+                // Reload or update the cover image on the page
+                document.getElementById('coverImage').src = data.newCoverImagePath; // Update the cover image source
+            })
+            .catch(error => {
+                // Handle errors
+                console.error(error);
+                Swal.fire('Error', 'Failed to upload cover image', 'error');
+            });
+        }
+    });
+}
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const addImagesBtn = document.getElementById("addImagesBtn");
+  const additionalImages = document.getElementById("additionalImages");
+
+  addImagesBtn.addEventListener("click", function(event) {
+    event.preventDefault(); // Prevent default button behavior (page reload)
+
+    additionalImages.style.display = "block"; // Display the additional images div
+  });
+});
+
+
+
+</script>
+
+        <%- include('adminFooter')%>

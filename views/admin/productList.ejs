@@ -1,0 +1,123 @@
+
+<%- include('adminHeader') %>
+
+
+
+<body>
+    <div class="screen-overlay"></div>
+
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Products List</h2>
+                    <p>Lorem ipsum dolor sit amet.</p>
+                </div>
+                <div>
+                   
+                    <a href="/admin/createProduct" class="btn btn-primary btn-sm rounded">Create new</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card mb-4">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Product Images</th>
+                                <th>Product Name</th>
+                                <th>Price</th>
+                                <th>Brand</th>
+                                <th>Category</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                                <th>&emsp;&ensp;Edit</th>
+                                <!-- <th><center>Delete</center></th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                                <% if(product.length>0) {%>
+                                    <% for(let i=0;i<product.length;i++) { %>
+                                    <tr>
+                                        
+                                        <td><%-i+1 %></td>
+                                        <td><img src="<%-product[i].coverimage %>" style="width: 50px; height: 40px;" alt=""> </td>
+                                        <td><%-product[i].name  %></td>
+                                        <td><%-product[i].price  %></td>
+                                        <td><%-product[i].brand  %></td>
+                                        
+                                        <td><%-product[i].category %></td>
+                                        <td><%-product[i].stock%></td>
+                                        <td>
+                                                <li>
+                                                    <% if(product[i].status === true){ %>
+                                                  
+                                                    <a href="/admin/blockproduct?id=<%= product[i]._id %>">
+                                                   
+                                                    <span style="color: rgb(39, 125, 95);">Listed</span>  </a> 
+                                                    <% }else{ %>
+                                                        <a href="/admin/unblockproduct?id=<%= product[i]._id %>">
+                                                            <span>Unlisted</span>
+                                                        </a>
+                                                  
+                                                   <% } %>
+                                                </li>
+                                                
+
+                                        </td>
+                                        
+                                        <td>
+                                            <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
+                                                <a href="/admin/editProduct?id=<%- product[i]._id %>" class="btn btn-sm font-sm rounded btn-brand">
+                                                    Edit
+                                                </a>
+                                                
+                                            </div>
+                                        </td>
+                                        <!-- <td>
+                                            <div class="btn-icon">
+                                                <a href="/admin/deletProduct?id=<%- product[i]._id %>"  class="btn btn-sm font-sm rounded btn-danger">
+                                                  
+
+                                                    Delete
+                                                </a>
+                                                
+                                            </div>
+                                        </td> -->
+                                    </tr>
+                                    <% } %>
+                               <% } %>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+               <!-- card end// -->
+            <div class="pagination-area mt-30 mb-50">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-start">
+                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                        <li class="page-item"><a class="page-link" href="#">02</a></li>
+                        <li class="page-item"><a class="page-link" href="#">03</a></li>
+                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                        <li class="page-item"><a class="page-link" href="#">16</a></li>
+                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </section> <!-- content-main end// -->
+        <!-- <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script>
+                    document.write(new Date().getFullYear())
+                    </script> ©, Evara - HTML Ecommerce Template .
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end">
+                        All rights reserved
+                    </div>
+                </div>
+            </div>
+        </footer> -->
+    </main>
+  <%- include('adminFooter') %>

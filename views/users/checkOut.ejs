@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>JerseyHUB</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon"
+        href="/firstAssets/imgs/theme/icons/pngtree-man-playing-football-image_1200610.jpg">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="/firstAssets/css/main.css?v=3.4">
+
+
+</head>
+
+<body style="background-color: black;">
+
+
+    <main class="main">
+        <section class="mt-50 mb-50">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6" id="view_card">
+                        <div class="row">
+                            <% if(address.length> 0 ){ %>
+                                <% for (let i=0; i < address.length; i++) { %>
+
+                                    <div class="col-12 mt-4">
+                                        <input class="form-check-input" type="radio" required=""
+                                            style="width: 1rem; height: 1rem;" value="<%= address[i]._id %>"
+                                            name="selectedAddressId" id="checkoutShippingMethod">
+                                        <div class="card mt-4" style="border: none; background-color: black; ">
+                                            <div class="card-header "  style="border: 1px solid #fd7e14 ; background-color: #fd7e14; color: white; ">
+                                                <h5 class="mb-0 text-white">Address</h5>
+                                            </div>
+                                            <div class="card-body bg-black border border-white shadow" style="border-radius: 10px; border: 3px solid #fd7e14;">
+                                                <address >
+                                                    <h5 style="color: red;margin-bottom: 20px;" >Deliverd To :</h5>
+                                                    <p style="color: white;">Full Name: &nbsp; <%= address[i].fullName %></p>
+                                                    <p style="color: white;">Phone Number:&nbsp; <%= address[i].phoneNum %></p>
+                                                    <p style="color: white;">District: <%= address[i].district %></p>
+                                                    <p style="color: white;">Pincode: <%= address[i].pincode %></p>
+                                                    <p style="color: white;">City: <%= address[i].city %></p>
+                                                    <p style="color: white;">State: <%= address[i].state %></p>
+                                                    <p style="color: white;">House Number: <%= address[i].houseNum %></p>
+                                                </address>
+                                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                                    <a href="/editCartAdd?id=<%- address[i]._id %>" class="btn btn-small btn-primary" style="background-color: ;">Edit</a>
+                                                    <a href="/deleteCartAdd?id=<%- address[i]._id %>" class="btn btn-small btn-danger" style="background-color: #ff0000;">Delete</a>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <a href="/homepage" style="color: white;; margin-top: 30px;margin-right: 50px;"><button style="background-color: aqua;color: #fd7e14;" class="btn  mt-30"> SHOP MORE....</button></a>
+                                    <% } %>
+                                        <% }else{ %>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="card mb-3 mb-lg-0">
+                                                        <div class="card-body">
+                                                            <h3 class="mb-4 text-center">You have not added an address
+                                                                yet</h3>
+                                                            <div class="text-center">
+                                                                <a href="/CheckOutAdd" class="btn btn-primary">Add
+                                                                    Address</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <% } %>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="mb-20">
+                            <h4 style="color: aqua;">Your Orders</h4>
+                        </div>
+                        <div class="table-responsive order_table text-center">
+                            <table class="table">
+
+                                <thead class="bg-dark text-white">
+                                    <tr>
+                                        <th  style="border: 1px solid #fd7e14 ; background-color: #fd7e14; color: white;">Product</th>
+                                        <th style="border: 1px solid #fd7e14 ; background-color: #fd7e14; color: white;">Quantity</th>
+                                        <th style="border: 1px solid #fd7e14 ; background-color: #fd7e14; color: white;">Size</th>
+                                        <th style="border: 1px solid #fd7e14 ; background-color: #fd7e14; color: white;">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-light">
+                                    <% if(cart.items.length> 0 ){ %>
+
+                                        <% cart.items.forEach((item)=> { %>
+                                            <tr style="background-color: black;">
+                                                <td class="image product-thumbnail" style="border: 1px solid #ff0000">
+                                                    <img src="<%= item.products.coverimage %>" alt="#">
+                                                    <h5 style="color: white;">
+                                                            <%= item.products.name %>
+                                                        </h5>
+
+                                                </td>
+                                                <td style="border: 1px solid #ff0000;color: white;">
+                                                    <span class="product-qty">x<%=item.quantity %></span>
+                                                </td>
+                                                <td style="border: 1px solid #ff0000;color: white;">
+                                                    <span id="size" onclick="size('<%= item.size%>')">
+                                                        <%= item.size %>
+
+                                                    </span>
+                                                </td>
+                                                <td style="border: 1px solid #ff0000;color: white;">
+                                                     <%= item.quantity * item.price %>
+                                                </td>
+                                            </tr>
+                                            <tr  style="background-color: black;">
+                                                <td style="border: 1px solid #ff0000;color: white;">
+                                                    <h5 style="color: white;">Shipping Cost</h5>
+                                                </td>
+                                                <td colspan="3" style="border: 1px solid #ff0000;color: white;">
+                                                    Free
+                                                </td>
+                                            </tr>
+                                            <tr  style="background-color: black;">
+                                                <td style="border: 1px solid #ff0000;color: white;">
+                                                    <h5 style="color: white;">Delivery Charge</h5>
+                                                </td>
+                                                <td colspan="3" style="border: 1px solid #ff0000;color: white;">
+                                                    Free Delivery
+                                                </td>
+                                            </tr>
+                                            <tr style="background-color: black;">
+                                                <td style="border: 1px solid #ff0000 ;color: white;">
+                                                    Total
+                                                </td>
+                                                <td colspan="3" style="border: 1px solid #ff0000;color: white;">
+                                                    <%= item.quantity * item.price %>
+                                                </td>
+                                            </tr>
+
+                                </tbody>
+
+                                <% }) %>
+                                    <% }else{ %>
+
+                                        <div class="container d-flex justify-content-center align-items-center"
+                                            style="height: 300px; width: 100%;">
+                                            <div style="text-align: center;">
+                                                <p class="mb-2"> EMPTY</p> <br><a class="btn btn-sucess"
+                                                    href="/">Continue Shopping</a>
+                                            </div>
+                                        </div>
+                                        <% } %>
+                            </table>
+                            <thead class="bg-dark text-white">
+                                <tr>
+
+
+                                </tr>
+                                
+                            </thead>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td style="background-color: black; color: white; width: 50%;border: 1px solid #fd7e14 ; background-color: #fd7e14; color: white;">
+                                            Grand Total
+                                        </td>
+                                        <td style="background-color: black; color: white; width: 50%; border: 1px solid #fd7e14 ; background-color: #fd7e14; color: white;">
+                                            <span class="font-xl fw-900 text-brand" style="color: red;">
+                                                <% total=0; %>
+                                                    <% cart.items.forEach(carts=> { %>
+                                                        <% if (cart) { %>
+                                                            <% total +=carts.price * carts.quantity; %>
+                                                                <% } %>
+                                                                    <% }); %>
+                                                                        <%= total %>
+                                                                            <input type="hidden" id="grandTotal" name="grandTotal" value="<%= total %>">
+                                            </span>
+                                        </td>
+                                        
+                                        
+                                    </tr>
+                                </tbody>
+                            </table>
+                           
+                            <table >
+                                <tbody>
+                                    <td style="border-right:none ; text-align: left;" class="col-8">
+                                        Wallet Balance: <span style="color: green;"><%= user.wallet %></span>
+                                    </td>
+                                    <td style="border-left: none;">
+                                        <a href="#" class="btn-sm" onclick="addWallet()" style="background-color: #fd7e14;">
+                                            update wallet
+                                        </a>
+                                    </td>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                        <div class="payment_method">
+                            <div class="mb-25">
+                                <h5 style="color: aqua;">Payment</h5>
+                            </div>
+                            <div class="payment_option" style="display: flex; ">
+                                <div>
+                                    <div class="custome-radio">
+                                        <input class="form-check-input" required="" type="radio" name="payment_option"
+                                            id="exampleRadios3" value="COD" checked="">
+                                        <label class="form-check-label" for="exampleRadios3" data-bs-toggle="collapse"
+                                            data-target="#bankTranfer" aria-controls="bankTranfer" style="color: #ff0000;" >
+                                            Cash On Delivery</label>
+
+
+                                        <div class="form-group collapse in" id="bankTranfer">
+                                            <p class="text-muted mt-5">You are Selected Cash On Delivery </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="custome-radio">
+                                        <input class="form-check-input" required="" type="radio" name="payment_option"
+                                            id="razorpayRadio" checked="" value="razorpay">
+                                        <label class="form-check-label" for="razorpayRadio" data-bs-toggle="collapse"
+                                            data-target="#checkPayment" aria-controls="razorpay" style="color: #ff0000;">RezorPay</label>
+                                        <div class="form-group collapse in" id="razorpay">
+                                            <p class="text-muted mt-5">Please send your cheque to Store Name, Store
+                                                Street,
+                                                Store Town, Store State / County, Store Postcode. </p>
+                                        </div>
+                                    </div>
+                                    <div class="custome-radio">
+                                        <input class="form-check-input" required="" type="radio" name="payment_option"
+                                            id="walletRadio" checked="" value="Wallet">
+                                        <label class="form-check-label" for="walletRadio" data-bs-toggle="collapse"
+                                            data-target="#checkPayment" aria-controls="wallet" style="color: #ff0000;">Wallet</label>
+                                        <div class="form-group collapse in" id="Wallet">
+                                            <p class="text-muted mt-5">Please send your cheque to Store Name, Store
+                                                Street,
+                                                Store Town, Store State / County, Store Postcode. </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="#" style="color: white;padding: 10px; margin-left: 200px;">
+                                    <button style="background-color: aqua;color: #fd7e14;"  onclick="confirmPlaceOrder()" id="placeOrderButton"value="Submit"  class="btn btn-fill-out btn-block mt-30"> Place Order</button>
+                                </a>
+
+                            </div>
+                        </div>
+                        <input type="hidden" name="selectedAddressId" id="selectedAddressId">
+                        <input type="hidden" name="paymentMethod" id="paymentMethod">
+
+
+                        <% cart.items.forEach((product,index)=>{ %>
+                            <input type="hidden" name="products[<%= index %>][productId]"
+                                value="<%= product.products._id %>">
+                            <input type="hidden" name="products[<%= index %>][quantity]"
+                                value="<%= product.quantity %>">
+                            <input type="hidden" name="products[<%= index %>][size]" value="<%= product.size %>">
+
+
+                            <% }) %>
+
+                    </div>
+                </div>
+            </div>
+
+            </div>
+        </section>
+    </main>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <script>
+        // Assuming you have jQuery available
+        $('input[name="payment_option"]').change(function () {
+            var selectedPayment = $('input[name="payment_option"]:checked').val();
+
+            // Perform actions based on the selected payment option
+            if (selectedPayment === "COD") {
+                // If Cash on Delivery is selected
+                console.log("Cash On Delivery selected");
+                // You can add your logic here for Cash On Delivery
+            } else if (selectedPayment === "razorpay") {
+                // If RezorPay is selected
+                console.log("RezorPay selected");
+                // You can add your logic here for RezorPay
+            } else if (selectedPayment === "Wallet") {
+                // If PayPal is selected
+                console.log("wallet selected");
+                // You can add your logic here for PayPal
+            }
+        });
+
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#search_box").on("input", function () {
+                var value = $("#search_box").val().toLowerCase();
+                var resultsContainer = $("#resultsContainer");
+                resultsContainer.empty();
+
+                $.get('/searchProduct', { q: value }, (data) => {
+                    data.forEach(element => {
+                        console.log(element);
+                        var resultDiv = $("<div>").css({
+                            'width': '33rem',
+                            'color': 'black',
+                            'background-color': 'white',
+                            'padding': '7px',
+                            'border': '1px solid black',
+                            'text-align': 'center',
+                            'cursor': 'pointer'
+                        }).text(element.name);
+
+                        resultDiv.hover(
+                            function () {
+                                $(this).css({
+                                    'background-color': 'black',
+                                    'color': 'white'
+                                });
+                            },
+                            function () {
+                                $(this).css({
+                                    'background-color': 'white',
+                                    'color': 'black'
+                                });
+                            }
+                        );
+
+                        resultDiv.click(function () {
+
+                            window.location.href = '/product/?id=' + element._id;
+                        });
+                        resultsContainer.append(resultDiv);
+                    });
+                });
+            });
+        });
+    </script>
+
+<script>
+      
+    
+    function addWallet() {
+      Swal.fire({
+        title: "Enter amount to add to Wallet",
+        input: "text",
+        inputAttributes: {
+          autocapitalize: "off"
+        },
+        showCancelButton: true,
+        confirmButtonText: "Add",
+        showLoaderOnConfirm: true,
+        preConfirm: async (amount) => {
+          try {
+            const response = await fetch('/addWallet', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ amount })
+            });
+  
+            if (response.status === 200) {
+              const res = await response.json();
+              if (res && res.order) {
+                const options = {
+                  key: 'rzp_test_P8THlp76qwLW4O',
+                  amount: res.order.amount,
+                  currency: res.order.currency,
+                  name: 'JereyHUB',
+                  description: 'Have A good Day ',
+                  order_id: res.order.id,
+                  handler: async function (razorpayResponse) {
+                    try {
+                      const updateResponse = await fetch('/updatewallet', {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ amount: res.order.amount })
+                      });
+                      if (updateResponse.ok) {
+                        location.reload()
+
+                        Swal.fire({
+                          position: "top",
+                          icon: "success",
+                          title: "Wallet Updated",
+                          showConfirmButton: false,
+                          timer: 1500,
+                        });
+                        
+                      } else {
+                        throw new Error("Failed to update Wallet");
+                      }
+                    } catch (error) {
+                      console.error('Error updating wallet:', error);
+                      Swal.fire({
+                        position: "top",
+                        icon: 'error',
+                        title: "Failed to update Wallet",
+                        showConfirmButton: false,
+                        timer: 1500
+                      });
+                    }
+                  },
+                };
+  
+                rzp = new Razorpay(options);
+                rzp.open();
+              } else {
+                throw new Error("No order details found");
+              }
+            } else {
+              throw new Error("Failed to fetch order details");
+            }
+          } catch (error) {
+            console.log('An error occurred:', error);
+            Swal.fire({
+              position: "top",
+              icon: 'error',
+              title: error.message || "Error",
+              showConfirmButton: false,
+              timer: 1500
+            });
+          }
+        },
+      });
+    }
+  </script> 
+
+
+    <!-- Vendor JS-->
+    <script src="/firstAssets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="/firstAssets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="/firstAssets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="/firstAssets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="/firstAssets/js/plugins/slick.js"></script>
+    <script src="/firstAssets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="/firstAssets/js/plugins/wow.js"></script>
+    <script src="/firstAssets/js/plugins/jquery-ui.js"></script>
+    <script src="/firstAssets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="/firstAssets/js/plugins/magnific-popup.js"></script>
+    <script src="/firstAssets/js/plugins/select2.min.js"></script>
+    <script src="/firstAssets/js/plugins/waypoints.js"></script>
+    <script src="/firstAssets/js/plugins/counterup.js"></script>
+    <script src="/firstAssets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="/firstAssets/js/plugins/images-loaded.js"></script>
+    <script src="/firstAssets/js/plugins/isotope.js"></script>
+    <script src="/firstAssets/js/plugins/scrollup.js"></script>
+    <script src="/firstAssets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="/firstAssets/js/plugins/jquery.theia.sticky.js"></script>
+    <script src="/firstAssets/js/plugins/jquery.elevatezoom.js"></script>
+    <!-- Template  JS -->
+    <script src="./firstAssets/js/main.js?v=3.4"></script>
+    <script src="./firstAssets/js/shop.js?v=3.4"></script>
+
+
+    <!-- //product  -->
+
+    <script src="/firstAssets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="/firstAssets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="/firstAssets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="/firstAssets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="/firstAssets/js/plugins/slick.js"></script>
+    <script src="/firstAssets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="/firstAssets/js/plugins/wow.js"></script>
+    <script src="/firstAssets/js/plugins/jquery-ui.js"></script>
+    <script src="/firstAssets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="/firstAssets/js/plugins/magnific-popup.js"></script>
+    <script src="/firstAssets/js/plugins/select2.min.js"></script>
+    <script src="/firstAssets/js/plugins/waypoints.js"></script>
+    <script src="/firstAssets/js/plugins/counterup.js"></script>
+    <script src="/firstAssets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="/firstAssets/js/plugins/images-loaded.js"></script>
+    <script src="/firstAssets/js/plugins/isotope.js"></script>
+    <script src="/firstAssets/js/plugins/scrollup.js"></script>
+    <script src="/firstAssets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="/firstAssets/js/plugins/jquery.theia.sticky.js"></script>
+    <!-- Template  JS -->
+    <script src="./firstAssets/js/main.js?v=3.4"></script>
+
+
+    <script src="firstAssets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="firstAssets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="firstAssets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="firstAssets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="firstAssets/js/plugins/slick.js"></script>
+    <script src="firstAssets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="firstAssets/js/plugins/wow.js"></script>
+    <script src="firstAssets/js/plugins/jquery-ui.js"></script>
+    <script src="firstAssets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="firstAssets/js/plugins/magnific-popup.js"></script>
+    <script src="firstAssets/js/plugins/select2.min.js"></script>
+    <script src="firstAssets/js/plugins/waypoints.js"></script>
+    <script src="firstAssets/js/plugins/counterup.js"></script>
+    <script src="firstAssets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="firstAssets/js/plugins/images-loaded.js"></script>
+    <script src="firstAssets/js/plugins/isotope.js"></script>
+    <script src="firstAssets/js/plugins/scrollup.js"></script>
+    <script src="firstAssets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="firstAssets/js/plugins/jquery.theia.sticky.js"></script>
+    <script src="firstAssets/js/plugins/jquery.elevatezoom.js"></script>
+    <!-- Template  JS -->
+    <script src="./firstAssets/js/main.js?v=3.4"></script>
+    <script src="./firstAssets/js/shop.js?v=3.4"></script>
+
+    <script src="/js/userLoginValidate.js"></script>
+    <script src="/js/createUserValidation.js"></script>
+    <script src="/js/addressValidation.js"></script>
+    <script src="/js/changePassword.js"></script>
+    <script src="/firstAssets/js/placeOrder.js"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js "></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></script>
+
+</body>
+
+</html>

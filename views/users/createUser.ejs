@@ -1,0 +1,216 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
+
+	<!-- title -->
+	<title>Contact</title>
+
+	<!-- favicon -->
+	<link rel="shortcut icon" type="image/png" href="assets/img/favicon.png">
+	<!-- google font -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+	<!-- fontawesome -->
+	<link rel="stylesheet" href="assets/css/all.min.css">
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+	<!-- owl carousel -->
+	<link rel="stylesheet" href="assets/css/owl.carousel.css">
+	<!-- magnific popup -->
+	<link rel="stylesheet" href="assets/css/magnific-popup.css">
+	<!-- animate css -->
+	<link rel="stylesheet" href="assets/css/animate.css">
+	<!-- mean menu css -->
+	<link rel="stylesheet" href="assets/css/meanmenu.min.css">
+	<!-- main style -->
+	<link rel="stylesheet" href="assets/css/main.css">
+	<!-- responsive -->
+	<link rel="stylesheet" href="assets/css/responsive.css">
+	
+    <link rel="stylesheet" href="/assets/css/second.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+
+</head>
+<div class="loader">
+	<div class="loader-inner">
+		<div class="circle"></div>
+	</div>
+</div>
+<!--PreLoader Ends-->
+
+<!-- header -->
+<!--  -->
+<!-- -->
+
+
+<style>
+	body{
+		background-color: black;
+	}
+</style>
+<!-- search area -->
+<div class="search-area">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<span class="close-btn"><i class="fas fa-window-close"></i></span>
+				<div class="search-bar">
+					<div class="search-bar-tablecell">
+						<h3>Search For:</h3>
+						<input type="text" placeholder="Keywords" id="search_box" autocomplete="off">
+						<div style="position: absolute; z-index: 999; width: 304px;" id="resultsContainer"></div>
+
+						<button type="submit">Search <i class="fas fa-search"></i></button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script>
+$(document).ready(function () {
+$("#search_box").on("input", function () {
+var value = $("#search_box").val().toLowerCase();
+var resultsContainer = $("#resultsContainer");
+resultsContainer.empty();
+
+$.get('/searchProduct', { q: value }, (data) => {
+data.forEach(element => {
+   console.log(element);
+   var resultDiv = $("<div>").css({
+       'width':'33rem',
+       'color': 'black',
+       'background-color':'white',
+       'padding': '7px',
+       'border': '1px solid black',
+       'text-align': 'center',
+       'cursor': 'pointer'
+   }).text(element.name);
+
+   resultDiv.hover(
+       function () {
+           $(this).css({
+               'background-color': 'black',
+               'color': 'white'
+           });
+       },
+       function () {
+           $(this).css({
+               'background-color': 'white',
+               'color': 'black'
+           });
+       }
+   );
+
+   resultDiv.click(function () {
+      
+       window.location.href = '/product/?id=' + element._id;
+   });
+   resultsContainer.append(resultDiv);
+});
+});
+});
+ });
+ </script>
+
+
+<body>
+	<section style="background-color: black;">
+		<div class="container">
+			<div class="row d-flex justify-content-center align-items-center  " >
+				<div class="col-lg-12 col-xl-10 " style="margin-top: 50px; margin-bottom: 50px;" >
+					<div class="card text-black" style="border-radius: 25px; height: 500px; background-image: url('/assets/img/953603722.jpg.0.jpg'); background-size: cover; border: 3px solid black;">
+						<div class="card-body  ">
+							<div class="row justify-content-center">
+								<div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+	
+							<p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4" style="color:#fd7e14">Sign up</p>
+	
+                        <form class="mx-1 mx-md-4" method="post" action="/userCreate" onsubmit="return newUserValidate()">
+	  
+						<div class="d-flex flex-row  ">
+						  <i class="fas fa-user fa-lg me-3 fa-fw" style="color: #fd7e14;"> </i>
+						  <div class="form-outline flex-fill mb-0">
+							<input id="userName" type="text" name="userName" placeholder="Username" class="form-control" >
+							<label class="form-label" for="form3Example1c">Your Name</label>
+							<p id="userNameErr"></p>
+
+						  </div>
+						</div>
+	  
+						<div class="d-flex flex-row  ">
+						  <i class="fas fa-envelope fa-lg me-3 fa-fw" style="color: #fd7e14;"></i>
+						  <div class="form-outline flex-fill mb-0">
+							<input id="email" type="text"  name="email" placeholder="Email" class="form-control">
+							<label class="form-label" for="form3Example3c">Your Email</label>
+							<p id="emailErr"></p>
+
+						  </div>
+						</div>
+	  
+						<div class="d-flex flex-row ">
+						  <i class="fas fa-lock fa-lg me-3 fa-fw" style="color: #fd7e14;"></i>
+						  <div class="form-outline flex-fill mb-0">
+							<!-- <input id="phoneNum" type="number"  name="phoneNum" placeholder="phone number" class="form-control"> -->
+							<input id="phoneNum" type="text"  name="phoneNum" placeholder="phone Number" class="form-control">
+
+							<label class="form-label" for="form3Example4c">Phone Number</label>
+							<p id="phoneNumErr"></p>
+
+						  </div>
+						</div>
+	  
+						<div class="d-flex flex-row  ">
+						  <i class="fas fa-key fa-lg me-3 fa-fw mt-10" style="color: #fd7e14;"></i>
+						  <div class="form-outline flex-fill mb-0">
+							<input id="password" required="" type="password" name="password" placeholder="Password"  class="form-control" >
+
+							<label class="form-label" for="form3Example4cd">password</label>
+						  </div>
+						</div>
+	  
+						<!-- <div class="form-check d-flex justify-content-center mb-5">
+						  <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
+						  <label class="form-check-label" for="form2Example3">
+							I agree all statements in <a href="#!">Terms of service</a>
+						  </label>
+						</div> -->
+						<div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+							<button type="submit" class="btn btn-primary btn-lg" name="login">Submit &amp; Register</button>
+						</div>
+						<!-- <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+						  <button type="button" class="btn btn-primary btn-lg">Register</button>
+						</div> -->
+	  
+					  </form>
+					  <div class="text-muted text-center">Already have an account? <a href="/userLogin">Login now</a></div>
+
+					</div>
+					
+					<div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+	  
+					  <!-- <img src="/assets/img/1200x630.jpeg"
+						class="img-fluid" alt="Sample image"> -->
+	  
+					</div>
+				  </div>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </section>
+	  
+
+	  <%- include('footerUser') %>

@@ -1,0 +1,122 @@
+ <%- include('adminHeader') %>
+ 
+
+
+<body>
+    <div class="screen-overlay"></div>
+    <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Categories </h2>
+                    <p>Add, edit or delete a category</p>
+                </div>
+                <div>
+                    <input type="text" placeholder="Search Categories" class="form-control bg-white">
+                </div>
+            </div>
+            <div class="container mt-4">
+                <div class="row">
+                  <div class="col-md-3">
+                    <div class="card mb-4">
+                      <div class="card-body">
+                        <form action="/admin/addCategory" method="post" onsubmit="return productValidation()">
+                          <div class="mb-4">
+                            <label for="product_name" class="form-label">Name</label>
+                            <input type="text"  name="name" placeholder="Type here" class="form-control" id="name" />
+                            <p id="nameErr"></p>
+                          </div>
+                          <div class="mb-4">
+                            <label class="form-label">Description</label>
+                            <textarea id="description" name="description" placeholder="Type here" required="Enter Enything" class="form-control"></textarea>
+                            <p id="descriptionErr"></p>
+                          </div>
+                          <div class="d-grid">
+                            <button class="btn btn-primary">Create category</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-9">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                  <tr>
+                                   
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th></th>
+                                    <th></th>
+                                   <th></th>
+                                    <th></th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <% if (category.length > 0) { %>
+                                    <% category.forEach((categoryItem) => { %>
+                                      <tr>
+                                        
+                                        <td><b><%= categoryItem.name %></b></td>
+                                        <td><%= categoryItem.description %></td>
+                                        <td></td>
+                                        <td class="text-end">
+                                          <ul class="list-unstyled">
+                                            <li>
+                                              <% if (categoryItem.isListed === true) { %>
+                                                <a href="/admin/category/block?id=<%= categoryItem._id %>">
+                                                  <i class="ri-eye-line"></i>
+                                                  <span style="color: rgb(39, 125, 95);">Listed</span>
+                                                </a>
+                                              <% } else { %>
+                                                <a href="/admin/category/unBlock?id=<%= categoryItem._id %>">
+                                                  <i class="ri-eye-line"></i>
+                                                  <span style="color: rgb(172, 14, 14);">Unlisted</span>
+                                                </a>
+                                              <% } %>
+                                            </li> 
+                                          </ul>
+                                        </td>
+                                        <td>
+                                          <ul class="list-unstyled">
+                                            <li>
+                                              <a href="/admin/editCategory?id=<%= categoryItem._id %>" class="btn btn-sm btn-light">
+                                                <i class="fas fa-edit"></i> Edit
+                                              </a>
+                                            </li>
+                                          </ul>
+                                        </td>
+                                        <!-- <td>
+                                          <div class="btn-icon">
+                                              <a href="/admin/deleteCategory?id=<%- categoryItem._id %>"  class="btn btn-sm font-sm rounded btn-danger">
+                                                
+
+                                                  Delete
+                                              </a>
+                                              
+                                          </div>
+                                      </td> -->
+                                      </tr>
+                                    <% }); %>
+                                  <% } %>
+                                </tbody>
+                              </table>
+                              
+                              
+                              
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+              <!-- card .// -->
+        </section>
+  
+    </main>
+
+
+
+<%- include('adminFooter') %> -->

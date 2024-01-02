@@ -1,0 +1,286 @@
+<%- include('headerUser') %>
+
+
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css"
+    integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc=" crossorigin="anonymous" />
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+  <div class="container" style="margin-top: 20vh">
+    <div class="row">
+      <div class="container" style="margin-top: 20vh">
+        <div class="row">
+          <div class="col-xl-12">
+            <% if(orders.length>0){ %>
+              <% orders.forEach((order, orderIndex)=> { %>
+                <div class="card border shadow-none mb-4">
+                  <% order.products.forEach((item, itemIndex)=> { %>
+                    <div style="display: flex;">
+                      <div class="card-body">
+                        <div class="row border-bottom pb-3">
+                          <!-- Display cover image based on the product -->
+                          <div>
+                            <a href="#" class="coverimage  product-details" data-size="<%= item.size %>"
+                              data-ordered-date="<%= order.createdAt.toDateString() %>"
+                              data-quantity="<%= item.quantity %>" data-order-status="<%= order.status %>"
+                              data-order-price="<%= item.price %>" data-order-grandTotal="<%= totall %>"
+                              data-order-coverimage="<%= item.coverimage %>">
+                              <img src="<%= item.product.coverimage %>" alt="" class="avatar-lg rounded">
+                            </a>
+                          </div>
+
+                          <div class="col-md-9" style="display: flex;">
+                            <div>
+                              <!-- Display product details -->
+                              <h5 class="text-truncate font-size-18">
+                                <% var totall=0; %>
+                                  <% totall +=item.price * item.quantity; %>
+                                    <a href="#" class="text-dark product-details" data-size="<%= item.size %>"
+                                      data-ordered-date="<%= order.createdAt.toDateString() %>"
+                                      data-quantity="<%= item.quantity %>" data-order-status="<%= order.status %>"
+                                      data-order-price="<%= item.price %>"
+                                      data-order-grandTotal="<%= totall %>">
+                                      <%= item.product.name %>
+                                    </a>
+                              </h5>
+                              <%if( order.products.length>1){ %>
+                                <p style="margin: 0;">Product Status:
+                                  <% if (item.status==='Pending' || item.status==='Shipped' ) { %>
+                                    <span style="color: orange;">
+                                      <%= item.status %>
+                                    </span>
+                                    <% } else if (item.status==='Cancelled' ) { %>
+                                      <span style="color: red;">
+                                        <%= item.status %>
+                                      </span>
+                                      <% } else if (item.status==='Delivered' || item.status==='Out of the Delivery' ) {
+                                        %>
+                                        <span style="color: green;">
+                                          <%= item.status %>
+                                        </span>
+                                        <% } else { %>
+                                          <%= item.status %>
+                                            <% } %>
+                                </p>
+                                <% } %>
+                            </div>
+
+
+                          </div>
+                          <div class="col-md-3">
+                            <p class="text-muted mb-2">Price</p>
+                            <h5>
+                              <%= item.price %>
+                            </h5>
+                          </div>
+                          <div class="col-md-3">
+                            <p class="text-muted mb-2">Quantity</p>
+                            <h5>
+                              <%= item.quantity %>
+                            </h5>
+                          </div>
+                          <div class="col-md-4">
+                            <p class="text-muted mb-2">Total</p>
+                            <h5>
+                              <% let total=0; %>
+                                <% order.products.forEach(prod=> { %>
+                                  <% total +=prod.price * prod.quantity; %>
+                                    <% }) %>
+                                      <%= total %>
+                            </h5>
+                          </div>
+                          <% if(order.products.length>1 && item.status !=='Cancelled'&& item.status !=='Delivered' && order.products.filter(product => product.status === 'Pending' ).length > 1){ %>
+                            <div class="col-md-2">
+                              <button class="btn boxed-btn btn-danger cancel-product"
+                                onclick="cancelProduct('<%= order._id %>','<%= item._id %>')"
+                                data-order-id="<%= order._id %>" data-product-id="<%= item._id %>">
+                                Cancel Product
+                              </button>
+                            </div>
+                            <% } %>
+                        </div>
+                      </div>
+
+                    </div>
+                    <% }) %>
+                      <div class="row mt-3 footer" style="width: 100%;display: flex; ">
+                        <div class="col-md-2 " style="padding-left: 40px;">
+                          Order : <% if (order.status==='Pending' || order.status==='Shipped' ) { %>
+                            <span style="color: orange;">
+                              <%= order.status %>
+                            </span>
+                            <% } else if (order.status==='Cancelled' ) { %>
+                              <span style="color: red;">
+                                <%= order.status %>
+                              </span>
+                              <% } else if (order.status==='Delivered' || order.status==='Out of the Delivery' ) { %>
+                                <span style="color: green;">
+                                  <%= order.status %>
+                                </span>
+                                <% } else { %>
+                                  <%= order.status %>
+                                    <% } %>
+                        </div>
+                        <div class="col-md-8 d-flex justify-content-center">
+                          <% if (order.status !=="Cancelled" && order.status !=="Delivered" ) { %>
+                            <div>
+                              <a href="#" onclick="cancelOrder('<%= order._id %>')" class="btn boxed-btn btn-danger"
+                                style="background: red; color: white;">
+                                Cancel Order
+                              </a>
+                            </div>
+                            <% } %>
+                        </div>
+                        <div class="col-md-2">
+                          <% if(order.status !=="Cancelled"){ %>
+                          <button style="margin-left: 13px; padding-left: 20px;padding-right: 20px;margin-bottom: 10px;"
+                            class="btn boxed-btn btn-success cancel-product">
+                            <a href="/invoice/?id=<%= order._id %>">
+                              Get Invoice
+                            </a>
+                          </button>
+                          <%}%>
+                        </div>
+                      </div>
+                </div>
+                <% }) %>
+
+                  <% }else{ %>
+                    <div class="row my-4 justify-content-center">
+                      <div class="col-sm-6">
+                        <div class="text-center text-sm-end mt-5 mt-sm-0 ">
+                          <h5 style="color: red;">No Orders Yet..</h5>
+                          <a href="/homepage" class="btn btn-success boxed-btn">
+                            <i class="mdi mdi-cart-outline me-1 "></i> Shop More..
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <% } %>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="sweetalert.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+  <script>
+    async function cancelOrder(orderId) {
+      Swal.fire({
+        title: "Cancel Order",
+        text: "Are you sure you want to cancel the order?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Remove",
+        cancelButtonText: "Cancel"
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          let response = await fetch(`/cancelOrder`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ orderId })
+          })
+          if (response.status === 200) {
+            await Swal.fire({
+              title: 'Product Cancelled',
+              icon: 'success'
+            })
+            location.reload()
+          }
+        }
+      });
+    }
+
+
+  </script>
+
+  <script>
+    // Assuming you've included the SweetAlert2 library
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const productDetailLinks = document.querySelectorAll('.product-details');
+      productDetailLinks.forEach(link => {
+        link.addEventListener('click', (event) => {
+          event.preventDefault(); // Prevent default link behavior
+
+          // Get other details from data attributes
+          const size = link.getAttribute('data-size');
+          const orderedDate = link.getAttribute('data-ordered-date');
+          const quantity = link.getAttribute('data-quantity');
+          const orderStatus = link.getAttribute('data-order-status');
+          const orderPrice = link.getAttribute("data-order-price")
+          const total = link.getAttribute("data-order-grandTotal")
+
+          const detailsHTML = `
+        <p>Size: ${size}</p>
+        <p>Ordered Date: ${orderedDate}</p>
+        <p>Quantity: ${quantity}</p>
+        <p>Order Status: ${orderStatus}</p>
+        <p>Order Price: ${orderPrice}</p>
+        <p>Total Peyd: ${total}</p>
+
+      `;
+
+          // Display details in SweetAlert
+          Swal.fire({
+            title: `${link.textContent} Details`, // Use the product name as the title
+            html: detailsHTML,
+            confirmButtonText: 'Close'
+            // Add other SweetAlert configurations as needed
+          });
+        });
+      });
+    });
+  </script>
+
+  <script>
+
+    async function cancelProduct(orderId, productId) {
+
+      Swal.fire({
+        title: 'Cancel Product',
+        text: 'Are you sure you want to cancel this product?',
+        showCancelButton: true,
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+          return fetch("/removeProductOrder", {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ orderId, productId })
+          })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Failed to cancel product');
+              }
+              return response.json();
+            })
+            .catch(error => {
+              Swal.showValidationMessage(`Error: ${error}`);
+            });
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire('Product Cancelled', '', 'success');
+          location.reload();
+
+        }
+      });
+    }
+
+
+  </script>
+
+
+
+  <%- include('footerUser') %>

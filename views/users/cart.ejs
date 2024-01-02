@@ -1,0 +1,275 @@
+<%- include('headerUser') %>
+
+	
+	<!-- breadcrumb-section -->
+	<div class="breadcrumb-section breadcrumb-bg" style="background-image: url('/assets/img/avaters/d93c29d67fb5fd1399f9722660f09bf8Y29udGVudHNlYXJjaGFwaSwxNjgyMzgwMzQz-2.70179413.jpg');">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="breadcrumb-text">
+						<p>Fresh and Organic</p>
+						<h1>Cart</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end breadcrumb section -->
+
+	<!-- cart -->
+
+    <% if(cart.length == 0){ %>
+        <div class="container d-flex justify-content-center align-items-center"
+        style="height: 300px; width: 100%; ">
+        <div style="text-align: center; color: red;"><p class="mb-2" style="color: red;"> CART IS EMPTY</p> <br><a class="btn btn-sucess" href="/" style="background-color: #fd7e14;color: white;">Continue Shopping</a></div>
+        </div> 
+        
+        <% }else{ %>
+            <% if (cart[0].items.length > 0){ %>
+
+	<div class="cart-section mt-150 mb-150">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 col-md-12" >
+					<div class="cart-table-wrap">
+						<table class="cart-table" >
+							<thead class="cart-table-head" >
+								<tr class="table-head-row">
+									<th style="border: 1px solid #fd7e14 ; background-color: #fd7e14; color: white;" class="product-image">Product Image</th>
+									<th style="border: 1px solid #fd7e14 ; background-color: #fd7e14; color: white;" class="product-name">Name</th>
+									<th style="border: 1px solid #fd7e14 ; background-color: #fd7e14; color: white;" class="product-price">Price</th>
+                                    <th style="border: 1px solid #fd7e14 ; background-color: #fd7e14; color: white;" class="product-price">size</th>
+									<th style="border: 1px solid #fd7e14 ; background-color: #fd7e14; color: white;" class="product-quantity">Quantity</th>
+									<th style="border: 1px solid #fd7e14 ; background-color: #fd7e14; color: white;" class="product-total">Total</th>
+                                    <th style="border: 1px solid #fd7e14 ; background-color: #fd7e14; color: white;" class="product-total">Remove</th>
+
+								</tr>
+							</thead>
+							<tbody>
+                                <% cart[0].items.forEach((item)=> {  %> 
+
+								<tr class="table-body-row" >
+									<td class="product-image"  style="border: 1px solid #ff0000; color: white;"><img src="<%= item.products.coverimage %>" alt="<%= item.products.name %>"></td>
+									<td class="product-name" style="border: 1px solid #ff0000; color: white;"> <%= item.products.name %></td>
+
+									<td class="product-price" style="border: 1px solid #ff0000; color: white;"><%=item.price %></td>
+                                    <td style="border: 1px solid #ff0000; color: white;"><%= item.size %></td>
+									<td class="align-middle"style="border: 1px solid #ff0000; color: white;">
+										<div class="input-group quantity-control d-flex justify-content-center">
+											<button class="btn btn-outline-secondary" type="button" id="cartDecrease" onclick="decreaseQuantity('<%= item.products._id %>')">-</button>
+											<span class="input-group-text quantity-value" id="quantityValue<%= item.products._id %>"><%= item.quantity %></span>
+											<button class="btn btn-outline-secondary" type="button" id="cartIncrease" onclick="increaseQuantity('<%= item.products._id %>')">+</button>
+										</div>
+									</td>
+									<td class="product-total" id="total<%= item.products._id %>" style="border: 1px solid #ff0000; color: white;">                  
+                                      <%= item.quantity * item.price %>
+                                    </td>
+                                    <td style="border: 1px solid #ff0000;color: white;">
+                                        <button class="btn btn-danger remove-btn rounded" onclick="itemDelete('<%= item.products._id %>')">Remove</button>
+
+                                    </td>
+								</tr>
+							<% }) %>
+							</tbody>
+						</table>
+					</div>
+				</div>
+                
+				<div class="col-lg-4">
+					<div class="total-section">
+						<table class="total-table">
+							<thead class="total-table-head">
+								<tr class="table-total-row">
+									<th  style="border: 1px solid #fd7e14 ; background-color: #fd7e14; color: white;">Total</th>
+									<th  style="border: 1px solid #fd7e14 ; background-color: #fd7e14; color: white;">Price</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="total-data">
+									<td style="border: 1px solid #ff0000; color: white;" ><strong>Subtotal: </strong></td>
+									<td style="border: 1px solid #ff0000; color: white;" id="subtotal<%= cart[0]._id %>">
+										<% let total = 0; %>
+										<% if (cart && cart[0] && cart[0].items && cart[0].items.length > 0) { %>
+											<% cart[0].items.forEach(carts => { %>
+												<% if (carts.products && carts.price && carts.quantity) { %>
+													<% total += carts.price * carts.quantity; %>
+												<% } %>
+											<% }); %>
+										<% } %>
+										<%= total %>
+									</td>
+									
+								</tr>
+								<tr class="total-data">
+									<td style="border: 1px solid #ff0000; color: white;"><strong>Shipping: </strong></td>
+									<td style="border: 1px solid #ff0000; color: white;">Free Shipping</td>
+								</tr>
+								<tr class="total-data">
+									<td style="border: 1px solid #ff0000; color: white;"><strong>Total: </strong></td>
+									<td style="border: 1px solid #ff0000; color: white;" id="subTotal">
+										
+										
+									
+								</td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="cart-buttons">
+							<a href="/checkOut" style="color: black; font-weight: bolder;" class="boxed-btn black">Check Out</a>
+						</div>
+					</div>
+                    <% }else{ %>
+                        <div class="container d-flex justify-content-center align-items-center"
+                        style="height: 300px; width: 100%; color: red;">
+                        <div style="text-align: center;color: red;"><p class="mb-2" style="color: red;"> CART IS EMPTY</p> <br><a class="btn btn-sucess" href="/"  style="background-color: #fd7e14;color: white;">Continue Shopping</a></div>
+                        </div>    
+                        <% } %>
+					<div class="coupon-section" >
+						<h3 style="color: white; ">Apply Coupon</h3>
+						<div class="coupon-form-wrap">
+							<form action="index.html">
+								<p ><input style="border:2px solid #fd7e14;" type="text" placeholder="Coupon"></p>
+								<p><input type="submit" value="Apply"></p>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+    <% } %>
+	<!-- end cart -->
+
+    <script>
+        function itemDelete(productId){
+            $.ajax({
+                url:`/removeproduct`,
+                method:'post',
+                data:{
+                    productId:productId
+                },
+                success:function(response){
+                    if(response.status){
+                        location.reload()
+                    }
+                }
+            })
+        }   
+        </script>
+        
+	<script>
+    async function updateQuantity(productId, quantityChange) {
+        try {
+            const response = await fetch(`/updateQuantity/${productId}?change=${quantityChange}`, {
+                method: 'PUT',
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const quantityElement = document.getElementById(`quantityValue${productId}`);
+                const totalElement = document.getElementById(`total${productId}`);
+                const subTotal = document.getElementById(`subtotal`);
+				// const allTotalElements = document.getElementsByClassName(`subtotal${cartId}`);
+				// alert(allTotalElements)
+                if (quantityElement && totalElement && subTotal) {
+                    quantityElement.innerText = data.quantity;
+                    totalElement.innerText = data.total;
+
+                  
+                }
+            } else {
+                console.error('Failed to update quantity');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+	async function increaseQuantity(productId) {
+    try {
+        const response = await $.ajax({
+            url: `/quantityinc/${productId}`,
+            method: 'POST'
+        });
+
+        $('#quantityValue' + productId).text(response.quantity ,response.stock);
+        console.log(response.stock,"😁😁😁😁😁");
+        if(response.stock<=response.quantity){
+            alert("not in stock")
+        }
+        const productPrice = await getProductPrice(productId);
+        const totalPrice = response.quantity * productPrice;
+
+        $('#total' + productId).text(totalPrice);
+
+        // Update the subtotal after increasing the quantity
+        const cartId = '<%= cart[0]._id %>';
+        updateSubtotal(cartId);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+async function decreaseQuantity(productId) {
+    try {
+        const response = await $.ajax({
+            url: `/quantity/${productId}`,
+            method: 'POST'
+        });
+
+        $('#quantityValue' + productId).text(response.quantity);
+
+        const productPrice = await getProductPrice(productId);
+        const totalPrice = response.quantity * productPrice;
+
+        $('#total' + productId).text(totalPrice);
+
+        // Update the subtotal after decreasing the quantity
+        const cartId = '<%= cart[0]._id %>';
+        updateSubtotal(cartId);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+async function getProductPrice(productId) {
+    try {
+		
+        const response = await $.ajax({
+            url: `/getProductPrice/${productId}`,
+            method: 'GET'
+        });
+
+        return response.price;
+    } catch (error) {
+        console.error('Error fetching product price:', error);
+        return 0; // Default value or appropriate error handling
+    }
+}
+
+async function updateSubtotal(cartId) {
+    try {
+        const response = await $.ajax({
+            url: `/getCartTotal/${cartId}`,
+            method: 'GET'
+        });
+
+        $(`#subtotal${cartId}`).text(response.total);
+        $('#subTotal').text(response.total); // Update the additional subtotal field
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+// Call the function initially to update the subtotal
+$(document).ready(function () {
+    // Replace 'cartId' with the actual cart ID you want to retrieve the total for
+    const cartId = '<%= cart[0]._id %>';
+    updateSubtotal(cartId);
+});
+</script>
+	
+	<%- include('footerUser') %>

@@ -1,0 +1,167 @@
+
+<%- include('headerUser') %>
+	<!-- breadcrumb-section -->
+	<div class="breadcrumb-section breadcrumb-bg" style="background-image: url('/assets/img/3800763-77305188-2560-1440.jpg');">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="breadcrumb-text">
+						<h1>Shop</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end breadcrumb section -->
+
+	<!-- products -->
+	<div class="product-section mt-150 mb-150">
+		<div class="container">
+
+			<div class="row">
+                <div class="col-md-12">
+                    <div class="product-filters">
+						<ul>
+							<li class="active" data-filter="*">All</li>
+							<% category.forEach(item => { %>
+							  <li data-filter=".<%= item.name %>" ><%= item.name %></li>
+							<% }) %>
+						  </ul>
+						  
+					
+                    </div>	
+                </div>
+            </div>
+
+			<div class="row" >
+				<% product.forEach(item => { %>
+				  <div class="col-lg-3 col-md-6 text-center product <%= item.category %>">
+					<div class="single-product-item">
+					  <div class="product-image">
+						<a href="/product/?id=<%= item._id %>">
+						  <img src="<%= item.coverimage %>" alt="" style="height: 200px;">
+						</a>
+					  </div>
+					  <h3 style="color: white;"><%= item.name %></h3>
+					  <p class="product-price" style="color: white;"><span style="color: #fd7e14;">
+						<% if (item.offerPrice == null || item.offerPrice === undefined) { %>
+						  <%= item.price %>
+						<% } else { %>
+						  <%= item.offerPrice %>
+						<% } %>
+					  </span></p>
+					  <a href="#" class="cart-btn" data-product-id="<%= item._id %>"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+					</div>
+				  </div>
+				<% }) %>
+			  </div>
+			
+
+			<div class="row">
+				<div class="col-lg-12 text-center">
+					<div class="pagination-wrap">
+						<ul>
+							<li><a href="#">Prev</a></li>
+							<li><a href="#">1</a></li>
+							<li><a class="active" href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">Next</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const filterItems = document.querySelectorAll('.product-filters ul li');
+
+    filterItems.forEach((item) => {
+        item.addEventListener('click', function () {
+            // Remove 'active' class from all filter items
+            filterItems.forEach((el) => {
+                el.classList.remove('active');
+            });
+
+            // Add 'active' class to the clicked filter item
+            this.classList.add('active');
+
+            const selectedCategory = this.getAttribute('data-filter');
+            const products = document.querySelectorAll('.product');
+
+            products.forEach((product) => {
+                product.style.display = 'none';
+            });
+
+            if (selectedCategory === '*') {
+                products.forEach((product) => {
+                    product.style.display = 'block';
+                });
+            } else {
+                const selectedProducts = document.querySelectorAll(selectedCategory);
+                selectedProducts.forEach((product) => {
+                    product.style.display = 'block';
+                });
+            }
+        });
+    });
+});
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+		document.addEventListener('DOMContentLoaded', function () {
+    const cartButtons = document.querySelectorAll('.cart-btn');
+
+    cartButtons.forEach(button => {
+        button.addEventListener('click', function (event) {
+            event.preventDefault();
+            const productId = this.getAttribute('data-product-id');
+
+            addToCart(productId);
+        });
+    });
+
+    function addToCart(id) {
+        // Your AJAX code remains the same
+        $.ajax({
+            url: `/addToCart?id=${id}`,
+            method: 'get',
+            // Rest of your AJAX settings...
+            success: function (response) {
+                if (response.status) {
+                    // Display a SweetAlert upon successful addition to cart
+                    Swal.fire({
+						title: 'ADDED TO CART',
+                    text: 'Product Added to cart',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Oops!',
+                        text: 'Failed to add product to cart.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            },
+            error: function (error) {
+                console.error('Error:', error);
+                // Display an error SweetAlert if there's an issue with the AJAX request
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'An error occurred. Please try again.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    }
+});
+
+		</script>
+	<%- include('footerUser') %>

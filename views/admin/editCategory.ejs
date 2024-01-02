@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Category</title>
+    <!-- Add Bootstrap CDN link -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+
+
+<body class="bg-light d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+    <div class="col-md-4"> <!-- Decreased the column width to col-md-4 -->
+        <div class="card shadow">
+            <div class="card-body">
+                <h3 class="mb-4">Edit Category</h3>
+                <form action="/admin/updateingCategory" method="post" onsubmit="return productValidation()">
+                    <div class="form-group">
+                        <label for="categoryName">Category Name</label>
+                        <input type="text" class="form-control" id="productName" name="name" required="" placeholder="Enter the Category Name">
+                        <p id="nameErr"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" name="description" id="description" required="" cols="15" rows="5"></textarea>
+                        <p id="descriptionErr"></p>
+                    </div>
+                   
+                    <button onclick="calculateOffer()" class="btn btn-primary">Offer</button>
+
+
+                    <input type="hidden" id="id" name="id" value="<%= Category.id %>">
+                    <button type="submit" class="btn btn-secondary" onclick="calculateCategoryOffer()">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function calculateOffer() {
+            Swal.fire({
+                title: 'How much offer?',
+                input: 'number',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'OK',
+                showLoaderOnConfirm: true,
+                preConfirm: (number) => {
+                    return number; // Send the entered value to the backend
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const enteredValue = result.value;
+                    const categoryId = "<%= Category.id %>"; // Assuming you're fetching the category ID from the server-side
+        
+                    if (enteredValue !== undefined && categoryId) {
+                        fetch('/admin/updateCategoryOffer', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ offerValue: enteredValue, id: categoryId }),
+                        })
+                            .then((response) => {
+                                if (response.ok) {
+                                    return response.json();
+                                }
+                                throw new Error('Failed to calculate category offer');
+                            })
+                            .then((data) => {
+                                const appliedOffer = `Offer of ${enteredValue}% applied`;
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: appliedOffer,
+                                });
+                                console.log('Updated category offer:', data.updatedOffer);
+                                // Update the frontend UI or perform other actions based on the response
+                            })
+                            .catch((error) => {
+                                console.error('Error:', error);
+                                // Handle errors or show error message to the user
+                            });
+                    }
+                }
+            });
+        }
+        </script>
+
+    <!-- Add Bootstrap JS and Popper.js scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/public/js/productValidation.js"></script>
+
+
+<%- include('adminFooter') %>

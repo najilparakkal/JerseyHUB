@@ -1,0 +1,965 @@
+
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>JerseyHUB</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/firstAssets/imgs/theme/icons/pngtree-man-playing-football-image_1200610.jpg">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="/firstAssets/css/main.css?v=3.4">
+    
+    <link rel="shortcut icon" type="image/png" href="assets/img/favicon.png">
+	<!-- google font -->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+	<!-- fontawesome -->
+	<link rel="stylesheet" href="assets/css/all.min.css">
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+	<!-- owl carousel -->
+	<link rel="stylesheet" href="assets/css/owl.carousel.css">
+	<!-- magnific popup -->
+	<link rel="stylesheet" href="assets/css/magnific-popup.css">
+	<!-- animate css -->
+	<link rel="stylesheet" href="assets/css/animate.css">
+	<!-- mean menu css -->
+	<link rel="stylesheet" href="assets/css/meanmenu.min.css">
+	<!-- main style -->
+	<link rel="stylesheet" href="assets/css/main.css">
+	<!-- responsive -->
+	<link rel="stylesheet" href="assets/css/responsive.css">
+	
+    <link rel="stylesheet" href="/assets/css/second.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+    <style>
+        .card {
+          /* Set a fixed height for the card container */
+          height: 300px; /* Adjust as needed */
+          overflow: auto; /* Enable vertical scrolling within the card */
+        }
+      
+        /* Optional: Style the table for better presentation */
+        .table-container {
+          width: 100%;
+          border-collapse: collapse;
+        }
+      
+        th, td {
+          border: 1px solid #ddd;
+          padding: 8px;
+          text-align: left;
+        }
+      </style>
+</head>
+
+<body style="background-color: black;">
+
+    <!-- Quick view -->
+    <div class="modal fade custom-modal" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">              
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>       
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <div class="detail-gallery">
+                                <span class="zoom-icon"><i class="fi-rs-search"></i></span>
+                                <!-- MAIN SLIDES -->
+                                <div class="product-image-slider">
+                                    <figure class="border-radius-10">
+                                        <img src="/firstAssets/imgs/shop/product-16-2.jpg" alt="product image">
+                                    </figure>
+                                    <figure class="border-radius-10">
+                                        <img src="/firstAssets/imgs/shop/product-16-1.jpg" alt="product image">
+                                    </figure>
+                                    <figure class="border-radius-10">
+                                        <img src="/firstAssets/imgs/shop/product-16-3.jpg" alt="product image">
+                                    </figure>
+                                    <figure class="border-radius-10">
+                                        <img src="/firstAssets/imgs/shop/product-16-4.jpg" alt="product image">
+                                    </figure>
+                                    <figure class="border-radius-10">
+                                        <img src="/firstAssets/imgs/shop/product-16-5.jpg" alt="product image">
+                                    </figure>
+                                    <figure class="border-radius-10">
+                                        <img src="/firstAssets/imgs/shop/product-16-6.jpg" alt="product image">
+                                    </figure>
+                                    <figure class="border-radius-10">
+                                        <img src="/firstAssets/imgs/shop/product-16-7.jpg" alt="product image">
+                                    </figure>
+                                </div>
+                                <!-- THUMBNAILS -->
+                                <div class="slider-nav-thumbnails pl-15 pr-15">
+                                    <div><img src="/firstAssets/imgs/shop/thumbnail-3.jpg" alt="product image"></div>
+                                    <div><img src="/firstAssets/imgs/shop/thumbnail-4.jpg" alt="product image"></div>
+                                    <div><img src="/firstAssets/imgs/shop/thumbnail-5.jpg" alt="product image"></div>
+                                    <div><img src="/firstAssets/imgs/shop/thumbnail-6.jpg" alt="product image"></div>
+                                    <div><img src="/firstAssets/imgs/shop/thumbnail-7.jpg" alt="product image"></div>
+                                    <div><img src="/firstAssets/imgs/shop/thumbnail-8.jpg" alt="product image"></div>
+                                    <div><img src="/firstAssets/imgs/shop/thumbnail-9.jpg" alt="product image"></div>
+                                </div>
+                            </div>
+                            <!-- End Gallery -->
+                            <div class="social-icons single-share">
+                                <ul class="text-grey-5 d-inline-block">
+                                    <li><strong class="mr-10">Share this:</strong></li>
+                                    <li class="social-facebook"><a href="#"><img src="/firstAssets/imgs/theme/icons/icon-facebook.svg" alt=""></a></li>
+                                    <li class="social-twitter"> <a href="#"><img src="/firstAssets/imgs/theme/icons/icon-twitter.svg" alt=""></a></li>
+                                    <li class="social-instagram"><a href="#"><img src="/firstAssets/imgs/theme/icons/icon-instagram.svg" alt=""></a></li>
+                                    <li class="social-linkedin"><a href="#"><img src="/firstAssets/imgs/theme/icons/icon-pinterest.svg" alt=""></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <div class="detail-info">
+                                <h3 class="title-detail mt-30">Colorful Pattern Shirts HD450</h3>
+                                <div class="product-detail-rating">
+                                    <div class="pro-details-brand">
+                                        <span> Brands: <a href="shop-grid-right.html">Bootstrap</a></span>
+                                    </div>
+                                    <div class="product-rate-cover text-end">
+                                        <div class="product-rate d-inline-block">
+                                            <div class="product-rating" style="width:90%">
+                                            </div>
+                                        </div>
+                                        <span class="font-small ml-5 text-muted"> (25 reviews)</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix product-price-cover">
+                                    <div class="product-price primary-color float-left">
+                                        <ins><span class="text-brand">$120.00</span></ins>
+                                        <ins><span class="old-price font-md ml-15">$200.00</span></ins>
+                                        <span class="save-price  font-md color3 ml-15">25% Off</span>
+                                    </div>
+                                </div>
+                                <div class="bt-1 border-color-1 mt-15 mb-15"></div>
+                                <div class="short-desc mb-30">
+                                    <p class="font-sm">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam rem officia, corrupti reiciendis minima nisi modi,!</p>
+                                </div>
+                                
+                                <div class="attr-detail attr-color mb-15">
+                                    <strong class="mr-10">Color</strong>
+                                    <ul class="list-filter color-filter">
+                                        <li><a href="#" data-color="Red"><span class="product-color-red"></span></a></li>
+                                        <li><a href="#" data-color="Yellow"><span class="product-color-yellow"></span></a></li>
+                                        <li class="active"><a href="#" data-color="White"><span class="product-color-white"></span></a></li>
+                                        <li><a href="#" data-color="Orange"><span class="product-color-orange"></span></a></li>
+                                        <li><a href="#" data-color="Cyan"><span class="product-color-cyan"></span></a></li>
+                                        <li><a href="#" data-color="Green"><span class="product-color-green"></span></a></li>
+                                        <li><a href="#" data-color="Purple"><span class="product-color-purple"></span></a></li>
+                                    </ul>
+                                </div>
+                                <div class="attr-detail attr-size">
+                                    <strong class="mr-10">Size</strong>
+                                    <ul class="list-filter size-filter font-small">
+                                        <li><a href="#">S</a></li>
+                                        <li class="active"><a href="#">M</a></li>
+                                        <li><a href="#">L</a></li>
+                                        <li><a href="#">XL</a></li>
+                                        <li><a href="#">XXL</a></li>
+                                    </ul>
+                                </div>
+                                <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                                <div class="detail-extralink">
+                                    <div class="detail-qty border radius">
+                                        <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
+                                        <span class="qty-val">1</span>
+                                        <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
+                                    </div>
+                                    <div class="product-extra-link2">
+                                        <button type="submit" class="button button-add-to-cart">Add to cart</button>
+                                        <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
+                                        <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+                                    </div>
+                                </div>
+                                <ul class="product-meta font-xs color-grey mt-50">
+                                    <li class="mb-5">SKU: <a href="#">FWM15VKT</a></li>
+                                    <li class="mb-5">Tags: <a href="#" rel="tag">Cloth</a>, <a href="#" rel="tag">Women</a>, <a href="#" rel="tag">Dress</a> </li>
+                                    <li>Availability:<span class="in-stock text-success ml-5">8 Items In Stock</span></li>
+                                </ul>
+                            </div>
+                            <!-- Detail Info -->
+                        </div>
+                    </div>
+                </div>        
+        </div>
+        </div>
+    </div>
+  
+    
+  
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="mobile-header-active mobile-header-wrapper-style">
+        <div class="mobile-header-wrapper-inner">
+            <div class="mobile-header-top">
+                <div class="mobile-header-logo">
+                    <a href="index.html"><img src="firstAssets/imgs/theme/logo.svg" alt="logo"></a>
+                </div>
+                <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
+                    <button class="close-style search-close">
+                        <i class="icon-top"></i>
+                        <i class="icon-bottom"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="mobile-header-content-area">
+                <div class="mobile-search search-style-3 mobile-header-border">
+                    <form action="#">
+                        <input type="text" placeholder="Search for items…">
+                        <button type="submit"><i class="fi-rs-search"></i></button>
+                    </form>
+                </div>
+                <div class="mobile-menu-wrap mobile-header-border">
+                    <div class="main-categori-wrap mobile-header-border">
+                        <a class="categori-button-active-2" href="#">
+                            <span class="fi-rs-apps"></span> Browse Categories
+                        </a>
+                        <div class="categori-dropdown-wrap categori-dropdown-active-small">
+                            <ul>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-dress"></i>Women's Clothing</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-tshirt"></i>Men's Clothing</a></li>
+                                <li> <a href="shop-grid-right.html"><i class="evara-font-smartphone"></i> Cellphones</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-desktop"></i>Computer & Office</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-cpu"></i>Consumer Electronics</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-home"></i>Home & Garden</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-high-heels"></i>Shoes</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-teddy-bear"></i>Mother & Kids</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-kite"></i>Outdoor fun</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- mobile menu start -->
+                    <nav>
+                        <ul class="mobile-menu">
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="index.html">Home</a>
+                                <ul class="dropdown">
+                                    <li><a href="index.html">Home 1</a></li>
+                                    <li><a href="index-2.html">Home 2</a></li>
+                                    <li><a href="index-3.html">Home 3</a></li>
+                                    <li><a href="index-4.html">Home 4</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="shop-grid-right.html">shop</a>
+                                <ul class="dropdown">
+                                    <li><a href="shop-grid-right.html">Shop Grid – Right Sidebar</a></li>
+                                    <li><a href="shop-grid-left.html">Shop Grid – Left Sidebar</a></li>
+                                    <li><a href="shop-list-right.html">Shop List – Right Sidebar</a></li>
+                                    <li><a href="shop-list-left.html">Shop List – Left Sidebar</a></li>
+                                    <li><a href="shop-fullwidth.html">Shop - Wide</a></li>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Single Product</a>
+                                        <ul class="dropdown">
+                                            <li><a href="shop-product-right.html">Product – Right Sidebar</a></li>
+                                            <li><a href="shop-product-left.html">Product – Left Sidebar</a></li>
+                                            <li><a href="shop-product-full.html">Product – No sidebar</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="shop-filter.html">Shop – Filter</a></li>
+                                    <li><a href="shop-wishlist.html">Shop – Wishlist</a></li>
+                                    <li><a href="shop-cart.html">Shop – Cart</a></li>
+                                    <li><a href="shop-checkout.html">Shop – Checkout</a></li>
+                                    <li><a href="shop-compare.html">Shop – Compare</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Mega menu</a>
+                                <ul class="dropdown">
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Women's Fashion</a>
+                                        <ul class="dropdown">
+                                            <li><a href="shop-product-right.html">Dresses</a></li>
+                                            <li><a href="shop-product-right.html">Blouses & Shirts</a></li>
+                                            <li><a href="shop-product-right.html">Hoodies & Sweatshirts</a></li>
+                                            <li><a href="shop-product-right.html">Women's Sets</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Men's Fashion</a>
+                                        <ul class="dropdown">
+                                            <li><a href="shop-product-right.html">Jackets</a></li>
+                                            <li><a href="shop-product-right.html">Casual Faux Leather</a></li>
+                                            <li><a href="shop-product-right.html">Genuine Leather</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Technology</a>
+                                        <ul class="dropdown">
+                                            <li><a href="shop-product-right.html">Gaming Laptops</a></li>
+                                            <li><a href="shop-product-right.html">Ultraslim Laptops</a></li>
+                                            <li><a href="shop-product-right.html">Tablets</a></li>
+                                            <li><a href="shop-product-right.html">Laptop Accessories</a></li>
+                                            <li><a href="shop-product-right.html">Tablet Accessories</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="blog-category-fullwidth.html">Blog</a>
+                                <ul class="dropdown">
+                                    <li><a href="blog-category-grid.html">Blog Category Grid</a></li>
+                                    <li><a href="blog-category-list.html">Blog Category List</a></li>
+                                    <li><a href="blog-category-big.html">Blog Category Big</a></li>
+                                    <li><a href="blog-category-fullwidth.html">Blog Category Wide</a></li>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Single Product Layout</a>
+                                        <ul class="dropdown">
+                                            <li><a href="blog-post-left.html">Left Sidebar</a></li>
+                                            <li><a href="blog-post-right.html">Right Sidebar</a></li>
+                                            <li><a href="blog-post-fullwidth.html">No Sidebar</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Pages</a>
+                                <ul class="dropdown">
+                                    <li><a href="page-about.html">About Us</a></li>
+                                    <li><a href="page-contact.html">Contact</a></li>
+                                    <li><a href="page-account.html">My Account</a></li>
+                                    <li><a href="page-login-register.html">login/register</a></li>
+                                    <li><a href="page-purchase-guide.html">Purchase Guide</a></li>
+                                    <li><a href="page-privacy-policy.html">Privacy Policy</a></li>
+                                    <li><a href="page-terms.html">Terms of Service</a></li>
+                                    <li><a href="page-404.html">404 Page</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Language</a>
+                                <ul class="dropdown">
+                                    <li><a href="#">English</a></li>
+                                    <li><a href="#">French</a></li>
+                                    <li><a href="#">German</a></li>
+                                    <li><a href="#">Spanish</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!-- mobile menu end -->
+                </div>
+                <div class="mobile-header-info-wrap mobile-header-border">
+                    <div class="single-mobile-header-info mt-30">
+                        <a  href="page-contact.html"> Our location </a>
+                    </div>
+                    <div class="single-mobile-header-info">
+                        <a href="page-login-register.html">Log In / Sign Up </a>
+                    </div>
+                    <div class="single-mobile-header-info">
+                        <a href="#">(+01) - 2345 - 6789 </a>
+                    </div>
+                </div>
+                <div class="mobile-social-icon">
+                    <h5 class="mb-15 text-grey-4">Follow Us</h5>
+                    <a href="#"><img src="firstAssets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
+                    <a href="#"><img src="firstAssets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
+                    <a href="#"><img src="firstAssets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
+                    <a href="#"><img src="firstAssets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
+                    <a href="#"><img src="firstAssets/imgs/theme/icons/icon-youtube.svg" alt=""></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="top-header-area" id="sticker">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 text-center">
+                    <div class="main-menu-wrap">
+                        <!-- logo -->
+                        <div class="site-logo">
+                            <a href="index.html">
+                                <img src="/assets/img/company-logos/jerseyhub-high-resolution-logo-transparent (3).png" alt="">
+                            </a>
+                        </div>
+                        <!-- logo -->
+    
+                        <!-- menu start -->
+                        <nav class="main-menu">
+                            <ul>
+                                <li class="current-list-item"><a href="/homepage">Home</a>
+                                
+                                </li>
+                                <li><a href="/shope">Shop</a>
+                                <li><a href="/about">About</a></li>
+                                <li><a href="/profile">Account</a>
+                                    
+                                </li>
+                                
+                                <li><a href="/contact">Contact</a></li>
+                               
+                                    
+                                </li>
+                                <li>
+                                    <div class="header-icons">
+                                        <a class="shopping-cart" href="/cart"><i class="fas fa-shopping-cart"></i></a>
+                                        <a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+                                        <a href="/logout" style="color: red;"> Logout</a>
+                                    </div>
+                                </li>
+                                
+                            </ul>
+                            <!-- <a href="">
+                                <button>
+                                    jj
+                                </button>
+                            </a> -->
+                        </nav>
+                        <a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+                        <div class="mobile-menu"></div>
+                        <!-- menu end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <main class="main">
+        <section class="pt-150 pb-150"  >
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-10 m-auto">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="dashboard-menu" style="border: 1px solid #ff0000;">
+                                    <ul class="nav flex-column" role="tablist" >
+                                        <li class="nav-item"style="border:none" >
+                                            <a class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" href="#dashboard" role="tab" style="background-color: #fd7e14;" aria-controls="dashboard" aria-selected="false"><i class="fi-rs-settings-sliders mr-10"></i>Dashboard</a>
+                                        </li>
+                                        <li class="nav-item" style="border: 1px solid #ff0000;">
+                                            <a class="nav-link" style="color: white;" id="orders-tab" data-bs-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="false"><i class="fi-rs-shopping-bag mr-10"></i>Orders</a>
+                                        </li>
+                                        <li class="nav-item" style="border: 1px solid #ff0000;">
+                                            <a class="nav-link" style="color: white;" id="track-orders-tab" data-bs-toggle="tab" href="#track-orders" role="tab" aria-controls="track-orders" aria-selected="false"><i class="fi-rs-shopping-cart-check mr-10"></i>Wallet</a>
+                                        </li>
+                                        <li class="nav-item" style="border: 1px solid #ff0000;">
+                                            <a class="nav-link" style="color: white;" id="address-tab" data-bs-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="true"><i class="fi-rs-marker mr-10"></i>My Address</a>
+                                        </li>
+                                        
+                                        <li class="nav-item" style="border: 1px solid #ff0000;">
+                                            <a class="nav-link" style="color: white;" href="/changePassword"><i class="fi-rs-user mr-10"></i>Change Password</a>
+                                        </li>
+                                        <li class="nav-item" style="border: 1px solid #ff0000;">
+                                            <a class="nav-link" style="color: rgb(255, 0, 0);" href="/logout"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-8"  >
+                                <div class="tab-content dashboard-content">
+                                    <div class="tab-pane fade active show" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab" >
+                                        <div class="card" id="profileCard" style="height: 340px; background-color: #495057;border: none;">
+                                            <div class="card-body">
+                                                <div class="text-center">
+                                                    <img src="/firstAssets/imgs/page/generic-person-icon-1.jpg" class="img-fluid rounded-circle mw-100 mx-auto mb-3" style="max-width: 150px; max-height: 150px;" alt="Dummy Photo">
+                                                    <h4><%= user.userName %></h4>
+                                                    <p style="margin-top: -20px;">Email: <%= user.email %></p>
+                                                    <p style="margin-top: -20px;">Phone: <%= user.phoneNum %></p>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer text-center">
+                                                <!-- Existing content -->
+                                                <a href="#" class="btn btn-primary btn-sm" onclick="showEditForm()">Edit</a>
+                                            </div>
+                                        </div>
+                                        <form id="editForm" class="card d-none" style="border: #495057;border-radius: 5px;" onsubmit="return address()" >
+                                            <!-- Form fields for editing -->
+
+                                            <div class="card-body" style=" background-color: #495057;border: none;border-radius: 5px;">
+                                                <div class="form-group">
+                                                    <p id="fullNameErr" style="color: red;"></p>
+                                                    <label for="name">Name</label>
+                                                    <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter name" style="background-color: white;">
+                                                </div>
+                                                <div class="form-group">
+                                                    <p id="phoneNumErr" style="color: red;"></p>
+                                                    <label for="phone">Phone Number</label>
+                                                    <input type="text" class="form-control" id="phoneNum" name="phoneNum" placeholder="Enter phone number" style="background-color: white;">
+                                                </div>
+                                            </div>
+                                            <div class="card-footer text-center" style=" background-color: #495057;border: none;border-radius: 5px;">
+                                                <button type="button" class="btn btn-primary btn-sm" onclick="saveChanges()">Save</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                      
+                                    <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
+                                        <div class="card" style="background-color: #495057;border:1px solid #fd7e14">
+                                            <div class="card-header" style="background-color: #fd7e14; border-top-left-radius: 10px;border-top-right-radius: 10px;" >
+                                                <h5 class="mb-0" >Your Orders</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table" >
+                                                        <thead >
+
+                                                            <tr >
+                                                                <th style="color: black;border: 1px solid #ff0000;"  class="col-1">N.O</th>
+                                                                <th style="color: black;border: 1px solid #ff0000; " class="col-2">Product </th>
+                                                                <th style="color: black;border: 1px solid #ff0000;" class="col-3">Date</th>
+                                                                <th style="color: black;border: 1px solid #ff0000;" class="col-1"> Status</th>
+                                                                <th style="color: black;border: 1px solid #ff0000;" class="col-1">Total</th>
+                                                                <th style="color: black;border: 1px solid #ff0000;" class="col-3">Address</th>
+                                                                <th style="color: black;border: 1px solid #ff0000;" class="col-1">Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                
+                                                                <tbody>
+                                                                    <% if (orders.length > 0) { %>
+                                                                        <% orders.forEach((order, index) => { %>
+                                                                            <tr>
+                                                                                <td style="color: white;border: 1px solid #ff0000;"><%- index + 1 %></td>
+                                                                                <td style="color: white;border: 1px solid #ff0000;">
+                                                                                    <% order.products.forEach((product, productIndex) => { %>
+                                                                                        <!-- Displaying product cover image as part of the product name -->
+                                                                                        <img src="<%- product.product.coverimage %>" class="img-fluid" style="max-width: 50px; max-height: 50px;">
+                                                                                        <%- product.name %><br>
+                                                                                    <% }) %>
+                                                                                </td >
+                                                                                <td style="color: white;border: 1px solid #ff0000;"><%- order.createdAt.toDateString() %></td>
+                                                                                <td style="color: white;border: 1px solid #ff0000;"><%- order.status %></td>
+                                                                                <td style="color: white;border: 1px solid #ff0000;">
+                                                                                    <% let total = 0; %>
+                                                                                    <% order.products.forEach((product, productIndex) => { %>
+                                                                                        <% total += product.product.price * product.quantity; %>
+                                                                                        
+                                                                                    <% }) %>
+                                                                                    <%= total %>    
+                                                                                </td>
+                                                                                <% if(order.address === null ){ %>
+
+                                                                                    <td style="color: red;">NO ADDRES YET</td>
+                                                                                    <% }else{ %>
+
+                                                                                <td style="color: white;border: 1px solid #ff0000;">
+                                                                                    State: <%=  order.address.state %> <br>
+                                                                                    District: <%=  order.address.district %> <br>
+                                                                                    City: <%= order.address.city %> <br>
+                                                                                    PinCode:<%=  order.address.pincode %><br>  
+                                                                                </td>
+                                                                                <% } %>
+                                                                                <td style="border: 1px solid #ff0000;"><a href="/orders" style="color: rgb(28, 28, 109);" class="btn-small d-block btn">View</a></td>
+                                                                            </tr>
+                                                                        <% }) %>
+                                                                    <% } else { %>
+                                                                        <div class="row">
+                                                                            <div class="col-lg-12">
+                                                                                <div class="card mb-3 mb-lg-0">
+                                                                                    <div class="card-body">
+                                                                                        <h3 class="mb-4 text-center">You have no orders yet</h3>
+                                                                                        <div class="text-center">
+                                                                                            <a href="/cart" class="btn btn-primary">Make an Order</a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    <% } %>
+                                                                </tbody>
+     
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="track-orders" role="tabpanel" aria-labelledby="track-orders-tab">
+                                        <div class="card" id="walletCard" style="background-color: #495057;">
+                                            <div class="card-header" style="background-color: #fd7e14;">
+                                              <h5 class="mb-0" >Wallet details</h5>
+                                            </div>
+                                            <div class="container mt-3 wallet-container">
+                                              <h4 style="text-align: center;">Your Wallet Balance</h4>
+                                              <h5 class="wallet-balance" style="text-align: center; color: white; ">Rs.<%- user.wallet %>.00</h5>
+                                              <button onclick="addWallet()" class="btn btn-primary btn-sm rounded update-wallet-btn" style="margin-left: 20%;">Update Wallet</button>
+                                              <button onclick="showWalletHistory()"  style="align-items: center; color: #ddd;"  class="btn btn-sm rounded show-wallet-history-btn bg-dark">Show Wallet History</button>
+
+                                            </div>
+                                            <button id="generateReferralButton" class="btn  mt-4 bg-primary text-white" onclick="shareLink()">Invite Frends  <br> Get Rs.100 On Wallet</button>
+                                          </div>
+                                      </div>
+                                      
+                                    
+                                    <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
+                                        <% if(address.length>0){ %>
+                                        <div class="row">
+                                          <% for(let i = 0; i < address.length; i++) { %>
+                                            <div class="col-lg-6">
+                                              <div class="card mb-3 mb-lg-0" style="border: none;">
+                                                <div class="card-header" style="background-color: #fd7e14; border-top-left-radius: 10px;border-top-right-radius: 10px;">
+                                                  <h5 class="mb-0">Address <%= i+1 %></h5>
+                                                </div>
+                                                <div class="card-body"style="background-color: #495057;border:1px solid #fd7e14">
+                                                  <h6 style="color: white;"><%= address[i].fullName %></h6>
+                                                  <p style="color: white;">Phone Number: <%= address[i].phoneNum %></p>
+                                                  <p style="color: white;">District: <%= address[i].district %></p>
+                                                  <p style="color: white;">Pincode: <%= address[i].pincode %></p>
+                                                  <p style="color: white;">City: <%= address[i].city %></p>
+                                                  <p style="color: white;"> State: <%= address[i].state %></p>
+                                                  <p style="color: white;">House Number: <%= address[i].houseNum %></p>
+                                                  <div class="d-flex justify-content-between align-items-center mt-3">
+                                                    <a href="/editAdd?id=<%- address[i]._id %>" class="btn btn-small btn-primary">Edit</a>
+                                                    <a href="/deleteadd?id=<%- address[i]._id %>" class="btn btn-small btn-danger">Delete</a>
+                                                </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          <% } %>
+                                        </div>
+                                        <a href="/address">
+                                            <button class="submit submit-auto-width" style="background-color: #fd7e14;" type="submit" >Add Address</button>
+
+                                        </a>
+                                      
+                                        <% } else { %>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="card mb-3 mb-lg-0">
+                                                        <div class="card-body">
+                                                            <h3 class="mb-4 text-center">You have not added an address yet</h3>
+                                                            <div class="text-center">
+                                                                <a href="/address" class="btn btn-primary">Add Address</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            
+                                        <% } %>
+                                    </div>
+                                    
+                                        </div>
+                                    </div>
+                                  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+  
+
+    <script>
+        function showEditForm() {
+            document.getElementById('profileCard').classList.add('d-none');
+            document.getElementById('editForm').classList.remove('d-none');
+        }
+    
+        async function saveChanges() {
+    const name = document.getElementById('fullName').value;
+    const phone = document.getElementById('phoneNum').value;
+
+    const userData = {
+        userName: name,
+        phoneNum: phone
+    };
+
+    try {
+        const response = await fetch('/updateProfile', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        });
+
+        if (response.ok) {
+            console.log('User data updated successfully.');
+            window.location.href = '/profile'; // Redirect to profile upon successful update
+        } else {
+            console.error('Error updating user data.');
+            // Handle errors (if needed)
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+    </script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+      
+    
+      function addWallet() {
+        Swal.fire({
+          title: "Enter amount to add to Wallet",
+          input: "text",
+          inputAttributes: {
+            autocapitalize: "off"
+          },
+          showCancelButton: true,
+          confirmButtonText: "Add",
+          showLoaderOnConfirm: true,
+          preConfirm: async (amount) => {
+            try {
+              const response = await fetch('/addWallet', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ amount })
+              });
+    
+              if (response.status === 200) {
+                const res = await response.json();
+                if (res && res.order) {
+                  const options = {
+                    key: 'rzp_test_P8THlp76qwLW4O',
+                    amount: res.order.amount,
+                    currency: res.order.currency,
+                    name: 'JereyHUB',
+                    description: 'Have A good Day ',
+                    order_id: res.order.id,
+                    handler: async function (razorpayResponse) {
+                      try {
+                        const updateResponse = await fetch('/updatewallet', {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/json'
+                          },
+                          body: JSON.stringify({ amount: res.order.amount })
+                        });
+                        if (updateResponse.ok) {
+                          Swal.fire({
+                            position: "top",
+                            icon: "success",
+                            title: "Wallet Updated",
+                            showConfirmButton: false,
+                            timer: 1500
+                          });
+                        } else {
+                          throw new Error("Failed to update Wallet");
+                        }
+                      } catch (error) {
+                        console.error('Error updating wallet:', error);
+                        Swal.fire({
+                          position: "top",
+                          icon: 'error',
+                          title: "Failed to update Wallet",
+                          showConfirmButton: false,
+                          timer: 1500
+                        });
+                      }
+                    },
+                  };
+    
+                  rzp = new Razorpay(options);
+                  rzp.open();
+                } else {
+                  throw new Error("No order details found");
+                }
+              } else {
+                throw new Error("Failed to fetch order details");
+              }
+            } catch (error) {
+              console.log('An error occurred:', error);
+              Swal.fire({
+                position: "top",
+                icon: 'error',
+                title: error.message || "Error",
+                showConfirmButton: false,
+                timer: 1500
+              });
+            }
+          },
+        });
+      }
+    </script> 
+    <script>
+        function showWalletHistory() {
+          const walletCard = document.getElementById('walletCard'); // Get the wallet card element
+      
+          const table = `
+            <div class="card" style="background-color: black;">
+              <table class="table-container">
+                <thead>
+                  <tr>
+                    <th style="color: gray;border: 1px solid #ff0000;">Amount</th>
+                    <th style="color: gray;border: 1px solid #ff0000;">Status</th>
+                    <th style="color: gray;border: 1px solid #ff0000;">Paid Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% user.history.forEach(item => { %>
+                    <tr>
+                      <td  style="color: white;border: 1px solid #ff0000;"><%- item.amount %></td>
+                      <td  style="color: white;border: 1px solid #ff0000;"><%- item.status %></td>
+                      <td style="color: white; border: 1px solid #ff0000;"><%- new Date(item.createdAt).toLocaleString() %></td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+              <button onclick="showWalletDetails()" class="btn btn-primary">Back</button>
+            </div>
+          `;
+      
+          walletCard.innerHTML = table;
+        }
+      
+        function showWalletDetails() {
+          const walletCard = document.getElementById('walletCard');
+          walletCard.innerHTML = `
+          <div class="card" id="walletCard" style="background-color: #495057; border:"none"">
+                                            <div class="card-header" style="background-color: #fd7e14;">
+                                              <h5 class="mb-0" >Wallet details</h5>
+                                            </div>
+                                            <div class="container mt-3 wallet-container">
+                                              <h4 style="text-align: center;">Your Wallet Balance</h4>
+                                              <h5 class="wallet-balance" style="text-align: center; color: white; ">Rs.<%- user.wallet %>.00</h5>
+                                              <button onclick="addWallet()" class="btn btn-primary btn-sm rounded update-wallet-btn" style="margin-left: 20%;">Update Wallet</button>
+                                              <button onclick="showWalletHistory()"  style="align-items: center; color: #ddd;"  class="btn btn-sm rounded show-wallet-history-btn bg-dark">Show Wallet History</button>
+
+                                            </div>
+                                            <button id="generateReferralButton" class="btn  mt-4 bg-primary text-white" onclick="shareLink()">Invite Frends  <br> Get Rs.100 On Wallet</button>
+                                          </div>
+          `;
+        }
+      </script>
+
+    </script>
+  
+<script>
+    function shareLink() {
+        $.get('/refer', (data) => {
+            const referalcode = data.referalCode;
+
+            const linkToShare = `http://127.0.0.1:7000/usercreate?code=${referalcode}`;
+
+            const whatsappUrl =` whatsapp://send?text=${encodeURIComponent(linkToShare)}`;
+
+                window.open(whatsappUrl, '_blank');
+
+        })
+            .fail(error)
+        {
+            alert("Failed getting the refferal code")
+        }
+    }
+</script>
+
+
+
+
+
+<%- include('footerUser') %>
+
+<!-- Vendor JS-->
+<script src="/firstAssets/js/vendor/modernizr-3.6.0.min.js"></script>
+<script src="/firstAssets/js/vendor/jquery-3.6.0.min.js"></script>
+<script src="/firstAssets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+<script src="/firstAssets/js/vendor/bootstrap.bundle.min.js"></script>
+<script src="/firstAssets/js/plugins/slick.js"></script>
+<script src="/firstAssets/js/plugins/jquery.syotimer.min.js"></script>
+<script src="/firstAssets/js/plugins/wow.js"></script>
+<script src="/firstAssets/js/plugins/jquery-ui.js"></script>
+<script src="/firstAssets/js/plugins/perfect-scrollbar.js"></script>
+<script src="/firstAssets/js/plugins/magnific-popup.js"></script>
+<script src="/firstAssets/js/plugins/select2.min.js"></script>
+<script src="/firstAssets/js/plugins/waypoints.js"></script>
+<script src="/firstAssets/js/plugins/counterup.js"></script>
+<script src="/firstAssets/js/plugins/jquery.countdown.min.js"></script>
+<script src="/firstAssets/js/plugins/images-loaded.js"></script>
+<script src="/firstAssets/js/plugins/isotope.js"></script>
+<script src="/firstAssets/js/plugins/scrollup.js"></script>
+<script src="/firstAssets/js/plugins/jquery.vticker-min.js"></script>
+<script src="/firstAssets/js/plugins/jquery.theia.sticky.js"></script>
+<script src="/firstAssets/js/plugins/jquery.elevatezoom.js"></script>
+<!-- Template  JS -->
+<script src="./firstAssets/js/main.js?v=3.4"></script>
+<script src="./firstAssets/js/shop.js?v=3.4"></script>
+
+
+<!-- //product  -->
+
+   <script src="/firstAssets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="/firstAssets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="/firstAssets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="/firstAssets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="/firstAssets/js/plugins/slick.js"></script>
+    <script src="/firstAssets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="/firstAssets/js/plugins/wow.js"></script>
+    <script src="/firstAssets/js/plugins/jquery-ui.js"></script>
+    <script src="/firstAssets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="/firstAssets/js/plugins/magnific-popup.js"></script>
+    <script src="/firstAssets/js/plugins/select2.min.js"></script>
+    <script src="/firstAssets/js/plugins/waypoints.js"></script>
+    <script src="/firstAssets/js/plugins/counterup.js"></script>
+    <script src="/firstAssets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="/firstAssets/js/plugins/images-loaded.js"></script>
+    <script src="/firstAssets/js/plugins/isotope.js"></script>
+    <script src="/firstAssets/js/plugins/scrollup.js"></script>
+    <script src="/firstAssets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="/firstAssets/js/plugins/jquery.theia.sticky.js"></script>
+    <!-- Template  JS -->
+    <script src="./firstAssets/js/main.js?v=3.4"></script>
+
+
+    <script src="firstAssets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="firstAssets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="firstAssets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="firstAssets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="firstAssets/js/plugins/slick.js"></script>
+    <script src="firstAssets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="firstAssets/js/plugins/wow.js"></script>
+    <script src="firstAssets/js/plugins/jquery-ui.js"></script>
+    <script src="firstAssets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="firstAssets/js/plugins/magnific-popup.js"></script>
+    <script src="firstAssets/js/plugins/select2.min.js"></script>
+    <script src="firstAssets/js/plugins/waypoints.js"></script>
+    <script src="firstAssets/js/plugins/counterup.js"></script>
+    <script src="firstAssets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="firstAssets/js/plugins/images-loaded.js"></script>
+    <script src="firstAssets/js/plugins/isotope.js"></script>
+    <script src="firstAssets/js/plugins/scrollup.js"></script>
+    <script src="firstAssets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="firstAssets/js/plugins/jquery.theia.sticky.js"></script>
+    <script src="firstAssets/js/plugins/jquery.elevatezoom.js"></script>
+    <!-- Template  JS -->
+    <script src="./firstAssets/js/main.js?v=3.4"></script>
+    <script src="./firstAssets/js/shop.js?v=3.4"></script>
+
+    <script src="/js/userLoginValidate.js"></script>
+    <script src="/js/createUserValidation.js"></script>
+    <script src="/js/addressValidation.js"></script>
+    <script src="/js/changePassword.js"></script>
+    <script src="/firstAssets/js/placeOrder.js"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js "></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></script>
+    <script src="/js/addressValidation.js"></script>
+</body>
+
+</html>    

@@ -1,0 +1,503 @@
+<%- include('adminHeader') %>
+
+
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Dashboard </h2>
+                <p>Whole data about your business here</p>
+            </div>
+          
+        </div>
+       
+        <div class="row" style="display: flex; " >
+            <div class="col-lg-3">
+                <div class="card card-body mb-4" style="height: 100px;  margin-left: 0px; padding-left: 10px; margin-right: 30px  ;">
+                    <article class="icontext">
+                        <span class="icon icon-sm rounded-circle bg-primary-light"><i
+                                class="text-primary material-icons md-monetization_on"></i></span>
+                        <div class="text">
+                            <h6 class="mb-1 card-title">Revenue</h6>
+                            <span>
+                                <%=totalValue %>
+                            </span>
+                            <span class="text-sm">
+                                Shipping fees are not included
+                            </span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="card card-body mb-4" style="height: 100px; margin-left: -50px; padding-right: 10px; margin-right: 60px;">
+                    <article class="icontext">
+                        <span class="icon icon-sm rounded-circle bg-success-light"><i
+                                class="text-success material-icons md-local_shipping"></i></span>
+                        <div class="text">
+                            <h6 class="mb-1 card-title">Deliverd Orders</h6> <span>
+                                <%=totalDeliverdOrders.length %>
+                            </span>
+                            <span class="text-sm">
+                                overoll Orders
+                            </span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="card card-body mb-4" style="height: 100px;  margin-left: -80px; padding-left: 20px; margin-right: 80px  ;">
+                    <article class="icontext">
+                        <span class="icon icon-sm rounded-circle bg-warning-light"><i
+                                class="text-warning material-icons md-qr_code"></i></span>
+                        <div class="text">
+                            <h6 class="mb-1 card-title">Products</h6> <span>
+                                <%= totalProducts %>
+                            </span>
+                            <span class="text-sm">
+                                In <%=totalCategories %> Categories
+                            </span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <div class="col-lg-3" style="margin-left: -30px;">
+                <article>
+                    <h5 class="card-title">Top Selling Categories</h5>
+                    <canvas id="categorySalesChart" width="500" height="300"></canvas>
+                </article>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-8 col-lg-12" style="margin-top: -100px;">
+
+
+
+
+
+                <div class="card mb-4">
+                    <article class="card-body">
+                        <h5 class="card-title">Sale statistics</h5>
+
+                        <canvas id="myChart" height="120px"></canvas>
+                        <input type="text" value="<%= monthlySalesArray %>" hidden id="monthlySalesArray">
+                        <input type="text" value="<%= monthlyOrdersCount %>" hidden id="monthlyOrdersCount">
+                        <input type="text" value="<%= monthlyCancelledOrders %>" hidden id="monthlyCancelledOrders">
+                        <input type="text" value="<%= monthlyUsersCount %>" hidden id="monthlyUsersCount">
+
+                    </article>
+                </div>
+
+
+
+
+
+
+
+                <div class="row">
+                    <div class="col-lg-5" >
+                        <div class="card mb-4" style="width: 595px;">
+                            <article class="card-body" >
+                                <h5 class="card-title">New Members</h5>
+                             <% if(recentUsers.length>0){ %>
+                                <% recentUsers.forEach(user=>{ %>
+                                <div class="new-member-list" id="newUsersDiv">
+
+                                    <div class="d-flex align-items-center justify-content-between mb-4">
+                                        <div class="d-flex align-items-center">
+                                            <img src="/adminAssets/imgs/people/male-avatar-icon-green-vector-22850285.jpg" alt="" class="avatar">
+                                            <div>
+                                                <h6>Namem  :<%=user.userName %></h6>
+                                                <p class="text-muted font-xs">
+                                                    <% if(user.createdAt){ %>
+                                                        <p class="text-muted font-xs" id="detailCreatedAt">
+                                                            Created Time: <%= user.createdAt.toLocaleTimeString() %> &nbsp; <%= user.createdAt.toLocaleDateString() %>
+                                                        </p>
+                                                    <% } else { %>
+                                                        <p>
+                                                            Time is Not in Data
+                                                        </p>
+                                                    <% } %>                                           
+                                                     </p>
+                                            </div>
+                                        </div>
+                                       <button class="btn btn-xs details-btn" onclick="showDetails('<%= user._id %>')" >Details</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="user-details" style="display: none;" id="user_<%= user._id %>">
+                                    <div class="d-flex align-items-center justify-content-between mb-4">
+                                        <div class="d-flex align-items-center">
+                                            <img src="/adminAssets/imgs/people/male-avatar-icon-green-vector-22850285.jpg" alt="" style="width: 100px;" class="avatar">
+                                            <div>
+                                                <h6 id="detailUserName"> Name :<%= user.userName %></h6>
+                                                <h6 id="detailUserEmail">Email :<%= user.email %></h6>
+                                                <h6 id="detailUserPhonNum">Phone Number :<%= user.phoneNum %></h6>
+                                                <h6 id="detailUserisBlocked">Is Listed<%= user.isBlocked %></h6>
+                                                <% if(user.createdAt){ %>
+                                                    <p class="text-muted font-xs" id="detailCreatedAt">
+                                                        Created Time: <%= user.createdAt.toLocaleTimeString() %> &nbsp; <%= user.createdAt.toLocaleDateString() %>
+                                                    </p>
+                                                <% } else { %>
+                                                    <p>
+                                                        Time is Not in Data
+                                                    </p>
+                                                <% } %>
+                                                
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-xs ok-btn" onclick="showUserList('<%= user._id %>')">OK</button>
+                                    </div>
+                                </div>
+                                <% }) %>
+                                <% }else{ %>
+                                    <p>Recently No Users</p>
+                                    <% } %>
+                            </article>
+                        </div>
+                    </div>
+                    <!-- <div class="col-lg-7">
+                        <div class="card mb-4">
+                            <article class="card-body">
+                                <h5 class="card-title">Recent activities</h5>
+                                <ul class="verti-timeline list-unstyled font-sm">
+                                    <li class="event-list">
+                                        <div class="event-timeline-dot">
+                                            <i class="material-icons md-play_circle_outline font-xxl"></i>
+                                        </div>
+                                        <div class="media">
+                                            <div class="me-3">
+                                                <h6><span>Today</span> <i
+                                                        class="material-icons md-trending_flat text-brand ml-15 d-inline-block"></i>
+                                                </h6>
+                                            </div>
+                                            <div class="media-body">
+                                                <div>
+                                                    Lorem ipsum dolor sit amet consectetur
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="event-list active">
+                                        <div class="event-timeline-dot">
+                                            <i
+                                                class="material-icons md-play_circle_outline font-xxl animation-fade-right"></i>
+                                        </div>
+                                        <div class="media">
+                                            <div class="me-3">
+                                                <h6><span>17 May</span> <i
+                                                        class="material-icons md-trending_flat text-brand ml-15 d-inline-block"></i>
+                                                </h6>
+                                            </div>
+                                            <div class="media-body">
+                                                <div>
+                                                    Debitis nesciunt voluptatum dicta reprehenderit
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="event-list">
+                                        <div class="event-timeline-dot">
+                                            <i class="material-icons md-play_circle_outline font-xxl"></i>
+                                        </div>
+                                        <div class="media">
+                                            <div class="me-3">
+                                                <h6><span>13 May</span> <i
+                                                        class="material-icons md-trending_flat text-brand ml-15 d-inline-block"></i>
+                                                </h6>
+                                            </div>
+                                            <div class="media-body">
+                                                <div>
+                                                    Accusamus voluptatibus voluptas.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="event-list">
+                                        <div class="event-timeline-dot">
+                                            <i class="material-icons md-play_circle_outline font-xxl"></i>
+                                        </div>
+                                        <div class="media">
+                                            <div class="me-3">
+                                                <h6><span>05 April</span> <i
+                                                        class="material-icons md-trending_flat text-brand ml-15 d-inline-block"></i>
+                                                </h6>
+                                            </div>
+                                            <div class="media-body">
+                                                <div>
+                                                    At vero eos et accusamus et iusto odio dignissi
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="event-list">
+                                        <div class="event-timeline-dot">
+                                            <i class="material-icons md-play_circle_outline font-xxl"></i>
+                                        </div>
+                                        <div class="media">
+                                            <div class="me-3">
+                                                <h6><span>26 Mar</span> <i
+                                                        class="material-icons md-trending_flat text-brand ml-15 d-inline-block"></i>
+                                                </h6>
+                                            </div>
+                                            <div class="media-body">
+                                                <div>
+                                                    Responded to need “Volunteer Activities
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </article>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="card card-body mb-4" style="width: 300px;">
+                    <article class="icontext">
+                        <span class="icon icon-sm rounded-circle bg-info-light"><i
+                                class="text-info material-icons md-shopping_basket"></i></span>
+                        <div class="text">
+                            <h6 class="mb-1 card-title">Monthly Earning</h6>
+                            <% if (monthlyRevenue && monthlyRevenue.length> 0) { %>
+                                <ul>
+                                    <% monthlyRevenue.forEach(function(month) { %>
+                                        <li>
+                                            <span>Month: <%= month._id.month %> <br> Year: <%= month._id.year %></span>
+                                            <span>Earnings: <%= month.total %></span>
+                                        </li>
+                                        <% }); %>
+                                </ul>
+                                <% } else { %>
+                                    <p>No monthly earnings data available.</p>
+                                    <% } %>
+                                        <span class="text-sm">Based on your local time.</span>
+                        </div>
+
+                    </article>
+                    <article class="card-body">
+                        <h5 class="card-title">Top Revenue Months</h5>
+                        <canvas id="topRevenueChart" width="600" height="700"></canvas>
+                    </article>
+                    </canvas>
+
+                </div>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <header class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="card-title">Latest orders</h4>
+                <div class="col-md-3 col-12 mb-md-0 mb-3 text-end">
+                    <div class="custom_select">
+                        <select class="form-select select-nice">
+                            <optgroup label="Categories">
+                                <option selected >All Categories</option>
+                                <% categories.forEach(item => { %>
+                                    <option><%= item.name %></option>
+                                <% }) %>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="card-body">
+                <div class="table-responsive">
+                    <div class="table-responsive">
+                        <table class="table align-middle table-nowrap mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th scope="col" >
+                                      item
+                                    </th>
+                                    <th class="align-middle" scope="col">Order ID</th>
+                                    <th class="align-middle" scope="col">Billing Name</th>
+                                    <th class="align-middle" scope="col">Date</th>
+                                    <th class="align-middle" scope="col">Total</th>
+                                    <th class="align-middle" scope="col">Payment Status</th>
+                                    <th class="align-middle" scope="col">Payment Method</th>
+                                    <!-- <th class="align-middle" scope="col">View Details</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if(latestOrders.length>0){ %>
+                                    <% latestOrders.forEach(order=>{ %>
+                                <tr>
+                                    <td>
+                                        <!-- Logic to display images in two per row -->
+                                        <% for (let i = 0; i < order.products.length; i += 2) { %>
+                                            <div class="image-row">
+                                                <% for (let j = i; j < Math.min(i + 2, order.products.length); j++) { %>
+                                                    <img src="<%- order.products[j].product.coverimage %>" style="width: 50px; height: 40px; margin: 2px;" alt="Product Image">
+                                                <% } %>
+                                            </div>
+                                        <% } %>
+                                    </td>
+                                    <td><a href="#" class="fw-bold"><%= order._id.toString().replace(/\D/g, '').slice(-6) %></a> </td>
+                                    <td><%- order.user.userName %></td>
+                                    <td>
+                                       <%- order.createdAt.toLocaleTimeString() %> &nbsp; <%- order.createdAt.toLocaleDateString() %>
+                                    </td>
+                                    <td>
+                                        <%- order.grandTotal %>
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-pill badge-soft-success"><%- order.status %></span>
+                                    </td>
+                                    <td>
+                                        <%  order.products.forEach(item=>{ %>
+                                        <i ><%- item.product.name %> <br>    </i>
+                                        <% }) %>
+                                    </td>
+                                    <!-- <td>
+                                        <a href="#" class="btn btn-xs"> View details</a>
+                                    </td> -->
+                                </tr>
+                                <% }) %>
+                                <% }else{ %>
+                                    <p style="background-color: red;">No Orders...</p>
+                                    <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div> <!-- table-responsive end// -->
+            </div>
+        </div>
+        <!-- <div class="pagination-area mt-30 mb-50">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-start">
+                    <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                    <li class="page-item"><a class="page-link" href="#">02</a></li>
+                    <li class="page-item"><a class="page-link" href="#">03</a></li>
+                    <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                    <li class="page-item"><a class="page-link" href="#">16</a></li>
+                    <li class="page-item"><a class="page-link" href="#"><i
+                                class="material-icons md-chevron_right"></i></a></li>
+                </ul>
+            </nav>
+        </div> -->
+    </section>
+
+    <!-- Your JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+
+        const topRevenueData = {
+            labels: <%- JSON.stringify(topRevenueLabels) %>,
+            datasets: [{
+                label: 'dec',
+                backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+                data:<%- JSON.stringify(topRevenueValues) %> ,
+            }],
+        };
+
+        const topRevenueOptions = {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        };
+        const ctxTopRevenue = document.getElementById('topRevenueChart').getContext('2d');
+
+        const topRevenueChart = new Chart(ctxTopRevenue, {
+            type: 'bar',
+            data: topRevenueData,
+            options: topRevenueOptions,
+
+        });
+        console.log(topRevenueLabels,topRevenueValues,"💕💕💕💕💕💕💕");
+
+    </script>
+
+
+
+<script>
+    // Function to show user details
+   // Function to show user details
+// function showDetails(userName, email, phonNum, isBlocked, createdAt) {
+//     const userList = document.querySelector('.user-list');
+//     const userDetails = document.querySelector('.user-details');
+//     const detailUserName = document.getElementById('detailUserName');
+//     const detailUserEmail = document.getElementById('detailUserEmail');
+//     const detailUserPhonNum = document.getElementById('detailUserPhonNum');
+//     const detailUserisBlocked = document.getElementById('detailUserisBlocked');
+//     const detailCreatedAt = document.getElementById('detailCreatedAt');
+
+//     // Set the details
+//     detailUserName.textContent = `Name: ${userName}`;
+//     detailUserEmail.textContent = `Email: ${email}`;
+//     detailUserPhonNum.textContent = `Phone Number: ${phonNum}`;
+//     detailUserisBlocked.textContent = `IsBlocked: ${isBlocked}`;
+//     detailCreatedAt.textContent = `Created: ${createdAt}`;
+
+//     // Show the details and hide the user list
+//     userList.style.display = 'none';
+//     userDetails.style.display = 'block';
+// }
+
+
+// Function to show user details in a new window
+function showDetails(userId) {
+    
+    document.getElementById('user_'+userId).style.display = 'block'
+    
+    return false;
+}
+
+function showUserList(id) {
+    document.getElementById('user_'+id).style.display = 'none'
+}
+ 
+</script>
+
+
+
+
+<script>
+    const categorySalesData = {
+   labels: [<%- categorySales.map(category => `'${category._id}'`).join(', ') %>],
+   datasets: [{
+     data: [<%- categorySales.map(category => category.totalSales).join(', ') %>],
+     backgroundColor: [
+       'rgba(255, 99, 132, 0.5)',
+       'rgba(54, 162, 235, 0.5)',
+       'rgba(255, 206, 86, 0.5)',
+       'rgba(75, 192, 192, 0.5)',
+       // Add more colors as needed
+     ],
+     borderColor: [
+       'rgba(255, 99, 132, 1)',
+       'rgba(54, 162, 235, 1)',
+       'rgba(255, 206, 86, 1)',
+       'rgba(75, 192, 192, 1)',
+       // Add more colors as needed
+     ],
+     borderWidth: 1,
+   }],
+ };
+ 
+     const categorySalesOptions = {
+         scale: {
+             ticks: {
+                 beginAtZero: true,
+             },
+         },
+     };
+ 
+     const ctxCategorySales = document.getElementById('categorySalesChart').getContext('2d');
+ 
+     const categorySalesChart = new Chart(ctxCategorySales, {
+         type: 'polarArea',
+         data: categorySalesData,
+         options: categorySalesOptions,
+     });
+ </script>
+
+
+    <%- include('adminFooter') %>

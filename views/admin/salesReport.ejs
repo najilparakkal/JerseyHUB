@@ -1,0 +1,509 @@
+<%- include('adminHeader') %>
+
+<section class="content-main">
+    <div class="content-header d-flex justify-content-between">
+        <div>
+            <h2 class="content-title card-title">Sales List</h2>
+        </div>
+        <div>
+            <div class="date-range-selector float-right">
+                <!-- Date range selector and other elements -->
+            </div>
+            <br>
+            <div class="col-md-12" >
+                <!-- Move the "Download PDF" button here -->
+                <button class="btn btn-primary float-end" id="downloadPdf">Download &nbsp;PDF&nbsp;</button><br>
+                <button class="btn btn-primary float-end" id="downloadExcel" style="margin-top: 10px;">Download Excel</button>
+
+                <!-- Other buttons -->
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="me-3 d-flex align-items-center">
+                <input type="date" class="form-control" id="startDate">
+                <!-- <h6 class="ms-2" >To</h6> -->
+                <p style="padding: 10px;">to</p>
+                <input type="date" class="form-control" id="endDate">
+            </div>
+            <div  >
+                <button class="btn btn-primary" id="filterSales" style="margin-top: 20px;">Filter Sales</button>
+                <a href="/admin/report">
+                    <button class="btn btn-primary" id="filterSales" style="margin-top: 20px;">  Show All</button>
+                </a>
+                <select class="form-select" id="filterOrders" style="margin-top: 30px; border-color: #088178; width: 70%;">
+                    <option value="all">Report</option>
+                    <option value="today">Report of Today</option>
+                    <option value="week">Report of this week</option>
+                    <option value="month">Report of this month</option>
+                    <option value="year">Report of this year</option>
+                </select>
+
+            </div>
+        </div>
+        <div class="col-md-9"  style="margin-top: 60px;">
+            <!-- Placeholder content for the table -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="table">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer </th>
+                                    <th>Total Payd</th>
+                                    <th>Payment Method</th>
+                                    <th>Order Date</th>
+                                    <th class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if(orders.length >0){ %>
+                                    <% orders.forEach(item=>{ %>
+                                <tr>
+                                    <td>
+                                        <%= item._id.toString().replace(/\D/g, '').slice(-6) %>
+                                    </td>
+                                    <td><%- item.user.userName %></td>
+                                    <td><%- item.grandTotal %></td>
+                                    <td><%- item.PaymentMethod%></td>
+                                    <td>
+                                        <%- item.createdAt.toLocaleTimeString() %> <br> <%- item.createdAt.toLocaleDateString() %>
+
+                                    </td>
+                                    <td class="text-end">
+                                        <!-- Use data attributes to store order details -->
+                                        <button class="btn btn-primary detailsBtn"
+                                                data-order-id="<%= item._id %>"
+                                                data-order-userName="<%= item.user.userName %>"
+                                                data-order-email="<%= item.user.email %>"
+                                                data-order-phone="<%= item.user.phoneNum %>"
+                                                data-order-total="<%= item.grandTotal %>">
+
+                                          <!-- Loop through products and set data-order-product for each -->
+                                          <% item.products.forEach(product => { %>
+                                            <span  data-order-productimage="<%- product.product.coverimage %>"
+                                                data-order-producName="<%- product.product.name %>"
+                                                data-order-producSize="<%- product.size %>"
+                                                data-order-producQuantity="<%- product.quantity %>"
+
+                                                ></span>
+                                          <% }) %>
+                                          <% if(item.address != null){%>
+
+                                          <span data-order-addName="<%- item.address.fullName %>"
+                                            data-order-addNum="<%- item.address.phoneNum %>"
+                                            data-order-addDistrict="<%- item.address.district %>"
+                                            data-order-addPin="<%- item.address.pincode %>"
+                                            
+                                            data-order-addCity="<%- item.address.city %>"
+                                            data-order-addState="<%- item.address.state %>"
+                                            data-order-addHouse="<%- item.address.houseNum %>"
+                                            <% }else{ %>
+                                                data-order-noAdd="No address Found"
+
+                                                <% } %> 
+                                            >
+                                      </span>
+                                     
+
+                                          Full Details
+                                        </button>
+                                      </td>
+                                </tr>
+                                <% }) %>
+                                <% }else{ %>
+                                    <p>
+                                        No Orders Yet
+                                    </p>
+                                    <% } %>
+                                <!-- Other table rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+
+    document.getElementById("filterSales").addEventListener("click",async()=>{
+
+        const startDate = document.getElementById("startDate").value;
+        const endDate = document.getElementById("endDate").value;
+
+
+        if(startDate && endDate){
+
+            const response = await fetch(`/admin/showSales?startDate=${startDate}&endDate=${endDate}`)
+
+            const showSales = await response.json();
+
+            if (showSales.length === 0) {
+                Swal.fire({
+                title: 'No DataFound',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            })            } else {
+                ubdateOrdersTable(showSales);
+            }
+            
+        }else{
+            Swal.fire({
+                title: 'Please select a Date',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            });        }
+
+
+    })
+    function ubdateOrdersTable(showSales) {
+    const tableBody = document.querySelector(".table tbody");
+    tableBody.innerHTML = "";
+
+    showSales.forEach(item => {
+        const row = `
+        <tr>
+            <td>
+                ${item._id.toString().replace(/\D/g, '').slice(-6)}
+            </td>
+            <td>
+                ${item.user.userName}
+            </td>
+            <td>
+                ${item.grandTotal}
+            </td>
+            <td>
+                ${item.status}
+            </td>
+            <td>
+                ${new Date(item.createdAt).toLocaleTimeString()} <br> ${new Date(item.createdAt).toLocaleDateString()}
+            </td>
+            <td>
+                <button class="btn btn-primary">Full Details</button>
+            </td>
+        </tr>`;
+        tableBody.insertAdjacentHTML("beforeend", row);
+    });
+}
+</script>
+
+<script>
+    document.getElementById("filterOrders").addEventListener("change", async (event) => {
+        const selectedOption = event.target.value;
+        let startDate, endDate;
+
+        // Logic to set startDate and endDate based on selectedOption...
+
+        if (selectedOption === 'today') {
+            const today = new Date();
+            startDate = today.toISOString().split('T')[0];
+            endDate = today.toISOString().split('T')[0];
+        } else if (selectedOption === 'week') {
+            const today = new Date();
+            const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+            startDate = firstDayOfWeek.toISOString().split('T')[0];
+            endDate = new Date().toISOString().split('T')[0];
+        } else if (selectedOption === 'month') {
+            const today = new Date();
+            const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+            startDate = firstDayOfMonth.toISOString().split('T')[0];
+            endDate = new Date().toISOString().split('T')[0];
+        } else if (selectedOption === 'year') {
+            const today = new Date();
+            const firstDayOfYear = new Date(today.getFullYear(), 0, 1);
+            startDate = firstDayOfYear.toISOString().split('T')[0];
+            endDate = new Date().toISOString().split('T')[0];
+        } else {
+            Swal.fire({
+                title: 'No DataFound',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            });
+        }
+
+        if (startDate && endDate) {
+            try {
+                const response = await fetch(`/admin/showSales?startDate=${startDate}&endDate=${endDate}`);
+                const showSales = await response.json();
+
+                if (showSales.length === 0) {
+                    Swal.fire({
+                title: 'No DataFound',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            })                } else {
+                    updateOrdersTable(showSales);
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                alert("An error occurred while fetching data");
+            }
+        } else {
+            Swal.fire({
+                title: 'Please select a valid option',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            });
+                }
+    });
+
+    function updateOrdersTable(showSales) {
+        const tableBody = document.querySelector(".table tbody");
+        tableBody.innerHTML = "";
+
+        showSales.forEach(item => {
+            const row = `
+                <tr>
+                    <td>${item._id.toString().replace(/\D/g, '').slice(-6)}</td>
+                    <td>${item.user.userName}</td>
+                    <td>${item.grandTotal}</td>
+                    <td>${item.status}</td>
+                    <td>${new Date(item.createdAt).toLocaleTimeString()} <br> ${new Date(item.createdAt).toLocaleDateString()}</td>
+                    <td><button class="btn btn-primary">Full Details</button></td>
+                </tr>`;
+            tableBody.insertAdjacentHTML("beforeend", row);
+        });
+    }
+</script>
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+  const detailsButtons = document.querySelectorAll('.detailsBtn');
+
+  const addressSpan = this.querySelector('[data-order-noAdd]');
+      const hasNoAddress = addressSpan ? true : false;
+
+
+  detailsButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const orderId = this.getAttribute('data-order-id');
+      const userName = this.getAttribute('data-order-userName');
+      const email = this.getAttribute('data-order-email');
+      const phone = this.getAttribute('data-order-phone');
+      const total = this.getAttribute('data-order-total');
+
+      // Retrieve all product details: images, names, sizes, and quantities
+      const productImages = Array.from(this.querySelectorAll('[data-order-productimage]'))
+        .map(span => span.getAttribute('data-order-productimage'));
+      const productNames = Array.from(this.querySelectorAll('[data-order-producName]'))
+        .map(span => span.getAttribute('data-order-producName'));
+      const productSizes = Array.from(this.querySelectorAll('[data-order-producSize]'))
+        .map(span => span.getAttribute('data-order-producSize'));
+      const productQty = Array.from(this.querySelectorAll('[data-order-producQuantity]'))
+        .map(span => span.getAttribute('data-order-producQuantity'));
+
+      // Retrieve address details
+      const addressNames = Array.from(this.querySelectorAll('[data-order-addName]'))
+        .map(span => span.getAttribute('data-order-addName'));
+      const addressNumbers = Array.from(this.querySelectorAll('[data-order-addNum]'))
+        .map(span => span.getAttribute('data-order-addNum'));
+      const addressDistricts = Array.from(this.querySelectorAll('[data-order-addDistrict]'))
+        .map(span => span.getAttribute('data-order-addDistrict'));
+      const addressPincodes = Array.from(this.querySelectorAll('[data-order-addPin]'))
+        .map(span => span.getAttribute('data-order-addPin'));
+      const addressCities = Array.from(this.querySelectorAll('[data-order-addCity]'))
+        .map(span => span.getAttribute('data-order-addCity'));
+      const addressStates = Array.from(this.querySelectorAll('[data-order-addState]'))
+        .map(span => span.getAttribute('data-order-addState'));
+      const addressHouses = Array.from(this.querySelectorAll('[data-order-addHouse]'))
+        .map(span => span.getAttribute('data-order-addHouse'));
+
+      // Construct the HTML for the SweetAlert with structured content
+      let alertText = `
+        <div style="text-align: left;">
+          <p><strong>Order ID:</strong> ${orderId}</p>
+          <p><strong>Customer:</strong> ${userName}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Phone:</strong> ${phone}</p>
+          <hr>
+          <p><strong>Products:</strong></p>
+          <ul style="list-style: none; padding-left: 0;">`;
+
+      // Append product details: images, names, sizes, and quantities
+      productImages.forEach((image, index) => {
+        alertText += `
+          <li>
+            <img src="${image}" style="max-width: 30px; margin-right: 10px;">
+            ${productNames[index]} - Size: ${productSizes[index]}, Quantity: ${productQty[index]}
+          </li>`;
+      });
+
+      if (!hasNoAddress) {
+        // Retrieve address details if available
+        const addressNames = Array.from(this.querySelectorAll('[data-order-addName]'))
+          .map(span => span.getAttribute('data-order-addName'));
+        const addressNumbers = Array.from(this.querySelectorAll('[data-order-addNum]'))
+          .map(span => span.getAttribute('data-order-addNum'));
+        const addressDistricts = Array.from(this.querySelectorAll('[data-order-addDistrict]'))
+          .map(span => span.getAttribute('data-order-addDistrict'));
+        const addressPincodes = Array.from(this.querySelectorAll('[data-order-addPin]'))
+          .map(span => span.getAttribute('data-order-addPin'));
+        const addressCities = Array.from(this.querySelectorAll('[data-order-addCity]'))
+          .map(span => span.getAttribute('data-order-addCity'));
+        const addressStates = Array.from(this.querySelectorAll('[data-order-addState]'))
+          .map(span => span.getAttribute('data-order-addState'));
+        const addressHouses = Array.from(this.querySelectorAll('[data-order-addHouse]'))
+          .map(span => span.getAttribute('data-order-addHouse'));
+
+        alertText += `
+          </ul>
+          <hr>
+          <p><strong>Shipped Address:</strong></p>
+          <p><strong>Name:</strong> ${addressNames.join(', ')}</p>
+          <p><strong>Phone:</strong> ${addressNumbers.join(', ')}</p>
+          <p><strong>District:</strong> ${addressDistricts.join(', ')}</p>
+          <p><strong>Pincode:</strong> ${addressPincodes.join(', ')}</p>
+          <p><strong>City:</strong> ${addressCities.join(', ')}</p>
+          <p><strong>State:</strong> ${addressStates.join(', ')}</p>
+          <p><strong>House Number:</strong> ${addressHouses.join(', ')}</p>`;
+      } else {
+        alertText += `
+          </ul>
+          <hr>
+          <p><strong>Shipped Address:</strong> No Address Found</p>`;
+      }
+
+      alertText += `
+        <hr>
+        <p><strong>Total Paid:</strong> ${total}</p>
+      </div>`;
+
+      // Show a SweetAlert with the structured order details
+      Swal.fire({
+        title: 'Order Details',
+        html: alertText,
+        confirmButtonText: 'OK'
+      });
+    });
+  });
+});
+
+</script>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script>
+document.getElementById('downloadPdf').addEventListener('click', function () {
+    const tableHeaders = Array.from(document.querySelectorAll('#table th'))
+        .filter(header => header.textContent.trim() !== 'Action')
+        .map(header => header.textContent.trim());
+
+    const tableRows = Array.from(document.querySelectorAll('#table tbody tr'));
+    const tableData = tableRows.map(row => {
+        const rowData = {};
+        const columns = Array.from(row.querySelectorAll('td')).filter((_, index) => index !== 5); // Exclude the 5th column (Action)
+        columns.forEach((column, index) => {
+            rowData[tableHeaders[index]] = column.innerText.trim();
+        });
+        return rowData;
+    });
+
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+    const selectedOption = document.getElementById('filterOrders').value;
+    let heading = "All Orders"; 
+
+    if (selectedOption === 'today') {
+        heading = `Orders of Today (${startDate})`;
+    } else if (selectedOption === 'week') {
+        heading = `Orders of this Week `;
+    } else if (selectedOption === 'month') {
+        heading = `Orders of this Month `;
+    } else if (selectedOption === 'year') {
+        heading = `Orders of this Year `;
+    } else if(startDate && endDate){
+        heading = `Orders of ${startDate} to ${endDate}`
+    }
+    fetch('/admin/generatePdf', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ tableHeaders, tableData, heading }) 
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'table_data.pdf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+    })
+    .catch(error => console.error('Error:', error));
+});
+
+
+    </script>
+
+
+<script>
+    document.getElementById('downloadExcel').addEventListener('click', function () {
+    const tableHeaders = Array.from(document.querySelectorAll('#table th'))
+        .filter(header => header.textContent.trim() !== 'Action')
+        .map(header => header.textContent.trim());
+
+    const tableRows = Array.from(document.querySelectorAll('#table tbody tr'));
+    const tableData = tableRows.map(row => {
+        const rowData = {};
+        const columns = Array.from(row.querySelectorAll('td')).filter((_, index) => index !== 5); // Exclude the 5th column (Action)
+        columns.forEach((column, index) => {
+            rowData[tableHeaders[index]] = column.innerText.trim();
+        });
+        return rowData;
+    });
+
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+    const selectedOption = document.getElementById('filterOrders').value;
+    let heading = "All Orders";
+
+    if (selectedOption === 'today') {
+        heading = `Orders of Today (${startDate})`;
+    } else if (selectedOption === 'week') {
+        heading = `Orders of this Week `;
+    } else if (selectedOption === 'month') {
+        heading = `Orders of this Month `;
+    } else if (selectedOption === 'year') {
+        heading = `Orders of this Year `;
+    } else if (startDate && endDate) {
+        heading = `Orders of ${startDate} to ${endDate}`
+    }
+
+    fetch('/admin/generateExcel', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ tableHeaders, tableData, heading })
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'table_data.xlsx';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+    })
+    .catch(error => console.error('Error:', error));
+});
+</script>
+
+<%- include('adminFooter') %>

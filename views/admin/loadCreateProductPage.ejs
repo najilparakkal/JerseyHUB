@@ -1,0 +1,218 @@
+<%- include ('adminHeader')%>
+
+<section class="content-main">
+    <form action="/admin/createProduct" method="post" enctype="multipart/form-data"
+        onsubmit="return productValidation()">
+        <div class="row">
+            <div class="col-9">
+                <div class="content-header">
+                    <h2 class="content-title">Add New Product</h2>
+                    <div>
+                        <button type="submit" class="btn btn-md rounded font-sm hover-up">Publish</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label for="product_title" class="form-label">Product title</label>
+                            <input name="name" type="text" placeholder="Type here" class="form-control"
+                                id="productName">
+                            <p id="nameErr"></p>
+                        </div>
+                        <div class="row gx-3">
+                            <div class="col-md-4 mb-3">
+                                <label for="product_size" class="form-label">Quantity</label>
+                                <input type="text" name="stock" placeholder="Type here" class="form-control"
+                                    id="productQuantity">
+                                <p id="quantityErr"></p>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="product_brand" class="form-label">Brand</label>
+                            <input type="text" name="brand" placeholder="Type here" class="form-control"
+                                id="productBrand">
+                            <p id="brandErr"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div>
+                        <label class="form-label">Cover Image </label>
+                        <div class="input-group">
+                            <input name="coverimage" id="images_1" class="form-control image-input" type="file"
+                                accept="image/*" required>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary crop-btn" id="crop_1" type="button"
+                                    onclick="initiateCropper(1)">Crop</button>
+                                <button class="btn btn-outline-secondary save-btn" id="save-btn_1" type="button"
+                                    onclick="uploadCroppedImage(1)" style="display:none">Save</button>
+                            </div>
+                        </div>
+                        <div id="image1Cover">
+                            <img id="croppedImages_1" style="display:none">
+                        </div>
+                        <p id="imagesErr"></p>
+                    </div>
+
+                    <div>
+                        <label class="form-label"> Images </label>
+                        <div class="input-group">
+                            <input name="images" class="form-control image-input" id="images_2" type="file"
+                                accept="image/*" required>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary crop-btn" id="crop_2"  type="button"
+                                    onclick="initiateCropper(2)">Crop</button>
+                                <button class="btn btn-outline-secondary save-btn" id="save-btn_2" type="button" onclick="uploadCroppedImage(2)"
+                                    style="display:none">Save</button>
+                            </div>
+                        </div>
+                        <img id="croppedImages_2" style="display:none">
+                        <p id="imagesErr"></p>
+                    </div>
+
+                    <div>
+                        <div class="input-group">
+                            <input name="images" class="form-control image-input" id="images_3" type="file"
+                                accept="image/*" required>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary crop-btn" id="crop_3" type="button"
+                                    onclick="initiateCropper(3)">Crop</button>
+                                <button class="btn btn-outline-secondary save-btn" id="save-btn_3" type="button" onclick="uploadCroppedImage(3)"
+                                    style="display:none">Save</button>
+                            </div>
+                        </div>
+                        <img id="croppedImages_3" style="display:none">
+                        <p id="imagesErr"></p>
+                    </div>
+
+                    <div>
+                        <div class="input-group">
+                            <input name="images" class="form-control image-input" id="images_4" type="file"
+                                accept="image/*" required>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary crop-btn" id="crop_4" type="button"
+                                    onclick="initiateCropper(4)">Crop</button>
+                                <button class="btn btn-outline-secondary save-btn" id="save-btn_4" type="button"  onclick="uploadCroppedImage(4)"
+                                    style="display:none">Save</button>
+                            </div>
+                        </div>
+                        <img id="croppedImages_4" style="display:none">
+                        <p id="imagesErr"></p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label class="form-label" for="product_price">Price</label>
+                            <input type="text" name="price" placeholder="Type here" class="form-control" id="price">
+                            <p id="priceErr"></p>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label" for="product_status">Category</label>
+                            <select class="form-select" name="category" id="category">
+                                <p id="categoryErr"></p>
+                                <% category.forEach(n=>{ %>
+                                    <option>
+                                        <%= n.name %>
+                                    </option>
+                                    <% }) %>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div>
+                            <label class="form-label">Description</label>
+                            <textarea name="description" placeholder="Type here" class="form-control" rows="4"
+                                id="description"></textarea>
+                            <p id="descriptionErr"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
+
+    <script>
+        let cropper;
+
+        function initiateCropper(imageNum) {
+            const input = document.getElementById('images_' + imageNum)
+            const file = input.files[0];
+            const image = document.getElementById(`croppedImages_${imageNum}`);
+            image.style.display = 'block'
+            const cropBtn = document.getElementById('crop_' + imageNum)
+            const saveBtn = document.getElementById('save-btn_' + imageNum)
+
+            if (file && image) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    image.src = e.target.result;
+
+                    cropper = new Cropper(image, {
+                        aspectRatio: 1,
+                        viewMode: 2,
+                    });
+
+                    cropBtn.style.display = 'none';
+                    saveBtn.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                canvas.src = '';
+                if (cropper) {
+                    cropper.destroy();
+                }
+            }
+        }
+
+        function uploadCroppedImage(id) {
+            const canvas = cropper.getCroppedCanvas();
+            if (canvas) {
+                canvas.toBlob((blob) => {
+                    const fileName = 'cropped_image.jpg';
+                    const file = new File([blob], fileName, { type: 'image/jpeg' });
+                    const input = document.getElementById('images_' + id);
+
+                    if (DataTransfer && FileList) {
+                        const dataTransfer = new DataTransfer();
+                        dataTransfer.items.add(file);
+                        input.files = dataTransfer.files;
+                    } else {
+                        console.error('FileList and DataTransfer are not supported in this browser.');
+                    }
+
+                    cropper.destroy();
+                    document.getElementById('croppedImages_' + id).style.display = 'none';
+                    document.getElementById('save-btn_' + id).style.display = 'none'
+                    document.getElementById('crop_' + id).style.display = 'block';
+
+                });
+            }
+        }
+
+
+        function dataURItoBlob(dataURI) {
+            const byteString = atob(dataURI.split(',')[1]);
+            const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+            const ab = new ArrayBuffer(byteString.length);
+            const ia = new Uint8Array(ab);
+            for (let i = 0; i < byteString.length; i++) {
+                ia[i] = byteString.charCodeAt(i);
+            }
+            return new Blob([ab], { type: mimeString });
+        }
+    </script>  
+
+    <%- include('adminFooter')%>
