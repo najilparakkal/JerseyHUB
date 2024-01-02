@@ -1,7 +1,7 @@
 const User = require("../models/userModels");
 const { sendOtp } = require("../models/nodemailer");
 const Product = require("../models/productModels")
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const Cart = require("../models/cart")
 
 

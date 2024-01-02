@@ -2,7 +2,7 @@ const Product = require("../models/productModels")
 const User = require("../models/userModels");
 const Cart = require("../models/cart")
 const Address = require("../models/addressModel")
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const Order = require("../models/orderModel")
 const Razorpay = require("razorpay")
 
