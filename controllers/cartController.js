@@ -65,8 +65,9 @@ const cart = async (req, res) => {
         const user = await User.findById(userId);
       
         const cartData = await Cart.find({ user: userId }).populate('items.products');
+        console.log(cartData.length);
         
-        if (cartData && cartData.length > 0) {
+        if ( cartData.length > 0) {
             cartData.forEach(cartItem => {
                 cartItem.items.forEach(async (item) => {
                     console.log(item, "👌👌👌");
@@ -91,7 +92,7 @@ const cart = async (req, res) => {
 
             res.render("cart", { cart: cartData, user: user });
         } else {
-            res.render("cart", { cart: cartData, user: user });
+            res.render("cart", { cart: null, user: user });
         }
     } catch (err) {
         console.error(err);

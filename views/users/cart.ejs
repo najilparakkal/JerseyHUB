@@ -18,7 +18,7 @@
 
 	<!-- cart -->
 
-    <% if(cart.length == 0){ %>
+    <% if(cart === null){ %>
         <div class="container d-flex justify-content-center align-items-center"
         style="height: 300px; width: 100%; ">
         <div style="text-align: center; color: red;"><p class="mb-2" style="color: red;"> CART IS EMPTY</p> <br><a class="btn btn-sucess" href="/" style="background-color: #fd7e14;color: white;">Continue Shopping</a></div>
@@ -207,7 +207,7 @@
         $('#total' + productId).text(totalPrice);
 
         // Update the subtotal after increasing the quantity
-        const cartId = '<%= cart[0]._id %>';
+        const cartId = '<%= (cart === null) ? null : cart[0]._id %>';
         updateSubtotal(cartId);
     } catch (error) {
         console.error('Error:', error);
@@ -229,7 +229,7 @@ async function decreaseQuantity(productId) {
         $('#total' + productId).text(totalPrice);
 
         // Update the subtotal after decreasing the quantity
-        const cartId = '<%= cart[0]._id %>';
+        const cartId = '<%= (cart === null) ? null : cart[0]._id %>';
         updateSubtotal(cartId);
     } catch (error) {
         console.error('Error:', error);
@@ -267,7 +267,7 @@ async function updateSubtotal(cartId) {
 // Call the function initially to update the subtotal
 $(document).ready(function () {
     // Replace 'cartId' with the actual cart ID you want to retrieve the total for
-    const cartId = '<%= cart[0]._id %>';
+    const cartId = '<%= (cart === null) ? null : cart[0]._id %>';
     updateSubtotal(cartId);
 });
 </script>
