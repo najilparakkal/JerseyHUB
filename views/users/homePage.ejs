@@ -16,11 +16,11 @@
 					<div class="col-md-12 col-lg-7 offset-lg-1 offset-xl-0">
 						<div class="hero-text">
 							<div class="hero-text-tablecell">
-								<p class="subtitle">Fresh & Organic</p>
-								<h1>Delicious Seasonal Fruits</h1>
+								<p class="subtitle">Orginal & signed </p>
+								<h1>All Jerseys are Available</h1>
 								<div class="hero-btns">
-									<a href="shop.html" class="boxed-btn">Fruit Collection</a>
-									<a href="contact.html" class="bordered-btn">Contact Us</a>
+									<a href="/shope" class="boxed-btn">Visit Shop</a>
+									<a href="/contact" class="bordered-btn">Contact Us</a>
 								</div>
 							</div>
 						</div>
@@ -35,11 +35,11 @@
 					<div class="col-lg-10 offset-lg-1 text-center">
 						<div class="hero-text">
 							<div class="hero-text-tablecell">
-								<p class="subtitle">Fresh Everyday</p>
-								<h1>100% Organic Collection</h1>
+								<p class="subtitle">Vintege & Current</p>
+								<h1>All Generetions Are here</h1>
 								<div class="hero-btns">
-									<a href="shop.html" class="boxed-btn">Visit Shop</a>
-									<a href="contact.html" class="bordered-btn">Contact Us</a>
+									<a href="/shope" class="boxed-btn">Visit Shop</a>
+									<a href="/contact" class="bordered-btn">Contact Us</a>
 								</div>
 							</div>
 						</div>
@@ -55,10 +55,10 @@
 						<div class="hero-text">
 							<div class="hero-text-tablecell">
 								<p class="subtitle">Mega Sale Going On!</p>
-								<h1>Get December Discount</h1>
+								<h1>Get You Jersey With Maximum Discount</h1>
 								<div class="hero-btns">
-									<a href="shop.html" class="boxed-btn">Visit Shop</a>
-									<a href="contact.html" class="bordered-btn">Contact Us</a>
+									<a href="/shope" class="boxed-btn">Visit Shop</a>
+									<a href="/contact" class="bordered-btn">Contact Us</a>
 								</div>
 							</div>
 						</div>
@@ -133,7 +133,16 @@
 						</a>
 					  </div>
 					  <h3 style="color: white;"><%=  product[i].name %></h3>
-					  <p class="product-price" style="color: white;"><span>Rs : <%=  product[i].price %></span></p>
+					  <p class="product-price" style="color: white;"><span style="color: #fd7e14;">
+						<% if (product[i].offerPrice == null || product[i].offerPrice === undefined) { %>
+						  <%= product[i].price %>
+						<% } else { %>
+						  <%= product[i].offerPrice %>
+						<% } %>
+					  </span>
+					  <del style="margin-top: -10px;"><span class="old-price font-md ml-15" ><%= product[i].price %></span></del>
+					  
+					</p>
 					  <a href="#" class="cart-btn" data-product-id="<%=  product[i]._id %>"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
 					</div>
 				  </div>
@@ -193,7 +202,7 @@
 						<div class="client-meta">
 							<h3>Cristiano Ronaldo <span>Footballer</span></h3>
 							<p class="testimonial-body">
-								" erseyHub! Dive into the realm of football greatness with our exclusive collection of player jerseys. Join Ronaldo's fervor for quality and authenticity as you explore a treasure trove of iconic jerseys. Experience the thrill, celebrate the legends – only at JerseyHub, where your football passion finds its perfect match!" "
+								" JerseyHub! Dive into the realm of football greatness with our exclusive collection of player jerseys. Join Ronaldo's fervor for quality and authenticity as you explore a treasure trove of iconic jerseys. Experience the thrill, celebrate the legends – only at JerseyHub, where your football passion finds its perfect match!" "
 							</p>
 							<div class="last-icon">
 								<i class="fas fa-quote-right"></i>
@@ -213,16 +222,14 @@
 			<div class="row">
 				<div class="col-lg-6 col-md-12">
 					<div class="abt-bg">
-						<a href="https://www.youtube.com/watch?v=DBLlFWYcIGQ" class="video-play-btn popup-youtube"><i class="fas fa-play"></i></a>
+						<img src="/assets/img/company-logos/logo.png" >
 					</div>
 				</div>
 				<div class="col-lg-6 col-md-12">
 					<div class="abt-text">
-						<p class="top-sub">Since Year 1999</p>
-						<h2 style="color: white;">We are <span class="orange-text">Fruitkha</span></h2>
-						<p style="color: gray;">Etiam vulputate ut augue vel sodales. In sollicitudin neque et massa porttitor vestibulum ac vel nisi. Vestibulum placerat eget dolor sit amet posuere. In ut dolor aliquet, aliquet sapien sed, interdum velit. Nam eu molestie lorem.</p>
-						<p style="color: gray;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente facilis illo repellat veritatis minus, et labore minima mollitia qui ducimus.</p>
-						<a href="about.html" class="boxed-btn mt-4">know more</a>
+						<p class="top-sub" style="color: gray;">Since Year 2023</p>
+						<h2  style="color: white;">We are <span class="orange-text">JerseyHUB</span></h2>
+						<p  style="color: gray;">"Discover authentic club and country jerseys, available in various sizes! Elevate your game-day style with our genuine collection, featuring top-quality materials and impeccable designs. Show your support for your favorite teams in style and comfort. Choose originality, choose passion – choose our exclusive jerseys today!"</p>
 					</div>
 				</div>
 			</div>
@@ -235,7 +242,7 @@
     	<div class="container">
         	<h3>December sale is on! <br> with big <span class="orange-text">Discount...</span></h3>
             <div class="sale-percent"><span>Sale! <br> Upto</span>50% <span>off</span></div>
-            <a href="shop.html" class="cart-btnw btn-lg">Shop Now</a>
+            <a href="/shope" class="cart-btn btn-lg">Shop Now</a>
         </div>
     </section>
 	<!-- end shop banner -->
@@ -248,7 +255,7 @@
 				<div class="col-lg-8 offset-lg-2 text-center">
 					<div class="section-title">	
 						<h3 style="color: rgb(255, 255, 255);"><span class="orange-text">Hot</span> News</h3>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, fuga quas itaque eveniet beatae optio.</p>
+						<p>Trending footballers transfer News...,Cullect all the Jerseys  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
 					</div>
 				</div>
 			</div>
@@ -256,42 +263,41 @@
 			<div class="row">
 				<div class="col-lg-4 col-md-6">
 					<div class="single-latest-news">
-						<div class="news-text-box">						<a href="single-news.html"><div class="latest-news-bg news-bg-1" style="background-image: url('/assets/img/latest-news/messi.avif');"></div></a>
+						<div class="news-text-box">			
+							<a href="/product/?id=<%= intermiami._id %>"><div class="latest-news-bg news-bg-1" style="background-image: url('/assets/img/latest-news/messi.avif');"></div></a>
 
-							<h3 ><a href="single-news.html" style="color:white">Messi was Joined  InterMiami on a 2 Year Contract</a></h3>
+							<h3 ><a href="/product/?id=<%= intermiami._id %>" style="color:white">Messi was Joined  InterMiami on a 2 Year Contract</a></h3>
 							<p class="blog-meta">
 								<h6 style="color:orange">Buy the jesrey</h6>
 							</p>
-							<p class="excerpt"style="color:gray">Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi. Praesent vitae mattis nunc, egestas viverra eros.</p>
-							<a href="single-news.html" class="read-more-btn">read more <i class="fas fa-angle-right"></i></a>
+							<p class="excerpt"style="color:gray">Messi, who officially joins Miami after leaving French champions Paris Saint-Germain following two seasons at the club, has signed a contract through the end of the 2025 MLS season..</p>
+							<!-- <a href="single-news.html" class="read-more-btn">read more <i class="fas fa-angle-right"></i></a> -->
 						</div>
 					</div>
 				</div>
 				<div class="col-lg-4 col-md-6">
 					<div class="single-latest-news">
-						<a href="single-news.html"><div class="latest-news-bg news-bg-2" style="background-image: url('/assets/img/latest-news/CORRECTION-FBL-KSA-HILAL-NEYMAR-0_1692171148316_1692171436515.avif')"></div></a>
+						<a href="/product/?id=<%= alhilal._id %>"><div class="latest-news-bg news-bg-2" style="background-image: url('/assets/img/latest-news/CORRECTION-FBL-KSA-HILAL-NEYMAR-0_1692171148316_1692171436515.avif')"></div></a>
 						<div class="news-text-box">
-							<h3><a href="single-news.html" style="color: rgb(255, 255, 255);">A man's worth has its season, like tomato.</a></h3>
+							<h3><a href="/product/?id=<%= alhilal._id %>" style="color: rgb(255, 255, 255);">Neymar agrees to join Al Hilal from PSG,</a></h3>
 							<p class="blog-meta">
-								<span class="author" style="color:orange"><i class="fas fa-user"></i> Admin</span>
-								<span class="date"><i class="fas fa-calendar"></i> 27 December, 2019</span>
+								<h6 style="color:orange">Buy the jesrey</h6>
+
 							</p>
-							<p class="excerpt" style="color:gray">Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi. Praesent vitae mattis nunc, egestas viverra eros.</p>
-							<a href="single-news.html" class="read-more-btn">read more <i class="fas fa-angle-right"></i></a>
+							<p class="excerpt" style="color:gray">Brazil and Paris Saint-Germain forward Neymar has agreed to join Saudi Pro League side Al Hilal, the arch-rival of Cristiano Ronaldo’s Al Nassr, as per reports from France.</p>
 						</div>
 					</div>
 				</div>
 				<div class="col-lg-4 col-md-6 offset-md-3 offset-lg-0">
 					<div class="single-latest-news">
-						<a href="single-news.html"><div class="latest-news-bg news-bg-3" style="background-image: url('/assets/img/latest-news/skysports-jude-bellingham-real_6187042.png')"></div></a>
+						<a href="/product/?id=<%= realmandrid._id %>"><div class="latest-news-bg news-bg-3" style="background-image: url('/assets/img/latest-news/skysports-jude-bellingham-real_6187042.png')"></div></a>
 						<div class="news-text-box">
-							<h3><a href="single-news.html" style="color:white">Good thoughts bear good fresh juicy fruit.</a></h3>
+							<h3><a href="/product/?id=<%= realmandrid._id %>" style="color:white">Jude Bellingham Joined Real Madrid</a></h3>
 							<p class="blog-meta">
-								<span class="author" style="color:orange"><i class="fas fa-user"></i> Admin</span>
-								<span class="date"><i class="fas fa-calendar"></i> 27 December, 2019</span>
+								<h6 style="color:orange">Buy the jesrey</h6>
+
 							</p>
-							<p class="excerpt" style="color:gray">Vivamus lacus enim, pulvinar vel nulla sed, scelerisque rhoncus nisi. Praesent vitae mattis nunc, egestas viverra eros.</p>
-							<a href="single-news.html" class="read-more-btn">read more <i class="fas fa-angle-right"></i></a>
+							<p class="excerpt" style="color:gray">Jude Bellingham has completed his move from Borussia Dortmund to Real Madrid.He become his country's most expensive player should the deal rise to the £115m price tag including add-ons</p>
 						</div>
 					</div>
 				</div>

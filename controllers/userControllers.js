@@ -39,7 +39,7 @@ const insertUser = async (req, res) => {
         const referalCode = req.session.referalCode;
 
         if (checkData) {
-            res.render("registration", {
+            res.render("createUser", {
                 errMessage: "User already found",
                 message: "",
             });
@@ -174,7 +174,6 @@ const verifyingUser = async (req, res) => {
 const loadMainPage = async (req, res) => {
     try {
         if (req.session.user_id) {
-            console.log("if worked");
             res.redirect('/homepage')
         } else {
             console.log("else worked");
@@ -190,7 +189,13 @@ const loadHomePage = async (req, res) => {
     try {
         if (req.session.user_id) {
             const product = await Product.find({ isListed: true })
-            res.render("homePage", { product });
+            const intermiami = await Product.findOne({ name:'Inert Miami', isListed: true });
+            const alhilal = await Product.findOne({ name:'Al Hilal', isListed: true });
+            const realmandrid = await Product.findOne({ name:"RealMandrid", isListed: true });
+
+            console.log(intermiami,alhilal,realmandrid,"😘😘");
+
+            res.render("homePage", { product ,realmandrid,alhilal,intermiami});
         } else {
             res.redirect('/mainpage')
         }

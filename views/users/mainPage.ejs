@@ -211,17 +211,17 @@
 				<div class="col-lg-4 col-md-6 text-center">
 					<div class="single-product-item">
 						<div class="product-image">
-							<a href="single-product.html"><img src="/product/FZEs-imXkAIghSQ.jpg" alt=""></a>
+							<a ><img style="height: 300px;" src="/assets/img/avaters/WhatsAppImage2023-09-08at19.30.58_1024x1024.webp" alt=""></a>
 						</div>
 						<h3>Barselona</h3>
-						<p class="product-price"> ₹ 200 </p>
-						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+						<p class="product-price"> ₹ 2000 </p>
+						<a  class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
 					</div>
 				</div>
 				<div class="col-lg-4 col-md-6 text-center">
 					<div class="single-product-item">
 						<div class="product-image">
-							<a href="single-product.html"><img src="/product/img_2373.jpg" alt=""></a>
+							<a ><img style="height: 300px;" src="/assets/img/avaters/Brazil-Home-ADULT-Shirt-2020-2021-Front.jpg" alt=""></a>
 						</div>
 						<h3>Argentina</h3>
 						<p class="product-price">₹ 2500 </p>
@@ -231,7 +231,7 @@
 				<div class="col-lg-4 col-md-6 offset-md-3 offset-lg-0 text-center">
 					<div class="single-product-item">
 						<div class="product-image">
-							<a href="single-product.html"><img src="/product/images (8).jpeg" alt=""></a>
+							<a><img style="height: 300px;" src="/assets/img/avaters/37738108_h.avif" alt=""></a>
 						</div>
 						<h3>Chelsea</h3>
 						<p class="product-price">₹1900 </p>
@@ -335,8 +335,8 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-6 col-md-12">
-					<div class="abt-bg">
-						<a href="/assets/img/avaters/logo-color.png" ></a>
+					<div class="abt-bg" >
+						<img src="/assets/img/company-logos/logo.png" >
 					</div>
 				</div>
 				<div class="col-lg-6 col-md-12">
@@ -344,7 +344,7 @@
 						<p class="top-sub">Since Year 2023</p>
 						<h2>We are <span class="orange-text">JerseyHUB</span></h2>
 						<p>"Discover authentic club and country jerseys, available in various sizes! Elevate your game-day style with our genuine collection, featuring top-quality materials and impeccable designs. Show your support for your favorite teams in style and comfort. Choose originality, choose passion – choose our exclusive jerseys today!"</p>
-						<a href="about.html" class="boxed-btn mt-4">know more</a>
+						<a href="about.html" class="boxed-btn mt-4 cart-btn">know more</a>
 					</div>
 				</div>
 			</div>
@@ -362,4 +362,25 @@
     </section>
 
 
-	<%- include('footerUser') %>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+    const addToCartBtns = document.querySelectorAll('.cart-btn');
+
+    addToCartBtns.forEach(function(btn) {
+        btn.addEventListener('click', function(event) {
+            event.preventDefault();
+
+			Swal.fire({
+    title: 'Error!',
+    text: 'You need to login',
+    icon: 'error',
+});
+
+        });
+    });
+});
+
+	</script>
+		<%- include('footerUser') %>

@@ -71,10 +71,9 @@ userRouter.put("/updateQuantity/:id",auth.isLogin,userController.cartQuantityUpd
 userRouter.get("/profile",auth.isLogin,profileController.profile)
 userRouter.get("/address",auth.isLogin,profileController.address)
 userRouter.post("/address",auth.isLogin,profileController.getAddress)
-userRouter.get("/editadd",auth.isLogin,profileController.editAdd)
-userRouter.get("/editAdd",auth.isLogin,profileController.editAddd)
+userRouter.get("/editprofileAdd",auth.isLogin,profileController.editAddd)
 
-userRouter.post("/updateadd",auth.isLogin,profileController.updateAdd)
+userRouter.post("/updateProfileAdd",auth.isLogin,profileController.updateProfileAdd)
 userRouter.post("/updateAdd",auth.isLogin,profileController.updateAddd)
 
 userRouter.get("/changePassword",auth.isLogin,profileController.changePassword)
@@ -104,7 +103,7 @@ userRouter.post("/razorpay",auth.isLogin,checkOutController.orderRazorpay)
 userRouter.post("/removeProductOrder",checkOutController.removeProduct)
 userRouter.post("/wallet",checkOutController.wallet)
 userRouter.get("/invoice",checkOutController.invoice)
-
+ 
 userRouter.get('/searchProduct',userController.searchProduct)
 userRouter.get("/shope",auth.isLogin,shopeController.shope)
 

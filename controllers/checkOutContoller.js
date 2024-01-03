@@ -12,6 +12,7 @@ const checkOut = async (req, res) => {
         const userId = req.session.user_id;
         const user = await User.findById(userId);
         const cart = await Cart.findOne({ user: user._id })
+        console.log(cart,"💕💕💕💕💕💕💕💕💕💕💕");
         for (const item of cart.items) {
             item.products = await Product.findById(item.products)
         }

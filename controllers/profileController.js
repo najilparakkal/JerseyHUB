@@ -138,7 +138,7 @@ const updateAddd = async(req,res)=>{
                 }
             })
             if(address){
-                res.redirect("/profile");
+                res.redirect("/checkOut");
             }else{
                 res.send("Somthing has happend Check the Console")
             }
@@ -151,6 +151,34 @@ const updateAddd = async(req,res)=>{
     }
 }
 
+const updateProfileAdd = async(req,res)=>{
+    try{
+
+        const address = await Address.findByIdAndUpdate(req.body.id,
+            {
+                $set:{
+                    fullName:req.body.fullName,
+                    phoneNum:req.body.phoneNum,
+                    district:req.body.district,
+                    pincode:req.body.pincode,
+                    city:req.body.city,
+                    state:req.body.state,
+                    houseNum:req.body.houseNum,
+                }
+            })
+            if(address){
+                res.redirect("/profile");
+            }else{
+                res.send("Somthing has happend Check the Console")
+            }
+
+    }catch(err){
+        console.log(err);
+        if(err){
+            res.render("404page");
+        }
+    }
+}
 
 const changePassword=async(req,res)=>{
     try{
@@ -347,5 +375,6 @@ module.exports={
     addWallet,
     refer,
     updateAddd,
-    editAddd
+    editAddd,
+    updateProfileAdd
 }
