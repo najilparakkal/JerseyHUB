@@ -11,6 +11,14 @@ const isLogin = async(req,res,next)=>{
        console.log(error.message)
     }
  }
+
+
+
+
+
+
+
+
  
  const isLogout = async(req,res,next)=>{
     try {
@@ -24,6 +32,13 @@ const isLogin = async(req,res,next)=>{
        console.log(error.message)
     }
  }
+ 
+
+
+
+
+
+
  
  module.exports = {
     isLogin,

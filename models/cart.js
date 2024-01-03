@@ -1,6 +1,4 @@
-// cartModel.js
 const mongoose = require("mongoose");
-// const Product = require("./productModels"); // Import the Product model
 
 const cartSchema = new mongoose.Schema({
     user: {
@@ -10,7 +8,7 @@ const cartSchema = new mongoose.Schema({
         {
             products: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: "Products", // Reference the Product model
+                ref: "Products", 
                 
             },
             quantity: {

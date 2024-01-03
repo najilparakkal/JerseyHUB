@@ -44,7 +44,7 @@ const userModel = new mongoose.Schema({
       },
        timestamp: {
          type: Date,
-         default: Date.now, // Default value will be the current timestamp
+         default: Date.now,
        },
    },
    referalCode:{

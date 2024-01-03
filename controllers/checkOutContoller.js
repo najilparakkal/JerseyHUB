@@ -7,12 +7,23 @@ const Razorpay = require("razorpay");
 const { render } = require("../routes/userRouter");
 const easyinvoice = require('easyinvoice')
 
+
+
+
+
+
+
+
+
+
+
+
+
 const checkOut = async (req, res) => {
     try {
         const userId = req.session.user_id;
         const user = await User.findById(userId);
         const cart = await Cart.findOne({ user: user._id })
-        console.log(cart,"💕💕💕💕💕💕💕💕💕💕💕");
         for (const item of cart.items) {
             item.products = await Product.findById(item.products)
         }
@@ -24,23 +35,40 @@ const checkOut = async (req, res) => {
     }
 };
 
+
+
+
+
+
+
+
+
+
+
 const itemCheckOut = async (req, res) => {
     try {
         const productId = req.query.id;
-
-
         const userId = req.session.user_id;
         const user = await User.findById(userId);
         const selectedProduct = await Product.findById(productId);
-
         const address = await Address.find({ userId: userId });
-
         res.render("itemCheckOut", { address, user, selectedProduct });
-
     } catch (err) {
         console.log(err);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 const editCartAdd = async (req, res) => {
@@ -56,6 +84,17 @@ const editCartAdd = async (req, res) => {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
 const deleteCartAdd = async (req, res) => {
     try {
         const addressId = req.query.id;
@@ -65,7 +104,6 @@ const deleteCartAdd = async (req, res) => {
         } else {
             res.render("404page");
         }
-
     } catch (err) {
         console.log(err);
         if (err) {
@@ -73,6 +111,14 @@ const deleteCartAdd = async (req, res) => {
         }
     }
 }
+
+
+
+
+
+
+
+
 
 
 const updateCartAdd = async (req, res) => {
@@ -95,7 +141,6 @@ const updateCartAdd = async (req, res) => {
         } else {
             res.send("Somthing has happend Check the Console")
         }
-
     } catch (err) {
         console.log(err);
         if (err) {
@@ -103,6 +148,13 @@ const updateCartAdd = async (req, res) => {
         }
     }
 }
+
+
+
+
+
+
+
 
 
 
@@ -117,11 +169,21 @@ const checkOutAdd = async (req, res) => {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
 const getCheckOutAdd = async (req, res) => {
     try {
         userId = req.session.user_id;
         if (userId) {
-
             const address = new Address({
                 userId: userId,
                 fullName: req.body.fullName,
@@ -131,11 +193,9 @@ const getCheckOutAdd = async (req, res) => {
                 city: req.body.city,
                 state: req.body.state,
                 houseNum: req.body.houseNum,
-
             })
             await address.save()
             res.redirect("/checkOut")
-
         }
     } catch (err) {
         console.log(err);
@@ -148,22 +208,25 @@ const getCheckOutAdd = async (req, res) => {
 
 
 
+
+
+
+
+
+
+
 const cancelOrder = async (req, res) => {
     try {
         const orderId = req.body.orderId;
         const order = await Order.findById(orderId);
-
         if (!order) {
             return res.status(404).json({ message: 'Order not found' });
         }
-
         order.status = 'Cancelled';
         order.products.forEach(item => {
             item.status = 'Cancelled';
         });
-
         await order.save();
-
         res.status(200).json({ message: 'Order Cancelled Successfully', order });
         console.log('Order cancelled');
     } catch (err) {
@@ -174,11 +237,18 @@ const cancelOrder = async (req, res) => {
 
 
 
+
+
+
+
+
+
+
+
 const orders = async (req, res) => {
     try {
         const userId = req.session.user_id
         const orders = await Order.find({ user: userId }).populate('products.product').sort({ createdAt: -1 }).populate("address")
-        console.log(orders,"👍👍");
         res.render("orders", { userId, orders })
     } catch (err) {
         console.log(err);
@@ -195,92 +265,83 @@ const orders = async (req, res) => {
 
 
 
+
+
+
 const rzp = new Razorpay({
     key_id: process.env.RAZORPAYId,
     key_secret: process.env.RAZORPAYSECRET,
 });
 
 
+
+
+
+
+
+
+
+
+
+
 const placeOrder = async (req, res) => {
     try {
-
         const { selectedAddressId, paymentMethod, grandTotal, size } = req.body;
-        console.log(grandTotal,"😒😒");
         const userId = req.session.user_id;
         if (paymentMethod === "COD") {
             let products = [];
             const cartItems = await Cart.findOne({ user: userId });
             for (let cartItem of cartItems.items) {
                 const foundProduct = await Product.findById(cartItem.products);
-
-
                 const updatedQuantity = foundProduct.quantity - cartItem.quantity;
-
                 if (updatedQuantity < 0) {
                     console.log(`Insufficient quantity for product ID: ${cartItem.products}`);
                     return res.status(400).json({ error: "Insufficient product quantity" });
                 }
-
                 await Product.findByIdAndUpdate(foundProduct._id, { quantity: updatedQuantity });
-
-                products.push({ product: foundProduct._id, quantity: cartItem.quantity, size: size,price: cartItem.price});
-                // console.log(cartItem.price,"😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘😘");
+                products.push({ product: foundProduct._id, quantity: cartItem.quantity, size: size, price: cartItem.price });
             }
             const order = new Order({
                 user: userId,
                 address: selectedAddressId,
-                PaymentMethod:paymentMethod,
+                PaymentMethod: paymentMethod,
                 products,
                 grandTotal: grandTotal,
-                
+
             });
-            // console.log(order, "👍👍");
             await order.save();
             await Cart.findByIdAndDelete({ _id: cartItems._id });
-
             return res.status(200).json({ message: "Order Placed" });
         } else if (paymentMethod === "razorpay") {
-
-
             const options = {
                 amount: grandTotal * 100,
                 currency: "INR",
                 receipt: "Order Reciept" + Date.now(),
                 payment_capture: 1
             }
-
             rzp.orders.create(options, (err, order) => {
                 if (err) {
                     console.log(err);
                 }
                 return res.status(201).json({ order });
             })
-
-
         } else if (paymentMethod === "Wallet") {
-            console.log("💕💕");
             const cartItems = await Cart.findOne({ user: userId });
             let total = 0;
-
             for (const cartItem of cartItems.items) {
                 const foundProduct = await Product.findById(cartItem.products);
                 const productTotal = cartItem.quantity * foundProduct.price;
                 total += productTotal;
             }
-
             const user = await User.findById(userId);
             const userWallet = user.wallet;
-
             if (total > userWallet) {
                 return res.status(501).json({ status: false, message: "Insufficient wallet balance" });
             }
-
-
             user.wallet -= total;
             console.log(total);
             console.log(user.wallet);
             await user.save();
-
             return res.status(200).json({ status: true, message: "Order placed successfully" });
         } else {
             return res.status(400).json({ error: "Invalid payment method" });
@@ -291,30 +352,39 @@ const placeOrder = async (req, res) => {
     }
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const wallet = async (req, res) => {
     try {
         const { selectedAddressId, paymentMethod, grandTotal } = req.body;
         const userId = req.session.user_id;
-
         const user = await User.findById(userId);
         let products = [];
         const cartItems = await Cart.findOne({ user: userId });
         for (let cartItem of cartItems.items) {
             const foundProduct = await Product.findById(cartItem.products);
-
-
             const updatedQuantity = foundProduct.quantity - cartItem.quantity;
-
             if (updatedQuantity < 0) {
                 console.log(`Insufficient quantity for product ID: ${cartItem.products}`);
                 return res.status(400).json({ error: "Insufficient product quantity" });
             }
-
             await Product.findByIdAndUpdate(foundProduct._id, { quantity: updatedQuantity });
-
             products.push({ product: foundProduct._id, quantity: cartItem.quantity });
         }
-
         const order = new Order({
             user: userId,
             address: selectedAddressId,
@@ -322,17 +392,27 @@ const wallet = async (req, res) => {
             products,
             grandTotal: grandTotal,
         });
-
         await order.save();
         await Cart.findByIdAndDelete({ _id: cartItems._id });
-
-
         return res.status(200).json({ message: "Funds added to the wallet successfully" });
     } catch (error) {
         console.error("Error handling wallet action:", error);
         return res.status(500).json({ error: "Internal Server Error" });
     }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -345,20 +425,14 @@ const orderRazorpay = async (req, res) => {
         const cartItems = await Cart.findOne({ user: userId });
         for (let cartItem of cartItems.items) {
             const foundProduct = await Product.findById(cartItem.products);
-
-
             const updatedQuantity = foundProduct.quantity - cartItem.quantity;
-
             if (updatedQuantity < 0) {
                 console.log(`Insufficient quantity for product ID: ${cartItem.products}`);
                 return res.status(400).json({ error: "Insufficient product quantity" });
             }
-
             await Product.findByIdAndUpdate(foundProduct._id, { quantity: updatedQuantity });
-
             products.push({ product: foundProduct._id, quantity: cartItem.quantity });
         }
-
         const order = new Order({
             user: userId,
             address: selectedAddressId,
@@ -366,10 +440,8 @@ const orderRazorpay = async (req, res) => {
             products,
             grandTotal: grandTotal,
         });
-
         await order.save();
         await Cart.findByIdAndDelete({ _id: cartItems._id });
-
         const rzpOrder = await rzp.orders.create({
             amount: grandTotal * 100,
             currency: "INR",
@@ -385,56 +457,69 @@ const orderRazorpay = async (req, res) => {
 };
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const removeProduct = async (req, res) => {
     try {
         const { orderId, productId } = req.body;
-
         const order = await Order.findById(orderId);
-
         if (!order) {
             return res.status(404).json({ message: 'Order not found' });
         }
-
-        // Find the product in the products array by its ID
         const productToUpdate = order.products.find(product => product._id.toString() === productId);
-
         if (!productToUpdate) {
             return res.status(404).json({ message: 'Product not found in the order' });
         }
-
-        // Update the status of the product to "Cancelled"
         productToUpdate.status = 'Cancelled';
-
-        // Save the updated order
         await order.save();
-        console.log(order,"🙌🙌🙌🙌🙌🙌🙌🙌🙌🙌");
         res.status(200).json({ message: 'Product status updated to Cancelled', order });
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Error updating product status' });
     }
 };
+
+
+
+
+
+
+
+
+
+
+
+
 const invoice = async (req, res) => {
     try {
         const orderId = req.query.id;
         const order = await Order.findById(orderId)
-        .populate('products.product')
-        .populate('user')
-        .populate('address');
-    
-    if (order) {
-        // Filter out products with status 'Cancelled'
-        order.products = order.products.filter(product => product.status !== 'Cancelled');
-    }
-    // console.log(order.products,"🙌🙌");
-    
+            .populate('products.product')
+            .populate('user')
+            .populate('address');
+
+        if (order) {
+            order.products = order.products.filter(product => product.status !== 'Cancelled');
+        }
         if (!order) {
             return res.status(404).send("Order not found");
         }
-
         const userDetails = order.user;
-        const userAddress = order.address;        
-
+        const userAddress = order.address;
         const data = {
             "documentTitle": "Invoice",
             "currency": "INR",
@@ -445,7 +530,7 @@ const invoice = async (req, res) => {
             "marginBottom": 25,
             "logo": "/assets/img/company-logos/jerseyhub-high-resolution-logo-transparent (3).png",
             "sender": {
-                "company":"JerseyHUB",
+                "company": "JerseyHUB",
                 "address": "Btototype",
                 "city": "Maradu",
                 "country": "India"
@@ -454,24 +539,23 @@ const invoice = async (req, res) => {
                 "company": `<span style="color: blue;">Orderd client : </span>${userDetails.userName}`,
                 "address": `<span style="color: red;">Billed Address :</span><br>${userAddress.fullName}<br>${userAddress.phoneNum}<br>${userAddress.district}<br> ${userAddress.pincode}<br> ${userAddress.houseNum}<br> ${userAddress.city}<br> ${userAddress.state}`
             },
-          
+
             "products": order.products.map(product => {
                 return {
                     "quantity": product.quantity,
                     "description": product.product.description,
                     "price": product.product.price,
-                    "size": product.size, 
-                    "tax-rate":5
+                    "size": product.size,
+                    "tax-rate": 5
                 };
             }),
             "information": {
-                "number": `${order.id}`, // Use order.id or order._id as needed
-                "date": order.createdAt ? order.createdAt.toISOString().split('T')[0] : '' ,// Check if createdAt is available
-                "due-date":''
+                "number": `${order.id}`,
+                "date": order.createdAt ? order.createdAt.toISOString().split('T')[0] : '',
+                "due-date": ''
             },
             "bottom-notice": "Thank You "
         };
-
         easyinvoice.createInvoice(data, function (result) {
             res.set({
                 'Content-Disposition': 'attachment; filename="invoice.pdf"',
@@ -484,6 +568,18 @@ const invoice = async (req, res) => {
         res.render("404page");
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

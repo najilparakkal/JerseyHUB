@@ -27,26 +27,19 @@ const auth = require("../middleware/adminAuth");
 const adminController = require("../controllers/adminControllers");
 
 
-
-
-
 adminRouter.get("/", auth.isLogout, adminController.loadLogin)
 adminRouter.post("/", auth.isLogout, adminController.verifyAdmin)
 adminRouter.get("/home", auth.isLogin, adminController.loadMainPage)
 adminRouter.get("/logoutAdmin", auth.isLogin, adminController.logoutAdmin)
-// adminRouter.post("/userDetail",auth.isLogin,adminController.userDetail)
 
 
-//users List
+////////////////////////////////////////////////////////////////////////////////////////users List
 
 adminRouter.get("/users", auth.isLogin, adminController.usersList)
 adminRouter.get("/block", auth.isLogin, adminController.block)
 adminRouter.get("/unBlock", auth.isLogin, adminController.unBlock)
 
-
-
-
-//category
+/////////////////////////////////////////////////////////////////////////////////////////category
 
 adminRouter.get("/categories", auth.isLogin, adminController.categories)
 adminRouter.post("/addCategory", auth.isLogin, adminController.addCategory)
@@ -57,7 +50,7 @@ adminRouter.post("/updateingCategory", auth.isLogin, adminController.updatCatego
 adminRouter.get("/deleteCategory", auth.isLogin, adminController.deleteCategory)
 adminRouter.post("/updateCategoryOffer",auth.isLogin,adminController.updateCategoryOffer)
 
-//product 
+/////////////////////////////////////////////////////////////////////////////////////////////product 
 
 adminRouter.get("/productList", auth.isLogin, adminController.productList)
 adminRouter.get("/createProduct", auth.isLogin, adminController.loadCreateingProduct)
@@ -71,8 +64,7 @@ adminRouter.get('/removeImage',auth.isLogin,adminController.removeImage)
 adminRouter.post("/changeimage", upload.single('image'), adminController.changeimage);
 adminRouter.post("/changeCoverImage", upload.single('coverImage'), adminController.changeCoverImage);
 
-//order
-
+//////////////////////////////////////////////////////////////////////////////////////////////order
 
 adminRouter.get("/orders",auth.isLogin,adminController.orders)
 adminRouter.get("/detail",auth.isLogin,adminController.orderDetail)
@@ -81,8 +73,7 @@ adminRouter.get("/orderPending",auth.isLogin,adminController.orderPending)
 adminRouter.get("/orderDelivered",auth.isLogin,adminController.orderDelivered)
 adminRouter.get("/orderConform",auth.isLogin,adminController.orderConfirm)
 
-
-//sales Report 
+////////////////////////////////////////////////////////////////////////////////////////////sales Report 
 
 adminRouter.get("/report",auth.isLogin,adminController.salesReport)
 adminRouter.get("/showSales",auth.isLogin,adminController.showSales);

@@ -279,23 +279,15 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
     <script>
-        // Assuming you have jQuery available
         $('input[name="payment_option"]').change(function () {
             var selectedPayment = $('input[name="payment_option"]:checked').val();
 
-            // Perform actions based on the selected payment option
             if (selectedPayment === "COD") {
-                // If Cash on Delivery is selected
                 console.log("Cash On Delivery selected");
-                // You can add your logic here for Cash On Delivery
             } else if (selectedPayment === "razorpay") {
-                // If RezorPay is selected
                 console.log("RezorPay selected");
-                // You can add your logic here for RezorPay
             } else if (selectedPayment === "Wallet") {
-                // If PayPal is selected
                 console.log("wallet selected");
-                // You can add your logic here for PayPal
             }
         });
 

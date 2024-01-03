@@ -5,6 +5,15 @@ const bcrypt = require('bcryptjs');
 const Cart = require("../models/cart")
 
 
+
+
+
+
+
+
+
+
+
 const loadRegister = async (req, res) => {
     try {
         if (req.session.user_id) {
@@ -19,17 +28,32 @@ const loadRegister = async (req, res) => {
 
 
 
+
+
+
+
+
+
+
+
+
 const loadCreateUser = async (req, res) => {
     try {
         req.session.referalCode = req.query.code
-        console.log(req.session.referalCode, "❤️❤️");
         res.render("createUser", { message: "", errMessage: "" })
     } catch (error) {
         console.log(error);
     }
 }
 
-//    createing a user
+
+
+
+
+
+
+
+
 
 
 const insertUser = async (req, res) => {
@@ -37,7 +61,6 @@ const insertUser = async (req, res) => {
         const email = req.body.email;
         const checkData = await User.findOne({ email: email });
         const referalCode = req.session.referalCode;
-
         if (checkData) {
             res.render("createUser", {
                 errMessage: "User already found",
@@ -47,9 +70,7 @@ const insertUser = async (req, res) => {
             function generateRandomReferralCode() {
                 return Math.floor(100000 + Math.random() * 900000).toString();
             }
-
             const referralCode = generateRandomReferralCode();
-
             const user = new User({
                 userName: req.body.userName,
                 email: req.body.email,
@@ -57,16 +78,11 @@ const insertUser = async (req, res) => {
                 phoneNum: req.body.phoneNum,
                 referalCode: referralCode,
             });
-
-            console.log(referalCode, "👌👌");
             if (referalCode) {
                 console.log("User get with Refferal invitation");
                 // Find the user associated with the referral code
                 const referredByUser = await User.findOne({ referalCode: referalCode });
                 if (referredByUser) {
-
-
-
                     let newUserAmount = 200
                     let oldUserAmount = 200
                     const updatewallet = await User.findByIdAndUpdate(
@@ -84,9 +100,6 @@ const insertUser = async (req, res) => {
                         },
                         { new: true }
                     );
-
-
-
                     user.wallet += newUserAmount;
                     user.history = {
                         amount: newUserAmount,
@@ -94,19 +107,14 @@ const insertUser = async (req, res) => {
                         reason: "Refferd  User",
                         timestamp: Date.now(),
                     }
-
                     await user.save();
-
                 }
             } else {
                 console.log("User get without Refferal invitation");
             }
-
             const userData = await user.save();
-
             req.session.otp = sendOtp(user.email);
             req.session.userData = user;
-
             res.redirect("/otp");
             console.log(req.session.otp);
         }
@@ -115,14 +123,40 @@ const insertUser = async (req, res) => {
     }
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const loadOtp = (req, res) => {
     if (req.session.userData) {
         res.render("otp");
-
     } else {
         res.redirect("/homePage")
     }
 }
+
+
+
+
+
+
+
+
+
+
 
 
 const verifyOtp = async (req, res) => {
@@ -140,7 +174,15 @@ const verifyOtp = async (req, res) => {
     }
 }
 
-// Verifying a User
+
+
+
+
+
+
+
+
+
 
 
 
@@ -148,10 +190,8 @@ const verifyingUser = async (req, res) => {
     try {
         const email = req.body.email;
         const password = req.body.password;
-
         const userData = await User.findOne({ email: email });
         if (userData) {
-            // Compare the entered password with the hashed password in the database
             const passwordMatch = await bcrypt.compare(password, userData.password);
             if (passwordMatch) {
                 req.session.user_id = userData._id;
@@ -171,6 +211,16 @@ const verifyingUser = async (req, res) => {
 
 
 
+
+
+
+
+
+
+
+
+
+
 const loadMainPage = async (req, res) => {
     try {
         if (req.session.user_id) {
@@ -185,17 +235,25 @@ const loadMainPage = async (req, res) => {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
 const loadHomePage = async (req, res) => {
     try {
         if (req.session.user_id) {
             const product = await Product.find({ isListed: true })
-            const intermiami = await Product.findOne({ name:'Inert Miami', isListed: true });
-            const alhilal = await Product.findOne({ name:'Al Hilal', isListed: true });
-            const realmandrid = await Product.findOne({ name:"RealMandrid", isListed: true });
-
-            console.log(intermiami,alhilal,realmandrid,"😘😘");
-
-            res.render("homePage", { product ,realmandrid,alhilal,intermiami});
+            const intermiami = await Product.findOne({ name: 'Inert Miami', isListed: true });
+            const alhilal = await Product.findOne({ name: 'Al Hilal', isListed: true });
+            const realmandrid = await Product.findOne({ name: "RealMandrid", isListed: true });
+            res.render("homePage", { product, realmandrid, alhilal, intermiami });
         } else {
             res.redirect('/mainpage')
         }
@@ -203,6 +261,16 @@ const loadHomePage = async (req, res) => {
         console.log(err);
     }
 }
+
+
+
+
+
+
+
+
+
+
 
 const userLogout = async (req, res) => {
     try {
@@ -213,15 +281,18 @@ const userLogout = async (req, res) => {
     }
 }
 
+
+
+
+
+
+
+
+
 const product = async (req, res) => {
     try {
-
-
-
         const productId = req.query.id;
-
         const productdetails = await Product.findById(productId);
-
         res.render("productPage", {
             userId: req.session.user_id ? req.session.user_id : "",
             productdetails,
@@ -240,16 +311,15 @@ const product = async (req, res) => {
 
 
 
+
+
+
 const searchProduct = async (req, res, next) => {
     try {
-
-
         const filter = req.query.q;
-
         if (filter != '') {
             const regex = new RegExp(filter, "i");
             const products = await Product.find({ name: { $regex: regex } });
-
             if (products) {
                 res.json(products)
             }
@@ -262,6 +332,14 @@ const searchProduct = async (req, res, next) => {
 
 
 
+
+
+
+
+
+
+
+
 const cartQuantityUpdate = async (req, res) => {
     try {
         const userId = req.session.user_id;
@@ -270,13 +348,11 @@ const cartQuantityUpdate = async (req, res) => {
         const product = await Product.findById(req.params.id);
         const quantityChange = parseInt(req.query.change);
         if (quantityChange) {
-            // Ensuring the quantity doesn't go below 1
             if (cart.items[itemIndex].quantity === 1 && quantityChange === -1) {
                 res.json({ success: true, quantity: cart.items[itemIndex].quantity, total });
             } else {
                 cart.items[itemIndex].quantity += quantityChange;
                 await cart.save();
-
                 const total = cart.items[itemIndex].quantity * product.offerPrice;
                 res.json({ success: true, quantity: cart.items[itemIndex].quantity, total });
             }
@@ -289,28 +365,53 @@ const cartQuantityUpdate = async (req, res) => {
     }
 };
 
-const about = async(req,res)=>{
-    try{
+
+
+
+
+
+
+
+
+const about = async (req, res) => {
+    try {
         const userId = req.session.user_id
         res.render("about")
-    }catch(err){
+    } catch (err) {
         console.log(err);
-        if(err){
+        if (err) {
             res.render('404page')
         }
     }
 }
 
-const contact = async (req,res)=>{
-    try{
+
+
+
+
+
+
+
+
+
+const contact = async (req, res) => {
+    try {
         res.render("contact")
-    }catch(err){
+    } catch (err) {
         console.log(err);
-        if(err){
+        if (err) {
             res.render("404page")
         }
     }
 }
+
+
+
+
+
+
+
+
 
 
 module.exports = {

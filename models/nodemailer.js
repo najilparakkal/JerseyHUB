@@ -28,7 +28,6 @@ function sendOtp(email){
             console.log(`Email sent:`+info.response);
         }
     });
-    console.log(otp,"💕💕💕💕💕💕💕💕💕💕💕");
 
     return otp
 

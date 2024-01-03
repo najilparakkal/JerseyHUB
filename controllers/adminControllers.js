@@ -9,6 +9,9 @@ const excel = require('exceljs');
 
 
 
+
+
+
 const loadLogin = async (req, res) => {
     try {
         res.render("adminLogin", { message: "" });
@@ -19,12 +22,12 @@ const loadLogin = async (req, res) => {
 }
 
 
+
+
 const verifyAdmin = async (req, res) => {
     try {
-        const email = req.body.email;
         const password = req.body.password;
         const adminData = await Admin.findOne({ password: password });
-
         if (adminData) {
             if (adminData.password === password) {
                 req.session.admin_id = adminData._id;
@@ -35,34 +38,30 @@ const verifyAdmin = async (req, res) => {
         } else {
             res.render("adminLogin", { message: "You are Not a Admin" });
         }
-
-
     } catch (err) {
         console.log(err.message);
     }
 }
 
 
+
+
+
+
 const loadMainPage = async (req, res) => {
     try {
-
         const users = await User.find();
-
         const recentUsers = await User.aggregate([
             {
-                $sort: { createdAt: -1 } // Sort by createdAt field in descending order (recent first)
+                $sort: { createdAt: -1 }
             },
 
             {
-                $limit: 3 // Limit the result to the last 10 recently registered users (adjust as needed)
+                $limit: 3
             }
         ]);
-
-
         const products = await Products.find({ isListed: true })
-
         const categories = await Category.find();
-
         const orders = await Orders.find();
         const totalOrders = orders.length
         const totalDeliverdOrders = await Orders.aggregate([
@@ -73,9 +72,7 @@ const loadMainPage = async (req, res) => {
             { $group: { _id: null, total: { $sum: "$grandTotal" } } },
             { $project: { _id: 0 } }
         ])
-
         const totalValue = totalRevenue.length > 0 ? totalRevenue[0].total : 0;
-
         const monthlyRevenue = await Orders.aggregate([
             {
                 $match: {
@@ -96,11 +93,7 @@ const loadMainPage = async (req, res) => {
                 $sort: { "_id.year": 1, "_id.month": 1 }
             }
         ]);
-
         const monthlySalesRevenue = monthlyRevenue.map((item) => item.total || 0);
-
-
-
         const monthlyOrders = await Orders.aggregate([
             {
                 $group: {
@@ -121,13 +114,10 @@ const loadMainPage = async (req, res) => {
             );
             return monthData ? monthData.count : 0;
         });
-
-
-
         const monthlySales = await Orders.aggregate([
             {
                 $match: {
-                    status: "Delivered", // Filter by status
+                    status: "Delivered",
                 },
             },
             {
@@ -148,40 +138,33 @@ const loadMainPage = async (req, res) => {
             const monthData = monthlySales.find((item) => item._id === index + 1);
             return monthData ? monthData.count : 0;
         });
-
-
-
         const categorySales = await Orders.aggregate([
             {
-              $match: {
-                status: "Delivered", // Filter by status
-              },
+                $match: {
+                    status: "Delivered",
+                },
             },
             {
-              $unwind: "$products",
+                $unwind: "$products",
             },
             {
-              $lookup: {
-                from: "products", // Assuming your products collection is named 'products'
-                localField: "products.product",
-                foreignField: "_id",
-                as: "productInfo",
-              },
+                $lookup: {
+                    from: "products",
+                    localField: "products.product",
+                    foreignField: "_id",
+                    as: "productInfo",
+                },
             },
             {
-              $unwind: "$productInfo",
+                $unwind: "$productInfo",
             },
             {
-              $group: {
-                _id: "$productInfo.category", // Group by category
-                totalSales: { $sum: "$products.quantity" }, // Calculate total sales quantity
-              },
+                $group: {
+                    _id: "$productInfo.category",
+                    totalSales: { $sum: "$products.quantity" },
+                },
             },
-          ]);
-      
-
-
-
+        ]);
         const monthlyDeliveredOrders = await Orders.aggregate([
             {
                 $match: {
@@ -202,39 +185,32 @@ const loadMainPage = async (req, res) => {
                 $sort: { "_id.year": 1, "_id.month": 1 }
             }
         ]);
-
-
         const monthlyCancelledOrders = await Orders.aggregate([
             {
-              $match: {
-                status: "Canceled" // Match the "Canceled" status
-              }
+                $match: {
+                    status: "Canceled"
+                }
             },
             {
-              $group: {
-                _id: {
-                  year: { $year: "$createdAt" },
-                  month: { $month: "$createdAt" }
-                },
-                count: { $sum: 1 } // Count the canceled orders per month
-              }
+                $group: {
+                    _id: {
+                        year: { $year: "$createdAt" },
+                        month: { $month: "$createdAt" }
+                    },
+                    count: { $sum: 1 }
+                }
             },
             {
-              $sort: { "_id.year": 1, "_id.month": 1 } // Sort by year and month
+                $sort: { "_id.year": 1, "_id.month": 1 }
             }
-          ]);
-          
-          
-
-
-        // Assuming you have a user field in the orders collection
+        ]);
         const monthlyUsers = await Orders.aggregate([
             {
                 $group: {
                     _id: {
                         year: { $year: "$createdAt" },
                         month: { $month: "$createdAt" },
-                        user: "$user" // Replace with actual user reference field
+                        user: "$user"
                     }
                 }
             },
@@ -257,38 +233,29 @@ const loadMainPage = async (req, res) => {
             );
             return monthData ? monthData.count : 0;
         });
-
-
-
         const totalCategories = categories.length
         const totalProducts = products.length;
-
-
-
         let topRevenueMonthsAggregate = await Orders.aggregate([
             {
                 $match: {
-                    status: "Delivered" // Match documents with the "Delivered" status
+                    status: "Delivered"
                 }
             },
             {
                 $group: {
                     _id: {
                         month: { $month: "$createdAt" },
-                        year: { $year: "$createdAt" } // If you want to consider the year as well
+                        year: { $year: "$createdAt" }
                     },
                     totalRevenue: { $sum: "$grandTotal" }
                 }
             },
         ]);
-   
         console.log(topRevenueMonthsAggregate, "👌");
         const topRevenueMonthsData = topRevenueMonthsAggregate.map((entry) => ({
-            month: entry._id.month, // Extract the month value
+            month: entry._id.month,
             totalRevenue: entry.totalRevenue,
         }));
-
-        // Extract month names for labels
         const monthNames = [
             "Jan",
             "Feb",
@@ -306,11 +273,9 @@ const loadMainPage = async (req, res) => {
         const topRevenueLabels = monthNames
         const topRevenueValues = Array.from({ length: 12 }, (_, i) => {
             const monthData = topRevenueMonthsData.find((data) => data.month === i + 1);
-            return monthData ? monthData.totalRevenue : 0; // If data exists for the month, use its revenue; otherwise, default to 0
+            return monthData ? monthData.totalRevenue : 0;
         });
-
         console.log(topRevenueLabels, topRevenueValues, "😂😂😂😂");
-
         const latestOrders = await Orders.find().sort({ createdAt: -1 }).limit(5).populate("products.product").populate("user").populate("address")
         res.render("mainPage", {
             totalProducts,
@@ -326,7 +291,6 @@ const loadMainPage = async (req, res) => {
             monthlySalesRevenue,
             monthlyOrdersCount,
             monthlyUsersCount,
-            // monthlyrevenue,
             topRevenueLabels,
             topRevenueValues,
             recentUsers,
@@ -345,22 +309,6 @@ const loadMainPage = async (req, res) => {
 
 
 
-// const userDetail = async (req, res) => {
-//     try {
-//         console.log("sioujkncv sldkoervnc sw;klvniucsw;likjorucfnv;hswiurvnchw;siu");
-//         const userDetails = {
-//             userName: 'John Doe',
-//             email: 'john@example.com',
-//             // Other user details
-//         };
-
-//         // Send user details as JSON response
-//         res.status(200).json({ userDetails });
-//     } catch (err) {
-//         console.log(err);
-//         res.status(500).json({ error: 'Internal Server Error' });
-//     }
-// };
 
 
 
@@ -377,6 +325,9 @@ const logoutAdmin = async (req, res) => {
 
 
 
+
+
+
 const usersList = async (req, res) => {
     try {
         const users = await User.find().sort({ userName: 1 })
@@ -388,11 +339,15 @@ const usersList = async (req, res) => {
 }
 
 
+
+
+
+
+
 const block = async (req, res) => {
     try {
         const userId = req.query.id;
         const blockUser = await User.findByIdAndUpdate(userId, { isBlocked: true });
-
         if (blockUser) {
             res.redirect("/admin/users");
         } else {
@@ -402,6 +357,10 @@ const block = async (req, res) => {
         console.log(err);
     }
 }
+
+
+
+
 
 const unBlock = async (req, res) => {
     try {
@@ -418,10 +377,13 @@ const unBlock = async (req, res) => {
 }
 
 
+
+
+
+
 const categories = async (req, res) => {
     try {
         const usersCatagory = await Category.find();
-
         res.render("usersCategories", { category: usersCatagory })
     }
     catch (err) {
@@ -429,13 +391,16 @@ const categories = async (req, res) => {
     }
 }
 
+
+
+
+
+
 const addCategory = async (req, res) => {
     try {
-
         const { name, description } = req.body;
         const nameRegex = new RegExp(name, "i");
         const checkData = await Category.findOne({ name: { $regex: nameRegex } });
-
         if (checkData) {
             const errMessage = "Category alredy exists";
             res.redirect(`/admin/categories?error=${encodeURIComponent(errMessage)}`)
@@ -445,23 +410,25 @@ const addCategory = async (req, res) => {
                 description: description
             })
             await addingcategory.save();
-
             res.redirect("/admin/categories")
-
         }
-
-
     } catch (error) {
         console.log(err);
     }
 }
 
 
+
+
+
+
+
+
+
 const blockCategory = async (req, res) => {
     try {
         const categoryId = req.query.id;
         const blocked = await Category.findByIdAndUpdate(categoryId, { isListed: false });
-
         if (blocked) {
             res.redirect("/admin/categories");
         } else {
@@ -474,13 +441,17 @@ const blockCategory = async (req, res) => {
 }
 
 
+
+
+
+
+
+
+
 const unBlockCategory = async (req, res) => {
     try {
-
         const categoryId = req.query.id;
         const unBlock = await Category.findByIdAndUpdate(categoryId, { isListed: true });
-
-
         if (unBlock) {
             res.redirect("/admin/categories");
         } else {
@@ -490,6 +461,14 @@ const unBlockCategory = async (req, res) => {
         console.log(err);
     }
 }
+
+
+
+
+
+
+
+
 
 const editCategory = async (req, res) => {
     try {
@@ -507,6 +486,12 @@ const editCategory = async (req, res) => {
 
 
 
+
+
+
+
+
+
 const updatCategory = async (req, res) => {
     try {
         const category = await Category.findByIdAndUpdate(req.body.id,
@@ -519,9 +504,6 @@ const updatCategory = async (req, res) => {
             });
 
         res.redirect("/admin/categories");
-
-
-
     } catch (err) {
         console.log(err);
     }
@@ -531,7 +513,10 @@ const updatCategory = async (req, res) => {
 
 
 
-///////////////////////////////////////////////////////////////////
+
+
+
+
 const deleteCategory = async (req, res) => {
     try {
         const categoryid = req.query.id;
@@ -551,6 +536,13 @@ const deleteCategory = async (req, res) => {
 
 
 
+
+
+
+
+
+
+
 const productList = async (req, res) => {
     try {
         const product = await Products.find()
@@ -561,6 +553,13 @@ const productList = async (req, res) => {
         }
     }
 }
+
+
+
+
+
+
+
 
 
 
@@ -578,9 +577,14 @@ const loadCreateingProduct = async (req, res) => {
 }
 
 
+
+
+
+
+
+
 const createProduct = async (req, res) => {
     try {
-
         const creatingProduct = {
             name: req.body.name,
             description: req.body.description,
@@ -593,57 +597,62 @@ const createProduct = async (req, res) => {
                 "/product/" + req.session.images[1],
                 "/product/" + req.session.images[2],
                 "/product/" + req.session.images[3],
-
-
             ]
         };
         req.session.images = null
         await Products.insertMany([creatingProduct]);
-        // req.session
         res.redirect("/admin/productList")
-
     } catch (error) {
-
         console.log(error);
-
     }
 }
 
-const blockProduct = async (req, res) => {
 
+
+
+
+
+
+
+
+
+const blockProduct = async (req, res) => {
     try {
         const product_id = req.query.id;
         const blocked = await Products.findByIdAndUpdate(product_id, { status: false, isListed: false })
-
         if (blocked) {
             res.redirect("/admin/productList")
         } else {
             res.render("404page")
         }
-
-
     } catch (err) {
         console.log(err);
         if (err) {
             res.render("404page")
         }
     }
-
 }
+
+
+
+
+
+
+
+
+
+
+
 
 const unblockproduct = async (req, res) => {
     try {
-
         const product_id = req.query.id;
         const unblock = await Products.findByIdAndUpdate(product_id, { status: true, isListed: true });
-
         if (unblock) {
             res.redirect("/admin/productList")
         } else {
             res.render("404page")
         }
-
-
     } catch (err) {
         console.log(err);
         if (err) {
@@ -651,15 +660,21 @@ const unblockproduct = async (req, res) => {
         }
     }
 }
+
+
+
+
+
+
+
+
 
 const editProduct = async (req, res) => {
     try {
         const productId = req.query.id
-
         const product = await Products.findById(productId);
         const category = await Category.find({ isListed: true })
         res.render("editProduct", { product: product, category })
-
     } catch (err) {
         console.log(err);
         if (err) {
@@ -667,14 +682,22 @@ const editProduct = async (req, res) => {
         }
     }
 }
+
+
+
+
+
+
+
+
 
 const updateProduct = async (req, res) => {
     try {
         const product = await Products.findById(req.body.id)
         const coverimage = product.coverimage
         const images = product.images
-       console.log(images,'🙌🙌');
-       console.log(coverimage);
+        console.log(images, '🙌🙌');
+        console.log(coverimage);
         const updating = await Products.findByIdAndUpdate(req.body.id,
             {
                 $set: {
@@ -684,25 +707,22 @@ const updateProduct = async (req, res) => {
                     brand: req.body.brand,
                     price: req.body.price,
                     category: req.body.category,
-                    coverimage:  req.session.images ?'/product/' +( req.session.images[0]) : coverimage,
+                    coverimage: req.session.images ? '/product/' + (req.session.images[0]) : coverimage,
                     images: [
-                        req.session.images ?"/product/" +(req.session.images[1]):images[0],
-                        req.session.images ?"/product/" +(req.session.images[2]):images[1],
-                        req.session.images ?"/product/" +(req.session.images[3]):images[2],        
-        
+                        req.session.images ? "/product/" + (req.session.images[1]) : images[0],
+                        req.session.images ? "/product/" + (req.session.images[2]) : images[1],
+                        req.session.images ? "/product/" + (req.session.images[3]) : images[2],
+
                     ]
                 },
             }
         );
-
         req.session.images = null
         if (updating) {
             res.redirect('/admin/productList')
         } else {
             res.send("ERROR CHECK THE CODE")
         }
-
-
     } catch (err) {
         console.error(err);
         res.status(500).send(`Internal Server Error: ${err.message}`);
@@ -710,11 +730,19 @@ const updateProduct = async (req, res) => {
 };
 
 
+
+
+
+
+
+
+
+
+
 const deletProduct = async (req, res) => {
     try {
         const product_id = req.query.id;
         const remove = await Products.findByIdAndDelete({ _id: product_id });
-
         if (remove) {
             res.redirect("/admin/productList");
         } else {
@@ -727,9 +755,14 @@ const deletProduct = async (req, res) => {
 };
 
 
+
+
+
+
+
+
 const orders = async (req, res) => {
     try {
-
         const order = await Orders.find({}).sort({ createdAt: -1 }).populate("user").populate('products.product')
         res.render("ordersList", { order })
     } catch (err) {
@@ -742,12 +775,15 @@ const orders = async (req, res) => {
 
 
 
+
+
+
+
+
 const orderDetail = async (req, res) => {
     try {
         const orderId = req.query.id;
         const order = await Orders.findById(orderId).populate("user").populate("products.product").populate("address")
-        console.log(order, "❤️❤️");
-
         res.render("orderDetails", { order })
     } catch (err) {
         console.log(err);
@@ -758,9 +794,13 @@ const orderDetail = async (req, res) => {
 }
 
 
+
+
+
+
+
 const cancelOrder = async (req, res) => {
     try {
-
         const orderId = req.query.id;
         const findOrder = await Orders.findByIdAndUpdate(orderId, {
             $set: {
@@ -776,11 +816,13 @@ const cancelOrder = async (req, res) => {
 
 
 
+
+
+
+
 const orderPending = async (req, res) => {
     try {
-
         const orderId = req.query.id;
-
         const findOrder = await Orders.findByIdAndUpdate(orderId, {
             $set: {
                 status: "Pending"
@@ -793,11 +835,16 @@ const orderPending = async (req, res) => {
     }
 }
 
+
+
+
+
+
+
+
 const orderDelivered = async (req, res) => {
     try {
-
         const orderId = req.query.id;
-
         const findOrder = await Orders.findByIdAndUpdate(orderId, {
             $set: {
                 status: "Delivered"
@@ -809,6 +856,13 @@ const orderDelivered = async (req, res) => {
         res.render("404page")
     }
 }
+
+
+
+
+
+
+
 
 const orderConfirm = async (req, res) => {
     try {
@@ -827,39 +881,43 @@ const orderConfirm = async (req, res) => {
 
 
 
-const salesReport = async(req,res)=>{
-    try{
 
+
+
+
+
+
+const salesReport = async (req, res) => {
+    try {
         const orders = await Orders.find({ status: "Delivered" }).sort({ createdAt: -1 }).populate("user").populate("products.product").populate("address")
-        console.log(orders,"💕💕💕");
-        res.render("salesReport",{orders})
+        res.render("salesReport", { orders })
     }
-    catch(err){
+    catch (err) {
         console.log(err);
         res.render("404page")
     }
-}   
+}
+
+
+
+
+
+
+
+
+
 
 const showSales = async (req, res) => {
     try {
         const { startDate, endDate } = req.query;
-
         console.log({ startDate, endDate });
-        
-        // Adjust the end date to capture orders for the entire day
         const adjustedEndDate = new Date(endDate);
-        adjustedEndDate.setHours(23, 59, 59, 999); // Set to the end of the day
-
+        adjustedEndDate.setHours(23, 59, 59, 999);
         const filterDate = await Orders.find({
             createdAt: { $gte: new Date(startDate), $lte: adjustedEndDate },
-            status: "Delivered" 
+            status: "Delivered"
         }).populate("user")
-            res.json(filterDate) 
-          
-        
-        // Rest of your code to handle filtered orders
-        
-
+        res.json(filterDate)
     } catch (err) {
         console.log(err);
         res.render("404page");
@@ -867,40 +925,33 @@ const showSales = async (req, res) => {
 };
 
 
+
+
+
+
 const pdfDownload = async (req, res) => {
     const { tableHeaders, tableData, heading } = req.body;
-
     try {
         const doc = new PDFDocument();
-        // Pipe the PDF content to the response
         res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', `attachment; filename="${heading}.pdf"`); // Set the filename dynamically
-
+        res.setHeader('Content-Disposition', `attachment; filename="${heading}.pdf"`);
         doc.pipe(res);
-
-        // Add heading to the PDF
         doc.fontSize(10).text(heading, { align: 'center' }).moveDown();
-
-        const tableTop = 200; // Y-coordinate to start the table
-        const rowHeight = 40; // Height of each row
-        const colWidth = 80; // Width of each column
-
-        // Draw table headers with borders
+        const tableTop = 200;
+        const rowHeight = 40;
+        const colWidth = 80;
         doc.font('Helvetica-Bold');
         tableHeaders.forEach((header, i) => {
             doc.rect(100 + colWidth * i, tableTop, colWidth, rowHeight).stroke();
-            doc.text(header, 100 + colWidth * i + 10, tableTop + 10); // Adjust text positioning
+            doc.text(header, 100 + colWidth * i + 10, tableTop + 10);
         });
-
-        // Draw table data with borders
         doc.font('Helvetica');
         tableData.forEach((row, i) => {
             Object.values(row).forEach((value, j) => {
                 doc.rect(100 + colWidth * j, tableTop + rowHeight * (i + 1), colWidth, rowHeight).stroke();
-                doc.text(value, 95 + colWidth * j + 10, tableTop + rowHeight * (i + 1) + 10); // Adjust text positioning
+                doc.text(value, 95 + colWidth * j + 10, tableTop + rowHeight * (i + 1) + 10);
             });
         });
-
         doc.end();
     } catch (err) {
         console.log(err);
@@ -909,26 +960,27 @@ const pdfDownload = async (req, res) => {
 };
 
 
+
+
+
+
+
+
+
 const updateCategoryOffer = async (req, res) => {
     try {
         const enteredValue = req.body.offerValue;
         const id = req.body.id;
-
         const category = await Category.findById(id);
         const name = category.name;
         let products = await Products.find();
-
         for (const product of products) {
             const trimmedProductCategory = product.category.trim();
             const trimmedName = name.trim();
-
             if (trimmedProductCategory === trimmedName) {
-                console.log(product.price, "😂😂");
-
                 const originalPrice = product.price;
                 const value = (originalPrice * enteredValue) / 100;
                 const result = originalPrice - value;
-
                 const productId = product.id;
                 const update = await Products.findByIdAndUpdate(
                     productId,
@@ -937,7 +989,6 @@ const updateCategoryOffer = async (req, res) => {
                 );
             }
         }
-
         res.status(200).json({ message: 'Category offer updated successfully' });
     } catch (error) {
         console.error('Error:', error);
@@ -945,27 +996,29 @@ const updateCategoryOffer = async (req, res) => {
     }
 };
 
+
+
+
+
+
+
+
+
 const generateExcel = async (req, res) => {
     const { tableHeaders, tableData, heading } = req.body;
-
     try {
         const workbook = new excel.Workbook();
         const worksheet = workbook.addWorksheet('Sheet 1');
-
-        worksheet.addRow([heading]); // Adding heading to the Excel file
-
-        worksheet.addRow([]); // Blank row
-
-        worksheet.addRow(tableHeaders); // Adding table headers
-
+        worksheet.addRow([heading]);
+        worksheet.addRow([]);
+        worksheet.addRow(tableHeaders);
         tableData.forEach(row => {
             const values = tableHeaders.map(header => row[header]);
-            worksheet.addRow(values); // Adding table data rows
+            worksheet.addRow(values);
         });
         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        res.setHeader('Content-Disposition', `attachment; filename="${heading}.xlsx"`); // Set the filename dynamically
-
-        await workbook.xlsx.write(res); // Send the workbook as response
+        res.setHeader('Content-Disposition', `attachment; filename="${heading}.xlsx"`);
+        await workbook.xlsx.write(res);
     } catch (err) {
         console.error(err);
         res.status(500).send('Internal Server Error');
@@ -975,58 +1028,49 @@ const generateExcel = async (req, res) => {
 const removeImage = async (req, res) => {
     try {
         const productId = req.query.productId;
-        const imageIndex = req.query.imageIndex; // Index of the image to remove
-        console.log("💕💕💕💕💕💕💕💕💕💕");
-        // Fetch the product by its ID
+        const imageIndex = req.query.imageIndex;
         const product = await Products.findById(productId);
-
         if (!product) {
             return res.status(404).send('Product not found');
         }
-
-        // Remove the image at the specified index from the 'images' array
         if (product.images && product.images[imageIndex]) {
             const removedImage = product.images.splice(imageIndex, 1)[0];
-
-            // Save the changes to the product after removing the image
             await product.save();
-            res.redirect("/admin/editProduct?id="+productId)
+            res.redirect("/admin/editProduct?id=" + productId)
         } else {
             res.status(404).send('Image not found');
         }
     } catch (err) {
-        console.log("😊😊😊😊😊😊😊");
         console.error(err);
         res.render("404page");
     }
 }
+
+
+
+
+
+
+
+
 const changeimage = async (req, res) => {
     try {
         const productId = req.query.productId;
         const imageIndex = req.query.imageIndex;
-        const file = req.file; // Access the uploaded file using req.file
-
+        const file = req.file;
         const product = await Products.findById(productId);
         if (!product) {
             return res.status(404).json({ message: 'Product not found' });
         }
-
-        // Update the image at the specified index
         if (product.images && product.images[imageIndex]) {
-            const uploadedPath = "/product/" + file.filename; // Assuming 'filename' contains the uploaded file's name
-
-            // If the array index exists and the value is a string (path), update it
+            const uploadedPath = "/product/" + file.filename;
             if (Array.isArray(product.images) && typeof product.images[imageIndex] === 'string') {
                 product.images[imageIndex] = uploadedPath;
             } else {
-                // If it's an array but not in the expected format, replace the entire index
                 product.images[imageIndex] = [uploadedPath];
             }
-
-            // Save the updated product
             await product.save();
             req.session.images = null
-
             res.status(200).json({ message: 'Image changed successfully' });
         } else {
             res.status(404).json({ message: 'Image not found' });
@@ -1039,25 +1083,26 @@ const changeimage = async (req, res) => {
 
 
 
+
+
+
+
+
+
+
 const changeCoverImage = async (req, res) => {
     try {
         const productId = req.query.productId;
-        const file = req.file; // Access the uploaded file using req.file
+        const file = req.file;
         const product = await Products.findById(productId);
         if (!product) {
             return res.status(404).json({ message: 'Product not found' });
         }
-
         if (file) {
-            const uploadedCoverImagePath = "/product/" + file.filename; // Assuming 'filename' contains the uploaded file's name
-
-            // Update the cover image path
+            const uploadedCoverImagePath = "/product/" + file.filename;
             product.coverimage = uploadedCoverImagePath;
-
-            // Save the updated product
             await product.save();
             req.session.images = null
-
             res.status(200).json({ message: 'Cover image changed successfully', newCoverImagePath: uploadedCoverImagePath });
         } else {
             res.status(400).json({ message: 'No file uploaded for cover image' });
@@ -1067,6 +1112,19 @@ const changeCoverImage = async (req, res) => {
         res.status(500).json({ message: 'Error changing cover image' });
     }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
